@@ -45,6 +45,7 @@ import '../views/home/messages/video_call/video_call_view.dart';
 import '../views/home/options/story/story_view.dart';
 import '../views/login/login_view.dart';
 import '../views/splash/splash_view.dart';
+import '../views/user_profile/user_profile.dart';
 
 class AppRoutes {
   static const String splashView = "/splash_view";
@@ -93,6 +94,7 @@ class AppRoutes {
   static const String aboutView = "/about_view";
   static const String editProfileView = "/edit_profile_view";
   static const String reelsView = "/reels_view";
+  static const String userProfile = "/user_profile";
 
   static List<GetPage> pages = [
     GetPage(name: splashView, page: () => SplashView()),
@@ -125,11 +127,13 @@ class AppRoutes {
     GetPage(name: reelCaptureView, page: () => ReelCaptureView()),
     GetPage(name: reelEditView, page: () => ReelEditView()),
     GetPage(name: reelUploadView, page: () => ReelUploadView()),
-    GetPage(name: reelUploadImageEditView, page: () => ReelUploadImageEditView()),
+    GetPage(
+        name: reelUploadImageEditView, page: () => ReelUploadImageEditView()),
     GetPage(name: qrCodeView, page: () => QRCodeView()),
     GetPage(name: settingsView, page: () => const SettingsView()),
     GetPage(name: accountView, page: () => AccountView()),
-    GetPage(name: notificationsOptionView, page: () => NotificationsOptionsView()),
+    GetPage(
+        name: notificationsOptionView, page: () => NotificationsOptionsView()),
     GetPage(name: blockView, page: () => BlockView()),
     GetPage(name: hideStoryView, page: () => HideStoryView()),
     GetPage(name: likeView, page: () => LikeView()),
@@ -141,5 +145,6 @@ class AppRoutes {
     GetPage(name: aboutView, page: () => AboutView()),
     GetPage(name: editProfileView, page: () => EditProfileView()),
     GetPage(name: reelsView, page: () => ReelsView()),
+    GetPage(name: userProfile, page: () => UserProfile()),
   ];
 }

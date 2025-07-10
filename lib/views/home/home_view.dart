@@ -1,5 +1,7 @@
 // ignore_for_file: must_be_immutable
 
+import 'dart:developer';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -235,50 +237,55 @@ class HomeView extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Row(
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.only(
-                                  right: languageController
-                                              .selectedLanguageIndex.value ==
-                                          AppSize.size2
-                                      ? AppSize.appSize0
-                                      : AppSize.appSize10,
-                                  left: languageController
-                                              .selectedLanguageIndex.value ==
-                                          AppSize.size2
-                                      ? AppSize.appSize10
-                                      : AppSize.appSize0,
-                                ),
-                                child: Image.asset(
-                                  socialPost.profileImage,
-                                  width: AppSize.appSize36,
-                                ),
-                              ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    socialPost.username,
-                                    style: const TextStyle(
-                                      fontSize: AppSize.appSize14,
-                                      fontWeight: FontWeight.w600,
-                                      fontFamily: AppFont.appFontSemiBold,
-                                      color: AppColor.secondaryColor,
-                                    ),
+                          GestureDetector(
+                            onTap: () {
+                              Get.toNamed(AppRoutes.userProfile);
+                            },
+                            child: Row(
+                              children: [
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                    right: languageController
+                                                .selectedLanguageIndex.value ==
+                                            AppSize.size2
+                                        ? AppSize.appSize0
+                                        : AppSize.appSize10,
+                                    left: languageController
+                                                .selectedLanguageIndex.value ==
+                                            AppSize.size2
+                                        ? AppSize.appSize10
+                                        : AppSize.appSize0,
                                   ),
-                                  Text(
-                                    socialPost.location,
-                                    style: const TextStyle(
-                                      fontSize: AppSize.appSize12,
-                                      fontWeight: FontWeight.w400,
-                                      fontFamily: AppFont.appFontRegular,
-                                      color: AppColor.text2Color,
-                                    ),
+                                  child: Image.asset(
+                                    socialPost.profileImage,
+                                    width: AppSize.appSize36,
                                   ),
-                                ],
-                              ),
-                            ],
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      socialPost.username,
+                                      style: const TextStyle(
+                                        fontSize: AppSize.appSize14,
+                                        fontWeight: FontWeight.w600,
+                                        fontFamily: AppFont.appFontSemiBold,
+                                        color: AppColor.secondaryColor,
+                                      ),
+                                    ),
+                                    Text(
+                                      socialPost.location,
+                                      style: const TextStyle(
+                                        fontSize: AppSize.appSize12,
+                                        fontWeight: FontWeight.w400,
+                                        fontFamily: AppFont.appFontRegular,
+                                        color: AppColor.text2Color,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
                           Row(
                             children: [

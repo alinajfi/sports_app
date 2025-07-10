@@ -315,6 +315,7 @@ class AppString {
   static const String logoutAllAccountsT = "logoutAllAccounts";
   static const String confirmLogoutT = "confirmLogout";
   static const String cancelT = "cancel";
+  static const String message = "message";
 
   static const String cancelString = "Cancel";
   static const String colorString = "#ff6666";
@@ -335,6 +336,7 @@ class AppString {
   static const String buttonTextUnhide = "Unhide";
   static const String buttonTextCancel = "Cancel";
   static const String buttonTextSubmit = "Submit";
+  static String upcommingEvent = 'Upcoming Events';
 
   static const String enText = "en";
   static const String hiText = "hi";
@@ -403,4 +405,6 @@ class AppString {
       "https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4";
   static const String reelVideo3 =
       "https://pixabay.com/videos/trees-lake-fall-reflection-water-186405/";
+
+  static String supporters = 'Supporters';
 }
