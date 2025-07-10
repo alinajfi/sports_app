@@ -407,4 +407,6 @@ class AppString {
       "https://pixabay.com/videos/trees-lake-fall-reflection-water-186405/";
 
   static String supporters = 'Supporters';
+
+  static var pleaseWait = 'Please wait..';
 }

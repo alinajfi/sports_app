@@ -33,6 +33,7 @@ class SignUpController extends GetxController {
   RxString postalCode = ''.obs;
   Rx<DateTime?> selectedDate = Rx<DateTime?>(null);
   RxBool isDateInvalid = false.obs;
+  RxBool isloading = false.obs;
 
   void togglePasswordVisibility() {
     isPasswordVisible.value = !isPasswordVisible.value;

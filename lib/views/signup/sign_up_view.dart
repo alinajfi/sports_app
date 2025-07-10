@@ -416,30 +416,45 @@ class SignUpView extends StatelessWidget {
           //             : SizedBox.shrink())
           //   ],
           // ),
-          AppButton(
-            onPressed: () async {
-              if (signUpController.firstName.value.isEmpty ||
-                  signUpController.password.value.isEmpty ||
-                  signUpController.email.value.isEmpty) {
-                signUpController.isButtonTap.value = true;
-                signUpController.isShowingUsername.value = true;
-                signUpController.isDateInvalid.value =
-                    signUpController.selectedDate.value == null;
-              } else {
-                signUpController.isButtonTap.value = false;
-                signUpController.isDateInvalid.value = false;
-                final result =
-                    await AuthService().registerUser(email: "", password: "");
-                if (result.$2) {
-                  Get.toNamed(AppRoutes.welcomeView);
-                } else {
-                  log(result.$1);
-                }
-              }
+          GetX<SignUpController>(
+            builder: (cont) {
+              return AppButton(
+                onPressed: () async {
+                  if (signUpController.firstName.value.isEmpty ||
+                      signUpController.password.value.isEmpty ||
+                      signUpController.email.value.isEmpty) {
+                    signUpController.isButtonTap.value = true;
+                    signUpController.isShowingUsername.value = true;
+                    signUpController.isDateInvalid.value =
+                        signUpController.selectedDate.value == null;
+                  } else {
+                    cont.isloading.value = true;
+                    signUpController.isButtonTap.value = false;
+                    signUpController.isDateInvalid.value = false;
+
+                    try {
+                      final result = await AuthService()
+                          .registerUser(email: "", password: "");
+                      if (result.$2) {
+                        cont.isloading.value = false;
+                        Get.toNamed(AppRoutes.welcomeView);
+                      } else {
+                        log(result.$1);
+                        cont.isloading.value = false;
+                      }
+                    } catch (e) {
+                      log("$e");
+                      cont.isloading.value = false;
+                    }
+                  }
+                },
+                text: cont.isloading.value
+                    ? AppString.pleaseWait
+                    : AppString.buttonTextSignUp,
+                backgroundColor: AppColor.primaryColor,
+                margin: const EdgeInsets.only(top: AppSize.appSize32),
+              );
             },
-            text: AppString.buttonTextSignUp,
-            backgroundColor: AppColor.primaryColor,
-            margin: const EdgeInsets.only(top: AppSize.appSize32),
           ),
           AppButton(
             onPressed: () {
