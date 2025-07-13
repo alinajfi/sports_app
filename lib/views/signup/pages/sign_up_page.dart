@@ -9,14 +9,14 @@ import 'package:prime_social_media_flutter_ui_kit/config/app_icon.dart';
 import 'package:prime_social_media_flutter_ui_kit/controller/sign_up_controller.dart';
 import 'package:prime_social_media_flutter_ui_kit/services/auth_service.dart';
 
-import '../../config/app_color.dart';
-import '../../config/app_font.dart';
-import '../../config/app_image.dart';
-import '../../config/app_size.dart';
-import '../../config/app_string.dart';
-import '../../routes/app_routes.dart';
-import '../../widget/app_button.dart';
-import '../../widget/app_textfield.dart';
+import '../../../config/app_color.dart';
+import '../../../config/app_font.dart';
+import '../../../config/app_image.dart';
+import '../../../config/app_size.dart';
+import '../../../config/app_string.dart';
+import '../../../routes/app_routes.dart';
+import '../../../widget/app_button.dart';
+import '../../../widget/app_textfield.dart';
 
 class SignUpView extends StatelessWidget {
   SignUpView({Key? key}) : super(key: key);

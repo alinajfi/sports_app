@@ -38,19 +38,20 @@ import 'package:prime_social_media_flutter_ui_kit/views/profile/options/options_
 import 'package:prime_social_media_flutter_ui_kit/views/profile/options/qr_code_view.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/profile/options/settings_view.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/reels/reels_view.dart';
-import 'package:prime_social_media_flutter_ui_kit/views/signup/sign_up_view.dart';
+import 'package:prime_social_media_flutter_ui_kit/views/signup/pages/sign_up_page.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/welcome/welcome_view.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/widget/home/reels_play_full_view.dart';
 import '../views/home/messages/video_call/video_call_view.dart';
 import '../views/home/options/story/story_view.dart';
 import '../views/login/login_view.dart';
+import '../views/signup/sign_up_screen.dart';
 import '../views/splash/splash_view.dart';
 import '../views/user_profile/user_profile.dart';
 
 class AppRoutes {
   static const String splashView = "/splash_view";
   static const String loginView = "/login_view";
-  static const String signUpView = "/sign_up_view";
+  static const String signUpView = "/sign_up_screen";
   static const String yourAccountView = "/your_account_view";
   static const String codeConfirmationView = "/code_confirmation_view";
   static const String resetPasswordView = "/reset_password_view";
@@ -99,7 +100,7 @@ class AppRoutes {
   static List<GetPage> pages = [
     GetPage(name: splashView, page: () => SplashView()),
     GetPage(name: loginView, page: () => LoginView()),
-    GetPage(name: signUpView, page: () => SignUpView()),
+    GetPage(name: signUpView, page: () => SignUpScreen()),
     GetPage(name: yourAccountView, page: () => YourAccountView()),
     GetPage(name: codeConfirmationView, page: () => CodeConfirmationView()),
     GetPage(name: resetPasswordView, page: () => ResetPasswordView()),
