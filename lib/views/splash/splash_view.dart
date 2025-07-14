@@ -35,7 +35,7 @@ class SplashView extends StatelessWidget {
             ),
           ),
           const Text(
-            AppString.primeSocialMedia,
+            AppString.appDisplayName,
             style: TextStyle(
               fontSize: AppSize.appSize28,
               fontWeight: FontWeight.w400,

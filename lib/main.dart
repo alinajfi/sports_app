@@ -25,9 +25,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TranslationController translationController = Get.put(TranslationController());
+    TranslationController translationController =
+        Get.put(TranslationController());
     return GetMaterialApp(
-      title: AppString.primeSocialMedia,
+      title: AppString.appDisplayName,
       translations: AppTranslations(),
       locale: Locale(translationController.locale),
       fallbackLocale: const Locale(AppString.enText),

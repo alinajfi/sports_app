@@ -1,5 +1,5 @@
 class AppString {
-  static const String primeSocialMedia = "Prime Social Media";
+  static const String appDisplayName = "Sport Me";
   static const String loginField1 = "Phone number, username, or email";
   static const String loginField2 = "Password";
   static const String forgotPassword = "Forgot password?";

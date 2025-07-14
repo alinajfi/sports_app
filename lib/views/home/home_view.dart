@@ -12,12 +12,15 @@ import 'package:prime_social_media_flutter_ui_kit/controller/home/home_controlle
 import 'package:prime_social_media_flutter_ui_kit/controller/profile/settings_options/language_controller.dart';
 import 'package:prime_social_media_flutter_ui_kit/model/social_media_post_model.dart';
 import 'package:prime_social_media_flutter_ui_kit/routes/app_routes.dart';
+import 'package:prime_social_media_flutter_ui_kit/views/home/widgets/my_drawer.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/widget/home/comments_bottom_sheet.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/widget/home/likes_bottom_sheet.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/widget/home/repost_bottom_sheet.dart';
 import '../../config/app_font.dart';
 import '../../config/app_size.dart';
 import '../../config/app_string.dart';
+
+final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
 class HomeView extends StatelessWidget {
   HomeView({Key? key}) : super(key: key);
@@ -29,6 +32,13 @@ class HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        key: _scaffoldKey,
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            _scaffoldKey.currentState?.openDrawer();
+          },
+        ),
+        drawer: MyDrawer(),
         backgroundColor: AppColor.backgroundColor,
         appBar: _appBar(),
         body: _body(context),
@@ -47,7 +57,7 @@ class HomeView extends StatelessWidget {
         padding:
             EdgeInsets.only(top: AppSize.appSize12, left: AppSize.appSize6),
         child: Text(
-          AppString.primeSocialMedia,
+          AppString.appDisplayName,
           style: TextStyle(
             fontSize: AppSize.appSize20,
             fontWeight: FontWeight.w400,
