@@ -3,6 +3,8 @@ import 'dart:developer';
 
 import 'package:http/http.dart' as http;
 import 'package:prime_social_media_flutter_ui_kit/constants/api_constants.dart';
+import 'package:prime_social_media_flutter_ui_kit/model/login_response_model.dart';
+import 'package:prime_social_media_flutter_ui_kit/model/user_model.dart';
 
 class AuthService {
   Future<(String, bool)> registerUser({
@@ -16,7 +18,7 @@ class AuthService {
     try {
       final response = await http.post(
         url,
-        //   headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         body: {
           "email": email,
           "password": password,
@@ -39,37 +41,35 @@ class AuthService {
     }
   }
 
-  Future<(String, bool)> loginUser({
+  Future<LoginResponse> loginUser({
     required String email,
     required String password,
   }) async {
-    //************* Response Type From Api *///
-    //{"status":200,"user_id":17,"message":"User registered","success":true}
-    final url = Uri.parse("${ApiConstants.baseUrl}${ApiConstants.login}");
+    final url = Uri.parse("${ApiConstants.baseUrl}${ApiConstants.login}")
+        .replace(queryParameters: {
+      "email": email,
+      "password": password,
+    });
 
     try {
-      final response = await http.post(
+      final response = await http.get(
         url,
-        //   headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-        body: {
-          "email": email,
-          "password": password,
-        },
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
       );
 
       if (response.statusCode == 200) {
-        // final message = jsonDecode(response.body)["message"];
-        log("User logged successfully:");
-        return ("", true);
+        final Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+        final loginResponse = LoginResponse.fromJson(jsonResponse);
+        return loginResponse;
       } else {
         final error =
             jsonDecode(response.body)["message"] ?? response.reasonPhrase;
         log("Failed to log in: $error");
-        return (error as String, false);
+        throw Exception("Login failed: $error");
       }
     } catch (e) {
-      log("login error: $e");
-      return (e as String, false);
+      log("Login error: $e");
+      throw Exception("Login error: $e");
     }
   }
 }

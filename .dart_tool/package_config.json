@@ -230,6 +230,12 @@
       "languageVersion": "2.15"
     },
     {
+      "name": "get_storage",
+      "rootUri": "file:///Users/mac/.pub-cache/hosted/pub.dev/get_storage-2.1.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.16"
+    },
+    {
       "name": "html",
       "rootUri": "file:///Users/mac/.pub-cache/hosted/pub.dev/html-0.15.6",
       "packageUri": "lib/",
@@ -734,7 +740,7 @@
       "languageVersion": "3.1"
     }
   ],
-  "generated": "2025-07-14T11:29:56.507008Z",
+  "generated": "2025-07-15T08:26:58.204318Z",
   "generator": "pub",
   "generatorVersion": "3.5.1",
   "flutterRoot": "file:///Users/mac/development/flutter",

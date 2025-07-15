@@ -4,4 +4,7 @@ class ApiConstants {
   static const String login = "/login";
 
   static const String register = "/register";
+
+  static const String createPost = "/create_post";
+  static const String getPostOnTimeline = "/timeline";
 }

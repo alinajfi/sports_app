@@ -213,9 +213,9 @@ class SignUpView extends StatelessWidget {
                   keyboardType: TextInputType.emailAddress,
                   cursorColor: AppColor.secondaryColor,
                   fillColor: AppColor.cardBackgroundColor,
-                  inputFormatters: [
-                    LengthLimitingTextInputFormatter(AppSize.size10),
-                  ],
+                  // inputFormatters: [
+                  //   LengthLimitingTextInputFormatter(AppSize.size10),
+                  // ],
                   textInputAction: TextInputAction.next,
                   onChanged: (value) {
                     signUpController.email.value = value;
@@ -433,8 +433,9 @@ class SignUpView extends StatelessWidget {
                     signUpController.isDateInvalid.value = false;
 
                     try {
-                      final result = await AuthService()
-                          .registerUser(email: "", password: "");
+                      final result = await AuthService().registerUser(
+                          email: cont.emailController.text.trim(),
+                          password: cont.passwordController.text.trim());
                       if (result.$2) {
                         cont.isloading.value = false;
                         Get.toNamed(AppRoutes.welcomeView);

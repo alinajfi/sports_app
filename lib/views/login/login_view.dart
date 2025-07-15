@@ -13,9 +13,6 @@ import '../../config/app_image.dart';
 import '../../config/app_size.dart';
 import '../../config/app_string.dart';
 import '../../controller/login_controller.dart';
-import '../signup/pages/parent_details_page.dart';
-import '../signup/pages/social_details_page.dart';
-import '../signup/pages/sports_selection_page.dart';
 
 class LoginView extends StatelessWidget {
   LoginView({Key? key}) : super(key: key);
@@ -167,7 +164,14 @@ class LoginView extends StatelessWidget {
                   loginController.isButtonTapped.value = true;
                 } else {
                   loginController.isButtonTapped.value = false;
-                  Get.toNamed(AppRoutes.welcomeView);
+                  final result = await AuthService().loginUser(
+                      email: loginController.loginField1Controller.text.trim(),
+                      password: loginController.password.value.toString());
+                  if (result.success) {
+                    await loginController.onLoginSuccessFull(result.data);
+                  } else {
+                    await loginController.onLoginFailed(result.message);
+                  }
                 }
               },
               text: AppString.buttonTextLogIn,
