@@ -7,6 +7,8 @@ import 'package:prime_social_media_flutter_ui_kit/config/app_color.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_string.dart';
 
 class SignUpController extends GetxController {
+  PageController pageController = PageController();
+
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
   TextEditingController dateOfBirthController = TextEditingController();
@@ -84,6 +86,7 @@ class SignUpController extends GetxController {
 
   @override
   void dispose() {
+    pageController.dispose();
     firstNameController.clear();
     lastNameController.clear();
     dateOfBirthController.clear();
