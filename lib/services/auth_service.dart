@@ -5,8 +5,9 @@ import 'package:http/http.dart' as http;
 import 'package:prime_social_media_flutter_ui_kit/constants/api_constants.dart';
 import 'package:prime_social_media_flutter_ui_kit/model/login_response_model.dart';
 import 'package:prime_social_media_flutter_ui_kit/model/user_model.dart';
+import 'package:prime_social_media_flutter_ui_kit/utils/common_api_functions.dart';
 
-class AuthService {
+class AuthService extends CommonApiFunctions {
   Future<(String, bool)> registerUser({
     required String email,
     required String password,
@@ -71,5 +72,16 @@ class AuthService {
       log("Login error: $e");
       throw Exception("Login error: $e");
     }
+  }
+
+  Future<UserData?> getUser() async {
+    final response = await http.get(
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        getUrlFromEndPoints(endPoint: ApiConstants.user));
+
+    if (response.statusCode == 200) {
+      log("-----------------");
+    }
+    return null;
   }
 }

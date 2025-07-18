@@ -12,6 +12,7 @@ import 'package:prime_social_media_flutter_ui_kit/controller/home/home_controlle
 import 'package:prime_social_media_flutter_ui_kit/controller/profile/settings_options/language_controller.dart';
 import 'package:prime_social_media_flutter_ui_kit/model/social_media_post_model.dart';
 import 'package:prime_social_media_flutter_ui_kit/routes/app_routes.dart';
+import 'package:prime_social_media_flutter_ui_kit/services/auth_service.dart';
 import 'package:prime_social_media_flutter_ui_kit/services/post_service.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/home/widgets/my_drawer.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/widget/home/comments_bottom_sheet.dart';
@@ -36,8 +37,12 @@ class HomeView extends StatelessWidget {
         key: _scaffoldKey,
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            PostService()
-                .getPostOnTimeLine(); //_scaffoldKey.currentState?.openDrawer();
+            AuthService().getUser();
+
+            // PostService()
+            //     .getPostOnTimeLine();
+
+            //_scaffoldKey.currentState?.openDrawer();
           },
         ),
         drawer: MyDrawer(),
