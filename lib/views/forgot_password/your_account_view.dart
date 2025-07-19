@@ -6,6 +6,7 @@ import 'package:prime_social_media_flutter_ui_kit/config/app_icon.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_size.dart';
 import 'package:prime_social_media_flutter_ui_kit/controller/forgot_password/your_account_controller.dart';
 import 'package:prime_social_media_flutter_ui_kit/routes/app_routes.dart';
+import 'package:prime_social_media_flutter_ui_kit/services/auth_service.dart';
 
 import '../../config/app_color.dart';
 import '../../config/app_font.dart';
@@ -98,7 +99,8 @@ class YourAccountView extends StatelessWidget {
                   },
                 ),
               ),
-              Obx(() => yourAccountController.isButtonTap.value && yourAccountController.email.value.isEmpty
+              Obx(() => yourAccountController.isButtonTap.value &&
+                      yourAccountController.email.value.isEmpty
                   ? Text(
                       AppString.emailRequired,
                       style: TextStyle(
@@ -117,7 +119,9 @@ class YourAccountView extends StatelessWidget {
                 yourAccountController.isButtonTap.value = true;
               } else {
                 yourAccountController.isButtonTap.value = false;
-                Get.toNamed(AppRoutes.codeConfirmationView);
+                AuthService().sendForgetPasswordRequest(
+                    email: yourAccountController.email.value);
+                //  Get.toNamed(AppRoutes.codeConfirmationView);
               }
             },
             text: AppString.buttonTextNext,

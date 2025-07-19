@@ -84,4 +84,49 @@ class AuthService extends CommonApiFunctions {
     }
     return null;
   }
+
+  sendForgetPasswordRequest({required String email}) async {
+    final response = await http.post(
+        getUrlFromEndPoints(endPoint: ApiConstants.forgetPasswordRequest),
+        headers: getHeadersWithToken(),
+        body: {"email": email});
+    log(response.body.toString());
+    if (response.statusCode == 200) {}
+  }
+
+  Future<http.Response> updatePassword(String token, String newPassword) {
+    final url =
+        getUrlFromEndPoints(endPoint: ApiConstants.updatePasswordRequest);
+
+    return http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
+        'token': token,
+        'password': newPassword,
+      }),
+    );
+  }
+
+  Future<http.Response> getUserPosts() {
+    final url = getUrlFromEndPoints(endPoint: ApiConstants.userPosts);
+    return http.get(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': getHeadersWithToken(),
+      },
+    );
+  }
+
+  Future<http.Response> getGeneralData() {
+    final url = getUrlFromEndPoints(endPoint: ApiConstants.userData);
+    return http.get(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': getHeadersWithToken(),
+      },
+    );
+  }
 }

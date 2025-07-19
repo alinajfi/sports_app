@@ -17,7 +17,7 @@ class LoginController extends GetxController {
 
   Future<void> onLoginSuccessFull(UserData user) async {
     DbController.instance
-        .writeData<String>(DbConstants.user, user.toJson().toString());
+        .writeData<String>(DbConstants.apiToken, user.apiToken);
     Get.offAllNamed(AppRoutes.welcomeView);
   }
 
