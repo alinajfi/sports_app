@@ -21,7 +21,7 @@ import '../../../widget/app_textfield.dart';
 class SignUpView extends StatelessWidget {
   SignUpView({Key? key}) : super(key: key);
 
-  //final signUpController = Get.find<SignUpController>();
+  final signUpController = Get.lazyPut(() => SignUpController());
 
   @override
   Widget build(BuildContext context) {
@@ -47,19 +47,29 @@ class SignUpView extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Padding(
-              padding: const EdgeInsets.only(bottom: AppSize.appSize24),
-              child: Image.asset(
-                AppImage.appLogo,
-                width: AppSize.appSize66,
-              ),
-            ),
+            // Padding(
+            //   padding: const EdgeInsets.only(bottom: AppSize.appSize24),
+            //   child: Image.asset(
+            //     AppImage.appLogo,
+            //     width: AppSize.appSize66,
+            //   ),
+            // ),
+            // const Text(
+            //   AppString.appDisplayName,
+            //   style: TextStyle(
+            //     fontSize: AppSize.appSize28,
+            //     fontWeight: FontWeight.w400,
+            //     fontFamily: AppFont.appFontSevillanaRegular,
+            //     color: AppColor.secondaryColor,
+            //   ),
+            // ),
+
             const Text(
-              AppString.appDisplayName,
+              AppString.signUpTitle,
               style: TextStyle(
                 fontSize: AppSize.appSize28,
                 fontWeight: FontWeight.w400,
-                fontFamily: AppFont.appFontSevillanaRegular,
+                fontFamily: AppFont.appFontSemiBold,
                 color: AppColor.secondaryColor,
               ),
             ),
@@ -417,56 +427,85 @@ class SignUpView extends StatelessWidget {
             //             : SizedBox.shrink())
             //   ],
             // ),
-            GetX<SignUpController>(
-              builder: (cont) {
-                return AppButton(
-                  onPressed: () async {
-                    cont.pageController.jumpToPage(0);
-                    // if (signUpController.firstName.value.isEmpty ||
-                    //     signUpController.password.value.isEmpty ||
-                    //     signUpController.email.value.isEmpty) {
-                    //   signUpController.isButtonTap.value = true;
-                    //   signUpController.isShowingUsername.value = true;
-                    //   signUpController.isDateInvalid.value =
-                    //       signUpController.selectedDate.value == null;
-                    // } else {
-                    //   cont.isloading.value = true;
-                    //   signUpController.isButtonTap.value = false;
-                    //   signUpController.isDateInvalid.value = false;
+            // GetX<SignUpController>(
+            //   builder: (cont) {
+            //     return AppButton(
+            //       onPressed: () async {
+            //         cont.pageController.jumpToPage(0);
+            //         // if (signUpController.firstName.value.isEmpty ||
+            //         //     signUpController.password.value.isEmpty ||
+            //         //     signUpController.email.value.isEmpty) {
+            //         //   signUpController.isButtonTap.value = true;
+            //         //   signUpController.isShowingUsername.value = true;
+            //         //   signUpController.isDateInvalid.value =
+            //         //       signUpController.selectedDate.value == null;
+            //         // } else {
+            //         //   cont.isloading.value = true;
+            //         //   signUpController.isButtonTap.value = false;
+            //         //   signUpController.isDateInvalid.value = false;
 
-                    //   try {
-                    //     final result = await AuthService().registerUser(
-                    //         email: cont.emailController.text.trim(),
-                    //         password: cont.passwordController.text.trim());
-                    //     if (result.$2) {
-                    //       cont.isloading.value = false;
-                    //       Get.toNamed(AppRoutes.welcomeView);
-                    //     } else {
-                    //       log(result.$1);
-                    //       cont.isloading.value = false;
-                    //     }
-                    //   } catch (e) {
-                    //     log("$e");
-                    //     cont.isloading.value = false;
-                    //   }
-                    // }
-                  },
-                  text: cont.isloading.value
-                      ? AppString.pleaseWait
-                      : AppString.buttonTextSignUp,
-                  backgroundColor: AppColor.primaryColor,
-                  margin: const EdgeInsets.only(top: AppSize.appSize32),
-                );
-              },
+            //         //   try {
+            //         //     final result = await AuthService().registerUser(
+            //         //         email: cont.emailController.text.trim(),
+            //         //         password: cont.passwordController.text.trim());
+            //         //     if (result.$2) {
+            //         //       cont.isloading.value = false;
+            //         //       Get.toNamed(AppRoutes.welcomeView);
+            //         //     } else {
+            //         //       log(result.$1);
+            //         //       cont.isloading.value = false;
+            //         //     }
+            //         //   } catch (e) {
+            //         //     log("$e");
+            //         //     cont.isloading.value = false;
+            //         //   }
+            //         // }
+            //       },
+            //       text: cont.isloading.value
+            //           ? AppString.pleaseWait
+            //           : AppString.buttonTextSignUp,
+            //       backgroundColor: AppColor.primaryColor,
+            //       margin: const EdgeInsets.only(top: AppSize.appSize32),
+            //     );
+            //   },
+            // ),
+            // AppButton(
+            //   onPressed: () {
+            //     Get.toNamed(AppRoutes.loginView);
+            //   },
+            //   text: AppString.buttonTextLogIn,
+            //   textColor: AppColor.primaryColor,
+            //   side: const BorderSide(color: AppColor.primaryColor),
+            //   margin: const EdgeInsets.only(top: AppSize.appSize12),
+            // ),
+
+            SizedBox(
+              height: AppSize.appSize24,
             ),
+
             AppButton(
-              onPressed: () {
-                Get.toNamed(AppRoutes.loginView);
-              },
-              text: AppString.buttonTextLogIn,
-              textColor: AppColor.primaryColor,
-              side: const BorderSide(color: AppColor.primaryColor),
-              margin: const EdgeInsets.only(top: AppSize.appSize12),
+                text: 'Continue',
+                backgroundColor: AppColor.primaryColor,
+                margin: const EdgeInsets.only(top: AppSize.appSize32),
+                onPressed: () async {
+                  signUpController.pageController.jumpToPage(1);
+                }),
+
+            SizedBox(
+              height: AppSize.appSize34,
+            ),
+
+            const Text(
+              AppString.signUpWithSocial,
+              style: TextStyle(
+                fontSize: AppSize.appSize15,
+                fontWeight: FontWeight.w200,
+                fontFamily: AppFont.appFontRegular,
+                color: AppColor.secondaryColor,
+              ),
+            ),
+            SizedBox(
+              height: AppSize.appSize34,
             ),
           ],
         ),

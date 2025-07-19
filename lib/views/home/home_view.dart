@@ -37,24 +37,21 @@ class HomeView extends StatelessWidget {
         key: _scaffoldKey,
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            AuthService().getUser();
-
             // PostService()
-            //     .getPostOnTimeLine();
-
-            //_scaffoldKey.currentState?.openDrawer();
+            //     .getPostOnTimeLine(); //_scaffoldKey.currentState?.openDrawer();
+            Get.toNamed(AppRoutes.donationScreen);
           },
         ),
-        drawer: MyDrawer(),
+        endDrawer: MyDrawer(),
         backgroundColor: AppColor.backgroundColor,
-        appBar: _appBar(),
+        appBar: _appBar(context),
         body: _body(context),
       ),
     );
   }
 
   //Home content
-  _appBar() {
+  _appBar(BuildContext context) {
     return AppBar(
       backgroundColor: AppColor.backgroundColor,
       automaticallyImplyLeading: false,
@@ -74,49 +71,60 @@ class HomeView extends StatelessWidget {
         ),
       ),
       actions: [
-        Padding(
-          padding: EdgeInsets.only(
-            top: AppSize.appSize12,
-            right: AppSize.appSize18,
-            left:
-                languageController.selectedLanguageIndex.value == AppSize.size2
+        Builder(
+          builder: (BuildContext context) {
+            return Padding(
+              padding: EdgeInsets.only(
+                top: AppSize.appSize12,
+                right: AppSize.appSize18,
+                left: languageController.selectedLanguageIndex.value ==
+                        AppSize.size2
                     ? AppSize.appSize13
                     : AppSize.appSize0,
-          ),
-          child: Row(
-            children: [
-              Padding(
-                padding: EdgeInsets.only(
-                  left: languageController.selectedLanguageIndex.value ==
-                          AppSize.size2
-                      ? AppSize.appSize6
-                      : AppSize.appSize0,
-                  right: languageController.selectedLanguageIndex.value ==
-                          AppSize.size2
-                      ? AppSize.appSize0
-                      : AppSize.appSize6,
-                ),
-                child: GestureDetector(
-                  onTap: () {
-                    Get.toNamed(AppRoutes.searchView);
-                  },
-                  child: Image.asset(
-                    AppIcon.search,
-                    width: AppSize.appSize32,
+              ),
+              child: Row(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(
+                      left: languageController.selectedLanguageIndex.value ==
+                              AppSize.size2
+                          ? AppSize.appSize6
+                          : AppSize.appSize0,
+                      right: languageController.selectedLanguageIndex.value ==
+                              AppSize.size2
+                          ? AppSize.appSize0
+                          : AppSize.appSize6,
+                    ),
+                    child: GestureDetector(
+                      onTap: () {
+                        Get.toNamed(AppRoutes.searchView);
+                      },
+                      child: Image.asset(
+                        AppIcon.search,
+                        width: AppSize.appSize32,
+                      ),
+                    ),
                   ),
-                ),
+                  GestureDetector(
+                    onTap: () {
+                      Get.toNamed(AppRoutes.messagesView);
+                    },
+                    child: Image.asset(
+                      AppIcon.message,
+                      width: AppSize.appSize32,
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  GestureDetector(
+                    onTap: () {
+                      Scaffold.of(context).openEndDrawer();
+                    },
+                    child: const Icon(Icons.menu, color: Colors.white),
+                  ),
+                ],
               ),
-              GestureDetector(
-                onTap: () {
-                  Get.toNamed(AppRoutes.messagesView);
-                },
-                child: Image.asset(
-                  AppIcon.message,
-                  width: AppSize.appSize32,
-                ),
-              ),
-            ],
-          ),
+            );
+          },
         ),
       ],
     );

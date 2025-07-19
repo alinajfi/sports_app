@@ -1,5 +1,7 @@
 class AppString {
   static const String appDisplayName = "Sport Me";
+  static const String signUpTitle = "Sign up to create a new account";
+  static const String signUpWithSocial = "Or signup with social network";
   static const String loginField1 = "Phone number, username, or email";
   static const String loginField2 = "Password";
   static const String forgotPassword = "Forgot password?";

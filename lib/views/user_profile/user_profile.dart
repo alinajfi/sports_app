@@ -25,10 +25,18 @@ class UserProfile extends StatelessWidget {
   UserProfile({Key? key}) : super(key: key);
 
   ProfileController profileController = Get.put(ProfileController());
-  LanguageController languageController = Get.put(LanguageController());
+  late final LanguageController languageController;
 
   @override
   Widget build(BuildContext context) {
+    // Initialize language controller with null check
+    try {
+      languageController = Get.find<LanguageController>();
+    } catch (e) {
+      // If controller not found, put a new instance
+      languageController = Get.put(LanguageController());
+    }
+
     return Scaffold(
       backgroundColor: AppColor.backgroundColor,
       appBar: _appBar(context),
@@ -36,7 +44,7 @@ class UserProfile extends StatelessWidget {
     );
   }
 
-  _appBar(BuildContext context) {
+  PreferredSizeWidget _appBar(BuildContext context) {
     return AppBar(
       backgroundColor: AppColor.backgroundColor,
       title: const Padding(
@@ -55,36 +63,40 @@ class UserProfile extends StatelessWidget {
         ),
       ),
       actions: [
-        Padding(
-          padding: EdgeInsets.only(
-            right: AppSize.appSize10,
-            left:
-                languageController.selectedLanguageIndex.value == AppSize.size2
+        Obx(() => Padding(
+              padding: EdgeInsets.only(
+                right: AppSize.appSize10,
+                left: languageController.selectedLanguageIndex.value ==
+                        AppSize.size2
                     ? AppSize.appSize16
                     : AppSize.appSize0,
-          ),
-          child: GestureDetector(
-            onTap: () {
-              profileActionBottomSheet(context);
-            },
-            child: Container(
-              width: AppSize.appSize40,
-              color: AppColor.backgroundColor,
-              child: Center(
-                child: Image.asset(
-                  AppIcon.info,
-                  height: AppSize.appSize14,
-                  width: AppSize.appSize3,
+              ),
+              child: GestureDetector(
+                onTap: () {
+                  try {
+                    profileActionBottomSheet(context);
+                  } catch (e) {
+                    debugPrint('Error showing bottom sheet: $e');
+                  }
+                },
+                child: Container(
+                  width: AppSize.appSize40,
+                  color: AppColor.backgroundColor,
+                  child: Center(
+                    child: Image.asset(
+                      AppIcon.info,
+                      height: AppSize.appSize14,
+                      width: AppSize.appSize3,
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ),
-        ),
+            )),
       ],
     );
   }
 
-  _body(BuildContext context) {
+  Widget _body(BuildContext context) {
     return DefaultTabController(
       length: 4,
       child: Column(
@@ -191,7 +203,11 @@ class UserProfile extends StatelessWidget {
               children: [
                 GestureDetector(
                   onTap: () {
-                    Get.toNamed(AppRoutes.storyWithMessageView);
+                    try {
+                      Get.toNamed(AppRoutes.storyWithMessageView);
+                    } catch (e) {
+                      debugPrint('Navigation error: $e');
+                    }
                   },
                   child: Image.asset(
                     AppImage.story2,
@@ -214,8 +230,6 @@ class UserProfile extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        // _customPostFollowersFollowingCount(
-                        //     AppString.posts176, AppString.posts),
                         _customPostFollowersFollowingCount(
                             AppString.followers200k, AppString.supporters),
                         _customPostFollowersFollowingCount(
@@ -257,7 +271,11 @@ class UserProfile extends StatelessWidget {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      Get.toNamed(AppRoutes.userProfile);
+                      try {
+                        Get.toNamed(AppRoutes.supportersScreenRoute);
+                      } catch (e) {
+                        debugPrint('Navigation error: $e');
+                      }
                     },
                     child: Container(
                       width: kIsWeb ? AppSize.appSize355 : AppSize.appSize147,
@@ -289,7 +307,11 @@ class UserProfile extends StatelessWidget {
                   Expanded(
                     child: GestureDetector(
                       onTap: () {
-                        Share.share(AppString.eleanorPena);
+                        try {
+                          Share.share(AppString.eleanorPena);
+                        } catch (e) {
+                          debugPrint('Share error: $e');
+                        }
                       },
                       child: Container(
                         width: AppSize.appSize147,
@@ -312,39 +334,6 @@ class UserProfile extends StatelessWidget {
                       ),
                     ),
                   ),
-                  // GestureDetector(
-                  //   onTap: () {
-                  //     Fluttertoast.showToast(
-                  //       msg: AppString.userAdded,
-                  //       backgroundColor: AppColor.cardBackgroundColor,
-                  //       fontSize: AppSize.appSize14,
-                  //       textColor: AppColor.secondaryColor,
-                  //       toastLength: Toast.LENGTH_SHORT,
-                  //       gravity: ToastGravity.BOTTOM,
-                  //     );
-                  //   },
-                  //   child: Container(
-                  //     width: AppSize.appSize40,
-                  //     height: AppSize.appSize32,
-                  //     margin: EdgeInsets.only(
-                  //       left: AppSize.appSize8,
-                  //       right: languageController.selectedLanguageIndex.value ==
-                  //               AppSize.size2
-                  //           ? AppSize.appSize8
-                  //           : AppSize.appSize0,
-                  //     ),
-                  //     decoration: BoxDecoration(
-                  //       borderRadius: BorderRadius.circular(AppSize.appSize6),
-                  //       color: AppColor.cardBackgroundColor,
-                  //     ),
-                  //     child: Center(
-                  //       child: Image.asset(
-                  //         AppIcon.add,
-                  //         width: AppSize.appSize20,
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
                 ],
               ),
             ),
@@ -359,7 +348,11 @@ class UserProfile extends StatelessWidget {
                   Flexible(
                     child: GestureDetector(
                       onTap: () {
-                        Get.toNamed(AppRoutes.userProfile);
+                        try {
+                          Get.toNamed(AppRoutes.eventScreenRoute);
+                        } catch (e) {
+                          debugPrint('Navigation error: $e');
+                        }
                       },
                       child: Container(
                         width:
@@ -394,8 +387,8 @@ class UserProfile extends StatelessWidget {
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: AppSize.appSize14),
+          const Padding(
+            padding: EdgeInsets.only(top: AppSize.appSize14),
             child: PremiumSubscriptionCard(),
           )
         ],
@@ -416,16 +409,24 @@ class UserProfile extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               _customHighlights(AppIcon.add3, AppString.add, () {
-                final index = profileController.highlights.length + 1;
-                profileController.highlights.add(
-                    HighlightItem(AppImage.highlight1, "Highlight $index"));
+                try {
+                  final index = profileController.highlights.length + 1;
+                  profileController.highlights.add(
+                      HighlightItem(AppImage.highlight1, "Highlight $index"));
+                } catch (e) {
+                  debugPrint('Error adding highlight: $e');
+                }
               }),
               _customHighlights(AppImage.highlight1, AppString.like, () {}),
               _customHighlights(AppImage.highlight2, AppString.travel, () {}),
               ...profileController.highlights
                   .map((highlight) =>
                       _customHighlights(highlight.image, highlight.label, () {
-                        profileController.highlights.remove(highlight);
+                        try {
+                          profileController.highlights.remove(highlight);
+                        } catch (e) {
+                          debugPrint('Error removing highlight: $e');
+                        }
                       }))
                   .toList(),
             ],
@@ -433,7 +434,7 @@ class UserProfile extends StatelessWidget {
     );
   }
 
-  _customPostFollowersFollowingCount(String text1, String text2) {
+  Widget _customPostFollowersFollowingCount(String text1, String text2) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -459,7 +460,7 @@ class UserProfile extends StatelessWidget {
     );
   }
 
-  _customHighlights(String image, String text, Function()? onTap) {
+  Widget _customHighlights(String image, String text, Function()? onTap) {
     return GestureDetector(
       onTap: onTap,
       child: Padding(
@@ -494,105 +495,254 @@ class PremiumSubscriptionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: const Color(0xFF1E1E1E), // Dark background
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: const Color(0xFF4A90E2),
-          width: 2,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.3),
-            spreadRadius: 2,
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Row(
-          children: [
-            // Diamond Icon
-            Container(
-              width: 50,
-              height: 50,
-              decoration: BoxDecoration(
-                color: const Color(0xFF2A2A2A), // Dark gray for icon background
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: const Icon(
-                Icons.diamond_outlined,
-                color: Color(0xFF9E9E9E), // Light gray for icon
-                size: 30,
-              ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return Container(
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: const Color(0xFF1E1E1E),
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(
+              color: const Color(0xFF4A90E2),
+              width: 2,
             ),
-            const SizedBox(width: 16),
-
-            // Text Content
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Text(
-                    'Premium Subscriptions',
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                      color: Color(0xFF9E9E9E), // Light gray for subtitle
-                    ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.3),
+                spreadRadius: 2,
+                blurRadius: 8,
+                offset: const Offset(0, 2),
+              ),
+            ],
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                // Icon Box
+                Container(
+                  width: 50,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF2A2A2A),
+                    borderRadius: BorderRadius.circular(8),
                   ),
-                  const SizedBox(height: 4),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.baseline,
-                    textBaseline: TextBaseline.alphabetic,
+                  child: const Icon(
+                    Icons.diamond_outlined,
+                    color: Color(0xFF9E9E9E),
+                    size: 30,
+                  ),
+                ),
+                const SizedBox(width: 12),
+
+                // Text Content
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
                     children: [
                       const Text(
-                        '£2.50',
+                        'Premium Subscriptions',
                         style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white, // White for main text
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                          color: Color(0xFF9E9E9E),
                         ),
                       ),
-                      const Text(
-                        '/ monthly',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Color(
-                              0xFF9E9E9E), // Light gray for secondary text
-                          fontWeight: FontWeight.w400,
-                        ),
+                      const SizedBox(height: 4),
+                      Row(
+                        children: const [
+                          Text(
+                            '£2.50',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                          SizedBox(width: 4),
+                          Text(
+                            '/ monthly',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Color(0xFF9E9E9E),
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                ],
-              ),
-            ),
-
-            // Support Button
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-              decoration: BoxDecoration(
-                color: const Color(0xFFFF8C00),
-                borderRadius: BorderRadius.circular(25),
-              ),
-              child: const Text(
-                'SUPPORT',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 0.5,
                 ),
-              ),
+
+                const SizedBox(width: 12),
+
+                // Support Button
+                Flexible(
+                  child: GestureDetector(
+                    onTap: () {
+                      try {
+                        if (Get.isRegistered<GetMaterialController>()) {
+                          Get.toNamed(AppRoutes.profileScreenRoute);
+                        } else {
+                          debugPrint(
+                              'GetMaterialApp is not properly initialized.');
+                        }
+                      } catch (e) {
+                        debugPrint('Navigation error: $e');
+                      }
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 10),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFFF8C00),
+                        borderRadius: BorderRadius.circular(25),
+                      ),
+                      child: const Text(
+                        'SUPPORT',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 0.5,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 }
+
+
+// class PremiumSubscriptionCard extends StatelessWidget {
+//   const PremiumSubscriptionCard({Key? key}) : super(key: key);
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       decoration: BoxDecoration(
+//         color: const Color(0xFF1E1E1E),
+//         borderRadius: BorderRadius.circular(12),
+//         border: Border.all(
+//           color: const Color(0xFF4A90E2),
+//           width: 2,
+//         ),
+//         boxShadow: [
+//           BoxShadow(
+//             color: Colors.black.withOpacity(0.3),
+//             spreadRadius: 2,
+//             blurRadius: 8,
+//             offset: const Offset(0, 2),
+//           ),
+//         ],
+//       ),
+//       child: Padding(
+//         padding: const EdgeInsets.all(20),
+//         child: Row(
+//           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//           children: [
+//             // Diamond Icon
+//             Container(
+//               width: 50,
+//               height: 50,
+//               decoration: BoxDecoration(
+//                 color: const Color(0xFF2A2A2A),
+//                 borderRadius: BorderRadius.circular(8),
+//               ),
+//               child: const Icon(
+//                 Icons.diamond_outlined,
+//                 color: Color(0xFF9E9E9E),
+//                 size: 30,
+//               ),
+//             ),
+//             const SizedBox(width: 16),
+
+//             // Text Content
+//             Expanded(
+//               child: Column(
+//                 crossAxisAlignment: CrossAxisAlignment.start,
+//                 mainAxisSize: MainAxisSize.min,
+//                 children: [
+//                   const Text(
+//                     'Premium Subscriptions',
+//                     style: TextStyle(
+//                       fontSize: 12,
+//                       fontWeight: FontWeight.w500,
+//                       color: Color(0xFF9E9E9E),
+//                     ),
+//                   ),
+//                   const SizedBox(height: 4),
+//                   Row(
+//                     crossAxisAlignment: CrossAxisAlignment.baseline,
+//                     textBaseline: TextBaseline.alphabetic,
+//                     children: [
+//                       const Text(
+//                         '£2.50',
+//                         style: TextStyle(
+//                           fontSize: 18,
+//                           fontWeight: FontWeight.bold,
+//                           color: Colors.white,
+//                         ),
+//                       ),
+//                       const SizedBox(width: 4),
+//                       Flexible(
+//                         child: Text(
+//                           '/ monthly',
+//                           style: const TextStyle(
+//                             fontSize: 16,
+//                             color: Color(0xFF9E9E9E),
+//                             fontWeight: FontWeight.w400,
+//                           ),
+//                           overflow: TextOverflow.ellipsis,
+//                         ),
+//                       ),
+//                     ],
+//                   ),
+//                 ],
+//               ),
+//             ),
+
+//             // Support Button
+//             Flexible(
+//               child: GestureDetector(
+//                 onTap: () {
+//                   try {
+//                     Get.toNamed(AppRoutes.profileScreenRoute);
+//                   } catch (e) {
+//                     debugPrint('Navigation error: $e');
+//                   }
+//                 },
+//                 child: Container(
+//                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+//                   decoration: BoxDecoration(
+//                     color: const Color(0xFFFF8C00),
+//                     borderRadius: BorderRadius.circular(25),
+//                   ),
+//                   child: const Text(
+//                     'SUPPORT',
+//                     style: TextStyle(
+//                       color: Colors.white,
+//                       fontSize: 14,
+//                       fontWeight: FontWeight.bold,
+//                       letterSpacing: 0.5,
+//                     ),
+//                     overflow: TextOverflow.ellipsis,
+//                   ),
+//                 ),
+//               ),
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }

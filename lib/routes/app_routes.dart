@@ -1,5 +1,9 @@
 import 'package:get/get.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/bottom_bar/bottom_bar_view.dart';
+import 'package:prime_social_media_flutter_ui_kit/views/donation/pages/bank_detail_screen.dart';
+import 'package:prime_social_media_flutter_ui_kit/views/donation/pages/donation_page.dart';
+import 'package:prime_social_media_flutter_ui_kit/views/donation/pages/payment_summary_screen.dart';
+import 'package:prime_social_media_flutter_ui_kit/views/donation/pages/thank_you_screen.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/forgot_password/code_confirmation_view.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/forgot_password/reset_password_view.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/forgot_password/your_account_view.dart';
@@ -40,17 +44,19 @@ import 'package:prime_social_media_flutter_ui_kit/views/profile/options/settings
 import 'package:prime_social_media_flutter_ui_kit/views/reels/reels_view.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/signup/pages/otp_page.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/signup/pages/parent_details_page.dart';
+import 'package:prime_social_media_flutter_ui_kit/views/signup/pages/sign_up_page.dart';
+import 'package:prime_social_media_flutter_ui_kit/views/user_profile/event_screen.dart';
+import 'package:prime_social_media_flutter_ui_kit/views/user_profile/profile_screen.dart';
+import 'package:prime_social_media_flutter_ui_kit/views/user_profile/supportes_screen.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/welcome/welcome_view.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/widget/home/reels_play_full_view.dart';
 import '../views/home/messages/video_call/video_call_view.dart';
 import '../views/home/options/story/story_view.dart';
 import '../views/login/login_view.dart';
-import '../views/profile/event_screen.dart';
-import '../views/profile/profile_screen.dart';
-import '../views/profile/supportes_screen.dart';
 import '../views/signup/sign_up_screen.dart';
 import '../views/splash/splash_view.dart';
 import '../views/user_profile/user_profile.dart';
+import '../views/user_profile/event_screen.dart';
 
 class AppRoutes {
   static const String splashView = "/splash_view";
@@ -105,6 +111,10 @@ class AppRoutes {
   static const String supportersScreenRoute = "/supporters_screen";
   static const String otpPageRoute = "/otp_page";
   static const String parentDetailsPage = "/presen_detail_page";
+  static const String donationScreen = "/donation_page";
+  static const String paymentSummaryScreen = "/payment_summary_screen";
+  static const String bankDetailsScreen = "/bank_details_screen";
+  static const String thankYouScreen = "/thank_you_screen";
 
   static List<GetPage> pages = [
     GetPage(name: splashView, page: () => SplashView()),
@@ -161,5 +171,9 @@ class AppRoutes {
     GetPage(name: supportersScreenRoute, page: () => SupportersScreen()),
     GetPage(name: otpPageRoute, page: () => OtpPage()),
     GetPage(name: parentDetailsPage, page: () => ParentDetailsPage()),
+    GetPage(name: donationScreen, page: () => DonationScreen()),
+    GetPage(name: paymentSummaryScreen, page: () => PaymentSummaryScreen()),
+    GetPage(name: bankDetailsScreen, page: () => BankDetailsScreen()),
+    GetPage(name: thankYouScreen, page: () => ThankYouScreen()),
   ];
 }

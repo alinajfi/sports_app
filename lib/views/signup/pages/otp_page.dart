@@ -1,4 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:prime_social_media_flutter_ui_kit/config/app_color.dart';
+import 'package:prime_social_media_flutter_ui_kit/config/app_size.dart';
+import 'package:prime_social_media_flutter_ui_kit/config/app_string.dart';
+import 'package:prime_social_media_flutter_ui_kit/controller/sign_up_controller.dart';
+import 'package:prime_social_media_flutter_ui_kit/routes/app_routes.dart';
+import 'package:prime_social_media_flutter_ui_kit/widget/app_button.dart';
 
 class OtpPage extends StatefulWidget {
   const OtpPage({Key? key}) : super(key: key);
@@ -44,6 +52,8 @@ class _OtpPageState extends State<OtpPage> {
     return _controllers.map((controller) => controller.text).join();
   }
 
+  final signUpController = Get.find<SignUpController>();
+
   @override
   Widget build(BuildContext context) {
     final primaryColor = Colors.red;
@@ -57,9 +67,10 @@ class _OtpPageState extends State<OtpPage> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios, color: Colors.white),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
+            icon: Icon(Icons.arrow_back_ios, color: Colors.white),
+            onPressed: () => signUpController.pageController.jumpToPage(0)
+            // Navigator.of(context).pop(),
+            ),
         title: Text(
           'Email Verification',
           style: TextStyle(
@@ -196,7 +207,7 @@ class _OtpPageState extends State<OtpPage> {
                 );
               }),
             ),
-            const SizedBox(height: 32),
+            const SizedBox(height: 20),
 
             // Verify Button
             SizedBox(
@@ -253,6 +264,15 @@ class _OtpPageState extends State<OtpPage> {
                   ),
                 ),
               ],
+            ),
+
+            AppButton(
+              onPressed: () {
+                signUpController.pageController.jumpToPage(2);
+              },
+              text: AppString.buttonTextNext,
+              backgroundColor: AppColor.primaryColor,
+              margin: const EdgeInsets.only(top: AppSize.appSize32),
             ),
           ],
         ),

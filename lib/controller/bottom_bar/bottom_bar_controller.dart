@@ -28,9 +28,9 @@ class BottomBarController extends GetxController {
 
   RxList<Widget> pages = [
     HomeView(),
-    NotificationsView(),
-    Container(),
     ReelsView(),
+    Container(),
+    NotificationsView(),
     ProfileView(),
   ].obs;
 }
