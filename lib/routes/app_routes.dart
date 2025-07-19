@@ -38,12 +38,16 @@ import 'package:prime_social_media_flutter_ui_kit/views/profile/options/options_
 import 'package:prime_social_media_flutter_ui_kit/views/profile/options/qr_code_view.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/profile/options/settings_view.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/reels/reels_view.dart';
-import 'package:prime_social_media_flutter_ui_kit/views/signup/pages/sign_up_page.dart';
+import 'package:prime_social_media_flutter_ui_kit/views/signup/pages/otp_page.dart';
+import 'package:prime_social_media_flutter_ui_kit/views/signup/pages/parent_details_page.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/welcome/welcome_view.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/widget/home/reels_play_full_view.dart';
 import '../views/home/messages/video_call/video_call_view.dart';
 import '../views/home/options/story/story_view.dart';
 import '../views/login/login_view.dart';
+import '../views/profile/event_screen.dart';
+import '../views/profile/profile_screen.dart';
+import '../views/profile/supportes_screen.dart';
 import '../views/signup/sign_up_screen.dart';
 import '../views/splash/splash_view.dart';
 import '../views/user_profile/user_profile.dart';
@@ -96,6 +100,11 @@ class AppRoutes {
   static const String editProfileView = "/edit_profile_view";
   static const String reelsView = "/reels_view";
   static const String userProfile = "/user_profile";
+  static const String eventScreenRoute = "/event_screen";
+  static const String profileScreenRoute = "/profile_screen";
+  static const String supportersScreenRoute = "/supporters_screen";
+  static const String otpPageRoute = "/otp_page";
+  static const String parentDetailsPage = "/presen_detail_page";
 
   static List<GetPage> pages = [
     GetPage(name: splashView, page: () => SplashView()),
@@ -147,5 +156,10 @@ class AppRoutes {
     GetPage(name: editProfileView, page: () => EditProfileView()),
     GetPage(name: reelsView, page: () => ReelsView()),
     GetPage(name: userProfile, page: () => UserProfile()),
+    GetPage(name: eventScreenRoute, page: () => EventScreen()),
+    GetPage(name: profileScreenRoute, page: () => ProfileScreen()),
+    GetPage(name: supportersScreenRoute, page: () => SupportersScreen()),
+    GetPage(name: otpPageRoute, page: () => OtpPage()),
+    GetPage(name: parentDetailsPage, page: () => ParentDetailsPage()),
   ];
 }
