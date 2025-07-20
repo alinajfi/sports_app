@@ -37,7 +37,7 @@ class HomeView extends StatelessWidget {
         key: _scaffoldKey,
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            AuthService().getUser();
+            AuthService().sendForgetPasswordRequest(email: "abbas@gmail.com");
 
             // PostService()
             //     .getPostOnTimeLine();

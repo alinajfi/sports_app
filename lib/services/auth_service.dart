@@ -76,20 +76,29 @@ class AuthService extends CommonApiFunctions {
 
   Future<UserData?> getUser() async {
     final response = await http.get(
-        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        headers: getHeadersWithToken(),
         getUrlFromEndPoints(endPoint: ApiConstants.user));
 
     if (response.statusCode == 200) {
+      log(response.body.toString());
       log("-----------------");
     }
     return null;
   }
 
   sendForgetPasswordRequest({required String email}) async {
-    final response = await http.post(
-        getUrlFromEndPoints(endPoint: ApiConstants.forgetPasswordRequest),
-        headers: getHeadersWithToken(),
-        body: {"email": email});
+    if (getHeadersWithToken() == null) {
+      log("headers are null");
+      return;
+    }
+
+    final response = await http.get(
+      getUrlFromEndPoints(endPoint: ApiConstants.forgetPasswordRequest)
+          .replace(queryParameters: {
+        "email": email,
+      }),
+      headers: getHeadersWithTokenJson()!,
+    );
     log(response.body.toString());
     if (response.statusCode == 200) {}
   }
@@ -100,7 +109,7 @@ class AuthService extends CommonApiFunctions {
 
     return http.post(
       url,
-      headers: {'Content-Type': 'application/json'},
+      headers: getHeadersWithToken(),
       body: jsonEncode({
         'token': token,
         'password': newPassword,
@@ -108,25 +117,24 @@ class AuthService extends CommonApiFunctions {
     );
   }
 
-  Future<http.Response> getUserPosts() {
+  Future<http.Response>? getUserPosts() {
+    if (getHeadersWithToken() == null) {
+      log("headers are null");
+      return null;
+    }
     final url = getUrlFromEndPoints(endPoint: ApiConstants.userPosts);
-    return http.get(
-      url,
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': getHeadersWithToken(),
-      },
-    );
+    return http.get(url, headers: getHeadersWithToken());
   }
 
-  Future<http.Response> getGeneralData() {
+  Future<http.Response>? getGeneralData() {
+    if (getHeadersWithToken() == null) {
+      log("headers are null");
+      return null;
+    }
     final url = getUrlFromEndPoints(endPoint: ApiConstants.userData);
     return http.get(
       url,
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': getHeadersWithToken(),
-      },
+      headers: getHeadersWithToken(),
     );
   }
 }
