@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:prime_social_media_flutter_ui_kit/controller/sign_up_controller.dart';
 
 class ParentDetailsPage extends StatefulWidget {
   const ParentDetailsPage({Key? key}) : super(key: key);
@@ -92,6 +95,8 @@ class _ParentDetailsPageState extends State<ParentDetailsPage> {
     );
   }
 
+  final signUpController = Get.find<SignUpController>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -100,9 +105,10 @@ class _ParentDetailsPageState extends State<ParentDetailsPage> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: Colors.white70),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
+            icon: const Icon(Icons.arrow_back_ios, color: Colors.white70),
+            onPressed: () => signUpController.pageController.jumpToPage(3)
+            // Navigator.of(context).pop(),
+            ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -174,6 +180,7 @@ class _ParentDetailsPageState extends State<ParentDetailsPage> {
                     'Postal Code': _postalCodeController.text,
                   };
                   print('Parent Details: $data');
+                  signUpController.pageController.jumpToPage(5);
                   // Handle continue logic
                 },
                 style: ElevatedButton.styleFrom(

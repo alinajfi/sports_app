@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:prime_social_media_flutter_ui_kit/controller/sign_up_controller.dart';
+import 'package:prime_social_media_flutter_ui_kit/routes/app_routes.dart';
 
 class CompleteProfileScreen extends StatefulWidget {
   const CompleteProfileScreen({Key? key}) : super(key: key);
@@ -39,6 +43,8 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
     print('Pick profile image');
   }
 
+  final signUpController = Get.find<SignUpController>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,9 +53,10 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: Colors.white70),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
+            icon: const Icon(Icons.arrow_back_ios, color: Colors.white70),
+            onPressed: () => signUpController.pageController.jumpToPage(4)
+            // Navigator.of(context).pop(),
+            ),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20.0),
@@ -312,6 +319,7 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
                   };
                   print('Profile data: $profileData');
                   // Add your profile creation logic here
+                  Get.toNamed(AppRoutes.welcomeView);
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.red,

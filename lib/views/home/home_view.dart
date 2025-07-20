@@ -45,7 +45,7 @@ class HomeView extends StatelessWidget {
             //_scaffoldKey.currentState?.openDrawer();
           },
         ),
-        drawer: MyDrawer(),
+        endDrawer: MyDrawer(),
         backgroundColor: AppColor.backgroundColor,
         appBar: _appBar(),
         body: _body(context),
@@ -115,6 +115,12 @@ class HomeView extends StatelessWidget {
                   width: AppSize.appSize32,
                 ),
               ),
+              GestureDetector(
+                onTap: () {
+                  _scaffoldKey.currentState?.openEndDrawer();
+                },
+                child: Icon(Icons.list, color: Colors.white),
+              ),
             ],
           ),
         ),
@@ -179,65 +185,66 @@ class HomeView extends StatelessWidget {
               },
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(
-              left: AppSize.appSize20,
-              right: AppSize.appSize20,
-              top: AppSize.appSize24,
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.max,
-              children:
-                  List.generate(homeController.labelsList.length, (index) {
-                return Expanded(
-                  child: GestureDetector(
-                    onTap: () {
-                      homeController.selectLabel(index);
-                    },
-                    child: Obx(() => Container(
-                          margin: EdgeInsets.only(
-                              right:
-                                  index == homeController.labelsList.length - 1
-                                      ? 0
-                                      : AppSize.appSize4),
-                          height: AppSize.appSize28,
-                          padding: const EdgeInsets.only(
-                            left: AppSize.appSize12,
-                            right: AppSize.appSize12,
-                          ),
-                          decoration: BoxDecoration(
-                            borderRadius:
-                                BorderRadius.circular(AppSize.appSize31),
-                            color: homeController.isLabelSelected(index)
-                                ? AppColor.secondaryColor
-                                : AppColor.cardBackgroundColor,
-                          ),
-                          child: Center(
-                            child: Text(
-                              homeController.labelsList[index],
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontSize: AppSize.appSize14,
-                                fontWeight:
-                                    homeController.isLabelSelected(index)
-                                        ? FontWeight.w600
-                                        : FontWeight.w400,
-                                fontFamily:
-                                    homeController.isLabelSelected(index)
-                                        ? AppFont.appFontSemiBold
-                                        : AppFont.appFontRegular,
-                                color: homeController.isLabelSelected(index)
-                                    ? AppColor.backgroundColor
-                                    : AppColor.secondaryColor,
-                              ),
-                            ),
-                          ),
-                        )),
-                  ),
-                );
-              }),
-            ),
-          ),
+
+          // Padding(
+          //   padding: const EdgeInsets.only(
+          //     left: AppSize.appSize20,
+          //     right: AppSize.appSize20,
+          //     top: AppSize.appSize24,
+          //   ),
+          //   child: Row(
+          //     mainAxisSize: MainAxisSize.max,
+          //     children:
+          //         List.generate(homeController.labelsList.length, (index) {
+          //       return Expanded(
+          //         child: GestureDetector(
+          //           onTap: () {
+          //             homeController.selectLabel(index);
+          //           },
+          //           child: Obx(() => Container(
+          //                 margin: EdgeInsets.only(
+          //                     right:
+          //                         index == homeController.labelsList.length - 1
+          //                             ? 0
+          //                             : AppSize.appSize4),
+          //                 height: AppSize.appSize28,
+          //                 padding: const EdgeInsets.only(
+          //                   left: AppSize.appSize12,
+          //                   right: AppSize.appSize12,
+          //                 ),
+          //                 decoration: BoxDecoration(
+          //                   borderRadius:
+          //                       BorderRadius.circular(AppSize.appSize31),
+          //                   color: homeController.isLabelSelected(index)
+          //                       ? AppColor.secondaryColor
+          //                       : AppColor.cardBackgroundColor,
+          //                 ),
+          //                 child: Center(
+          //                   child: Text(
+          //                     homeController.labelsList[index],
+          //                     overflow: TextOverflow.ellipsis,
+          //                     style: TextStyle(
+          //                       fontSize: AppSize.appSize14,
+          //                       fontWeight:
+          //                           homeController.isLabelSelected(index)
+          //                               ? FontWeight.w600
+          //                               : FontWeight.w400,
+          //                       fontFamily:
+          //                           homeController.isLabelSelected(index)
+          //                               ? AppFont.appFontSemiBold
+          //                               : AppFont.appFontRegular,
+          //                       color: homeController.isLabelSelected(index)
+          //                           ? AppColor.backgroundColor
+          //                           : AppColor.secondaryColor,
+          //                     ),
+          //                   ),
+          //                 ),
+          //               )),
+          //         ),
+          //       );
+          //     }),
+          //   ),
+          // ),
           Padding(
             padding: const EdgeInsets.only(
               left: AppSize.appSize20,
@@ -753,79 +760,81 @@ class HomeView extends StatelessWidget {
               ],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(
-              top: AppSize.appSize40,
-              bottom: AppSize.appSize40,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(
-                    bottom: AppSize.appSize16,
-                    left: AppSize.appSize20,
-                    right: languageController.selectedLanguageIndex.value ==
-                            AppSize.size2
-                        ? AppSize.appSize20
-                        : AppSize.appSize0,
-                  ),
-                  child: const Text(
-                    AppString.trendingReels,
-                    style: TextStyle(
-                      fontSize: AppSize.appSize16,
-                      fontWeight: FontWeight.w600,
-                      fontFamily: AppFont.appFontSemiBold,
-                      color: AppColor.secondaryColor,
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: AppSize.appSize170,
-                  child: ListView.builder(
-                    physics: const ClampingScrollPhysics(),
-                    shrinkWrap: true,
-                    padding: EdgeInsets.only(
-                      right: languageController.selectedLanguageIndex.value ==
-                              AppSize.size2
-                          ? AppSize.appSize0
-                          : AppSize.appSize20,
-                    ),
-                    itemCount: homeController.reelsList.length,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) {
-                      return GestureDetector(
-                        onTap: () {},
-                        child: Container(
-                          width: AppSize.appSize120,
-                          margin: EdgeInsets.only(
-                            left: languageController
-                                        .selectedLanguageIndex.value ==
-                                    AppSize.size2
-                                ? AppSize.appSize0
-                                : AppSize.appSize20,
-                            right: languageController
-                                        .selectedLanguageIndex.value ==
-                                    AppSize.size2
-                                ? AppSize.appSize20
-                                : AppSize.appSize0,
-                          ),
-                          decoration: BoxDecoration(
-                            borderRadius:
-                                BorderRadius.circular(AppSize.appSize12),
-                            image: DecorationImage(
-                              image:
-                                  AssetImage(homeController.reelsList[index]),
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ],
-            ),
-          ),
+          // Padding(
+          //   padding: const EdgeInsets.only(
+          //     top: AppSize.appSize40,
+          //     bottom: AppSize.appSize40,
+          //   ),
+          //   child: Column(
+          //     crossAxisAlignment: CrossAxisAlignment.start,
+          //     children: [
+          //       Padding(
+          //         padding: EdgeInsets.only(
+          //           bottom: AppSize.appSize16,
+          //           left: AppSize.appSize20,
+          //           right: languageController.selectedLanguageIndex.value ==
+          //                   AppSize.size2
+          //               ? AppSize.appSize20
+          //               : AppSize.appSize0,
+          //         ),
+          //         child: const Text(
+          //           AppString.trendingReels,
+          //           style: TextStyle(
+          //             fontSize: AppSize.appSize16,
+          //             fontWeight: FontWeight.w600,
+          //             fontFamily: AppFont.appFontSemiBold,
+          //             color: AppColor.secondaryColor,
+          //           ),
+          //         ),
+          //       ),
+
+          //       //reels section
+          //       // SizedBox(
+          //       //   height: AppSize.appSize170,
+          //       //   child: ListView.builder(
+          //       //     physics: const ClampingScrollPhysics(),
+          //       //     shrinkWrap: true,
+          //       //     padding: EdgeInsets.only(
+          //       //       right: languageController.selectedLanguageIndex.value ==
+          //       //               AppSize.size2
+          //       //           ? AppSize.appSize0
+          //       //           : AppSize.appSize20,
+          //       //     ),
+          //       //     itemCount: homeController.reelsList.length,
+          //       //     scrollDirection: Axis.horizontal,
+          //       //     itemBuilder: (context, index) {
+          //       //       return GestureDetector(
+          //       //         onTap: () {},
+          //       //         child: Container(
+          //       //           width: AppSize.appSize120,
+          //       //           margin: EdgeInsets.only(
+          //       //             left: languageController
+          //       //                         .selectedLanguageIndex.value ==
+          //       //                     AppSize.size2
+          //       //                 ? AppSize.appSize0
+          //       //                 : AppSize.appSize20,
+          //       //             right: languageController
+          //       //                         .selectedLanguageIndex.value ==
+          //       //                     AppSize.size2
+          //       //                 ? AppSize.appSize20
+          //       //                 : AppSize.appSize0,
+          //       //           ),
+          //       //           decoration: BoxDecoration(
+          //       //             borderRadius:
+          //       //                 BorderRadius.circular(AppSize.appSize12),
+          //       //             image: DecorationImage(
+          //       //               image:
+          //       //                   AssetImage(homeController.reelsList[index]),
+          //       //             ),
+          //       //           ),
+          //       //         ),
+          //       //       );
+          //       //     },
+          //       //   ),
+          //       // ),
+          //     ],
+          //   ),
+          // ),
           _repostMediaWidget(AppImage.post4),
           Padding(
             padding: const EdgeInsets.only(

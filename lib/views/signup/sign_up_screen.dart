@@ -14,9 +14,9 @@ class SignUpScreen extends StatelessWidget {
   final List<Widget> pages = [
     SignUpView(),
     OtpPage(),
-    ParentDetailsPage(),
     SportSelectionScreen(),
     SocialDetailsPage(),
+    ParentDetailsPage(),
     CompleteProfileScreen()
   ];
 
