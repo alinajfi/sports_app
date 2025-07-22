@@ -164,17 +164,27 @@ class LoginView extends StatelessWidget {
                   loginController.isButtonTapped.value = true;
                 } else {
                   loginController.isButtonTapped.value = false;
-                  final result = await AuthService().loginUser(
+                  loginController.isLoading.value = true;
+                  try {
+                    final result = await AuthService().loginUser(
                       email: loginController.loginField1Controller.text.trim(),
-                      password: loginController.password.value.toString());
-                  if (result.success) {
-                    await loginController.onLoginSuccessFull(result.data);
-                  } else {
-                    await loginController.onLoginFailed(result.message);
+                      password: loginController.password.value.toString(),
+                    );
+                    if (result.success) {
+                      await loginController.onLoginSuccessFull(result.data);
+                    } else {
+                      await loginController.onLoginFailed(result.message);
+                    }
+                  } catch (e) {
+                    await loginController.onLoginFailed("Something went wrong");
+                  } finally {
+                    loginController.isLoading.value = false;
                   }
                 }
               },
-              text: AppString.buttonTextLogIn,
+              text: loginController.isLoading.value == true
+                  ? 'Please Wait'
+                  : AppString.buttonTextLogIn,
               backgroundColor: AppColor.primaryColor,
               margin: const EdgeInsets.only(top: AppSize.appSize32),
             ),

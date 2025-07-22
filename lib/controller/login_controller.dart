@@ -10,7 +10,7 @@ import 'package:prime_social_media_flutter_ui_kit/routes/app_routes.dart';
 class LoginController extends GetxController {
   TextEditingController loginField1Controller = TextEditingController();
   TextEditingController loginField2Controller = TextEditingController();
-
+  RxBool isLoading = false.obs;
   RxBool isButtonTapped = false.obs;
   RxString email = "".obs;
   RxString password = "".obs;
