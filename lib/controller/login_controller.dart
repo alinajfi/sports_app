@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:prime_social_media_flutter_ui_kit/constants/db_constants.dart';
 import 'package:prime_social_media_flutter_ui_kit/controller/db_controller.dart';
+import 'package:prime_social_media_flutter_ui_kit/model/login_response_model.dart';
 import 'package:prime_social_media_flutter_ui_kit/model/user_model.dart';
 import 'package:prime_social_media_flutter_ui_kit/routes/app_routes.dart';
 
@@ -15,9 +16,9 @@ class LoginController extends GetxController {
   RxString email = "".obs;
   RxString password = "".obs;
 
-  Future<void> onLoginSuccessFull(UserData user) async {
+  Future<void> onLoginSuccessFull(LoginResponse loginRes) async {
     DbController.instance
-        .writeData<String>(DbConstants.apiToken, user.apiToken);
+        .writeData<String>(DbConstants.apiToken, loginRes.token);
     Get.offAllNamed(AppRoutes.welcomeView);
   }
 

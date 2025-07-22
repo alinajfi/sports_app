@@ -19,7 +19,7 @@ class AuthService extends CommonApiFunctions {
     try {
       final response = await http.post(
         url,
-        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        headers: {'Accept': 'application/json'},
         body: {
           "email": email,
           "password": password,
@@ -46,22 +46,16 @@ class AuthService extends CommonApiFunctions {
     required String email,
     required String password,
   }) async {
-    final url = Uri.parse("${ApiConstants.baseUrl}${ApiConstants.login}")
-        .replace(queryParameters: {
-      "email": email,
-      "password": password,
-    });
+    final url = Uri.parse("${ApiConstants.baseUrl}${ApiConstants.login}");
 
     try {
-      final response = await http.get(
-        url,
-        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-      );
+      final response = await http.post(url,
+          headers: headersWithOutTokeAccpetJsonType(),
+          body: {"email": email, "password": password});
 
-      if (response.statusCode == 200) {
-        final Map<String, dynamic> jsonResponse = jsonDecode(response.body);
-        final loginResponse = LoginResponse.fromJson(jsonResponse);
-        return loginResponse;
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return LoginResponse.fromJson(
+            jsonDecode(response.body) as Map<String, dynamic>);
       } else {
         final error =
             jsonDecode(response.body)["message"] ?? response.reasonPhrase;
@@ -126,15 +120,13 @@ class AuthService extends CommonApiFunctions {
     return http.get(url, headers: getHeadersWithToken());
   }
 
-  Future<http.Response>? getGeneralData() {
-    if (getHeadersWithToken() == null) {
-      log("headers are null");
-      return null;
-    }
-    final url = getUrlFromEndPoints(endPoint: ApiConstants.userData);
-    return http.get(
+  Future<User?>? getGeneralData() async {
+    final url = getUrlFromEndPoints(endPoint: "/user_post");
+    final response = await http.get(
       url,
       headers: getHeadersWithToken(),
     );
+    log("---------------" + response.body.toString());
+    return null;
   }
 }

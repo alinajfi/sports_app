@@ -167,11 +167,7 @@ class LoginView extends StatelessWidget {
                   final result = await AuthService().loginUser(
                       email: loginController.loginField1Controller.text.trim(),
                       password: loginController.password.value.toString());
-                  if (result.success) {
-                    await loginController.onLoginSuccessFull(result.data);
-                  } else {
-                    await loginController.onLoginFailed(result.message);
-                  }
+                  await loginController.onLoginSuccessFull(result);
                 }
               },
               text: AppString.buttonTextLogIn,

@@ -1,11 +1,9 @@
-import 'dart:convert';
 import 'dart:developer';
 
 import 'package:prime_social_media_flutter_ui_kit/constants/api_constants.dart';
 import 'package:prime_social_media_flutter_ui_kit/constants/db_constants.dart';
 
 import '../controller/db_controller.dart';
-import '../model/user_model.dart';
 
 class CommonApiFunctions {
   Uri getUrlFromEndPoints({required String endPoint}) {
@@ -21,7 +19,7 @@ class CommonApiFunctions {
       final token = apiToken; // Adjust field name based on your model
 
       return {
-        'Content-Type': 'application/x-www-form-urlencoded',
+        'Accept': 'application/json',
         'Authorization': 'Bearer $token',
       };
     } catch (e) {
@@ -45,6 +43,12 @@ class CommonApiFunctions {
       log(e.toString());
       return null;
     }
+  }
+
+  Map<String, String> headersWithOutTokeAccpetJsonType() {
+    return {
+      'Accept': 'application/json',
+    };
   }
 }
 
