@@ -61,7 +61,7 @@ newPostOptionsBottomSheet(BuildContext context) {
                 return GestureDetector(
                   onTap: () async {
                     newPostController.selectItem(index);
-                    if(index == 0) {
+                    if (index == 0) {
                       Get.back();
                       Get.toNamed(AppRoutes.createReelView);
                     }
@@ -75,46 +75,52 @@ newPostOptionsBottomSheet(BuildContext context) {
                     //    Get.back();
                     //   }
                     // }
-                    else if (index == 3) {
-                      Get.back();
-                      final ImagePicker picker = ImagePicker();
-                      final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+                    // else if (index == 3) {
+                    //   Get.back();
+                    //   final ImagePicker picker = ImagePicker();
+                    //   final XFile? image = await picker.pickImage(source: ImageSource.gallery);
 
-                      if (image != null) {
-                        Get.to(EditPostScreen(
-                          image: XFile(image.path),
-                        ));
-                      } else {
-                        Get.back();
-                      }
-                    }
-
+                    //   if (image != null) {
+                    //     Get.to(EditPostScreen(
+                    //       image: XFile(image.path),
+                    //     ));
+                    //   } else {
+                    //     Get.back();
+                    //   }
+                    // }
                   },
                   child: Obx(() => Container(
-                    padding: EdgeInsets.symmetric(vertical:  AppSize.appSize15),
-                    margin: const EdgeInsets.only(
-                      bottom: AppSize.appSize8, left: AppSize.appSize14, right: AppSize.appSize14,
-                    ),
-                    decoration: BoxDecoration(
-                      color: newPostController.isSelected.value == index ? AppColor.cardBackgroundColor : AppColor.transparentColor,
-                      borderRadius: BorderRadius.circular(AppSize.appSize12),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: AppSize.appSize12),
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          newPostController.newPostOptionsList[index],
-                          style: const TextStyle(
-                            fontSize: AppSize.appSize14,
-                            fontWeight: FontWeight.w600,
-                            fontFamily: AppFont.appFontSemiBold,
-                            color: AppColor.secondaryColor,
+                        padding:
+                            EdgeInsets.symmetric(vertical: AppSize.appSize15),
+                        margin: const EdgeInsets.only(
+                          bottom: AppSize.appSize8,
+                          left: AppSize.appSize14,
+                          right: AppSize.appSize14,
+                        ),
+                        decoration: BoxDecoration(
+                          color: newPostController.isSelected.value == index
+                              ? AppColor.cardBackgroundColor
+                              : AppColor.transparentColor,
+                          borderRadius:
+                              BorderRadius.circular(AppSize.appSize12),
+                        ),
+                        child: Padding(
+                          padding:
+                              const EdgeInsets.only(left: AppSize.appSize12),
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              newPostController.newPostOptionsList[index],
+                              style: const TextStyle(
+                                fontSize: AppSize.appSize14,
+                                fontWeight: FontWeight.w600,
+                                fontFamily: AppFont.appFontSemiBold,
+                                color: AppColor.secondaryColor,
+                              ),
+                            ),
                           ),
                         ),
-                      ),
-                    ),
-                  )),
+                      )),
                 );
               },
             ),

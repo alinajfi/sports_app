@@ -86,15 +86,15 @@ class BottomBarView extends StatelessWidget {
                 ),
                 label: '',
               ),
-              BottomNavigationBarItem(
-                icon: Image.asset(
-                  bottomBarController.selectedIndex.value == 3
-                      ? AppIcon.reelFillIcon
-                      : AppIcon.reelIcon,
-                  width: AppSize.appSize22,
-                ),
-                label: '',
-              ),
+              // BottomNavigationBarItem(
+              //   icon: Image.asset(
+              //     bottomBarController.selectedIndex.value == 3
+              //         ? AppIcon.reelFillIcon
+              //         : AppIcon.reelIcon,
+              //     width: AppSize.appSize22,
+              //   ),
+              //   label: '',
+              // ),
               BottomNavigationBarItem(
                 icon: Image.asset(
                   bottomBarController.selectedIndex.value == 4

@@ -1,20 +1,36 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_size.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_string.dart';
+import 'package:prime_social_media_flutter_ui_kit/constants/db_constants.dart';
 import 'package:prime_social_media_flutter_ui_kit/controller/bottom_bar/bottom_bar_controller.dart';
-
+import 'package:prime_social_media_flutter_ui_kit/controller/db_controller.dart';
+import 'package:prime_social_media_flutter_ui_kit/model/login_response_model.dart';
+import 'package:prime_social_media_flutter_ui_kit/model/user_model.dart';
+import 'package:http/http.dart' as http;
 import '../../model/highlight_model.dart';
 
 BottomBarController bottomBarController = Get.put(BottomBarController());
 
-class ProfileController extends GetxController with GetSingleTickerProviderStateMixin {
-   TabController? tabController;
-   RxBool isFollow = false.obs;
-   RxBool isLiked = false.obs;
-   RxInt selectedTabIndex = 0.obs;
-   RxInt isSelected = (-1).obs;
-   RxList<HighlightItem> highlights = <HighlightItem>[].obs;
+class ProfileController extends GetxController
+    with GetSingleTickerProviderStateMixin {
+  TabController? tabController;
+  RxBool isFollow = false.obs;
+  RxBool isLiked = false.obs;
+  RxInt selectedTabIndex = 0.obs;
+  RxInt isSelected = (-1).obs;
+  RxList<HighlightItem> highlights = <HighlightItem>[].obs;
+  Rx<UserModel?> user = Rx<UserModel?>(null);
+  RxBool isLoading = false.obs;
+  int get followersCount => user.value?.followers ?? 0;
+  int get followingCount => user.value?.following ?? 0;
+  var editUser = Rxn<UserModel>();
+  final editProfileUser = Rxn<EditProfileUser>();
+  final nameController = TextEditingController();
+  final nicknameController = TextEditingController();
+  final phoneController = TextEditingController();
 
   @override
   void onInit() {
@@ -33,6 +49,116 @@ class ProfileController extends GetxController with GetSingleTickerProviderState
     isSelected.value = -1;
   }
 
+  Rx<User?> currentUser = Rx<User?>(null);
+
+  Future<void> onLoginSuccessFull(LoginResponse response) async {
+    // Save token if needed
+    currentUser.value = response.user;
+    await fetchUserProfile();
+
+    // Navigate to ProfileScreen or HomePage
+    // Get.offAll(() => HomeScreen());
+  }
+
+  void loadEditFieldsFromUserModel() {
+    final u = user.value;
+    if (u != null) {
+      nameController.text = u.name ?? '';
+      nicknameController.text = u.nickname ?? '';
+      phoneController.text = u.phone ?? '';
+    }
+  }
+
+  Future<void> updateProfile() async {
+    isLoading.value = true;
+
+    try {
+      final token =
+          await DbController.instance.readData<String>(DbConstants.apiToken);
+
+      final response = await http.post(
+        Uri.parse('https://mysportsjourney.co.uk/api/edit_profile'),
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Accept': 'application/json',
+        },
+        body: {
+          'name': nameController.text.trim(),
+          'nickname': nicknameController.text.trim(),
+          'phone': phoneController.text.trim(),
+        },
+      );
+
+      final data = json.decode(response.body);
+
+      if (response.statusCode == 200 && data['status'] == 200) {
+        // Parse with EditProfileUser model
+        editProfileUser.value = EditProfileUser.fromJson(data['user']);
+
+        Get.snackbar('Success', 'Profile updated successfully',
+            backgroundColor: Colors.green, colorText: Colors.white);
+
+        // OPTIONAL: Reload user profile if needed
+        // await loadUserProfile();
+      } else {
+        Get.snackbar('Error', 'Failed to update profile',
+            backgroundColor: Colors.red, colorText: Colors.white);
+      }
+    } catch (e) {
+      Get.snackbar('Exception', e.toString(),
+          backgroundColor: Colors.red, colorText: Colors.white);
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  Future<UserModel> fetchUserProfile() async {
+    final token =
+        await DbController.instance.readData<String>(DbConstants.apiToken);
+
+    final response = await http.get(
+      Uri.parse("https://mysportsjourney.co.uk/api/profile"),
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return UserModel.fromJson(json.decode(response.body));
+    } else {
+      throw Exception("Failed to load user profile");
+    }
+  }
+
+  Future<void> loadUserProfile() async {
+    try {
+      isLoading.value = true;
+      final token =
+          await DbController.instance.readData<String>(DbConstants.apiToken);
+
+      final response = await http.get(
+        Uri.parse("https://mysportsjourney.co.uk/api/profile"),
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final jsonData = json.decode(response.body);
+        user.value = UserModel.fromJson(jsonData);
+        print("Profile loaded: ${user.value?.username}");
+      } else {
+        throw Exception("Failed to load user profile");
+      }
+    } catch (e) {
+      print("Profile error: $e");
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
   void toggleFollow() {
     isFollow.value = !isFollow.value;
   }
@@ -49,7 +175,7 @@ class ProfileController extends GetxController with GetSingleTickerProviderState
     isSelected.value = index;
   }
 
-   RxList<String> postsList = [
+  RxList<String> postsList = [
     AppString.post1,
     AppString.post2,
     AppString.post3,
@@ -70,7 +196,7 @@ class ProfileController extends GetxController with GetSingleTickerProviderState
     AppString.post9,
   ].obs;
 
-   RxList<String> reelsList = [
+  RxList<String> reelsList = [
     AppString.reel1,
     AppString.reel2,
     AppString.reel3,
@@ -82,7 +208,7 @@ class ProfileController extends GetxController with GetSingleTickerProviderState
     AppString.reel9,
   ].obs;
 
-   RxList<String> reelsViewList = [
+  RxList<String> reelsViewList = [
     AppString.reelView500,
     AppString.reelView500k,
     AppString.reelView100k,
@@ -94,7 +220,7 @@ class ProfileController extends GetxController with GetSingleTickerProviderState
     AppString.reelView78,
   ].obs;
 
-   RxList<String> profileActionsList = [
+  RxList<String> profileActionsList = [
     AppString.yourActivity,
     AppString.qrCode,
     AppString.saved,
