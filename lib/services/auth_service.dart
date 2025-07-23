@@ -71,7 +71,7 @@ class AuthService extends CommonApiFunctions {
   Future<UserData?> getUser() async {
     final response = await http.get(
         headers: getHeadersWithToken(),
-        getUrlFromEndPoints(endPoint: ApiConstants.user));
+        getUrlFromEndPoints(endPoint: ApiConstants.userProfile));
 
     if (response.statusCode == 200) {
       log(response.body.toString());

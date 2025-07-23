@@ -159,6 +159,8 @@ class LoginView extends StatelessWidget {
             ),
             AppButton(
               onPressed: () async {
+                Get.offAllNamed(AppRoutes.welcomeView);
+
                 if (loginController.loginField1Controller.text.isEmpty ||
                     loginController.password.value.isEmpty) {
                   loginController.isButtonTapped.value = true;
