@@ -58,7 +58,10 @@ class ProfileView extends StatelessWidget {
         Padding(
           padding: EdgeInsets.only(
             right: AppSize.appSize10,
-            left: languageController.selectedLanguageIndex.value == AppSize.size2 ? AppSize.appSize16 : AppSize.appSize0,
+            left:
+                languageController.selectedLanguageIndex.value == AppSize.size2
+                    ? AppSize.appSize16
+                    : AppSize.appSize0,
           ),
           child: GestureDetector(
             onTap: () {
@@ -102,59 +105,59 @@ class ProfileView extends StatelessWidget {
           Container(
             color: AppColor.backgroundColor,
             child: Obx(() => TabBar(
-              onTap: (val) {
-                profileController.selectedTabIndex.value = val;
-              },
-              controller: profileController.tabController,
-              dividerColor: AppColor.backgroundColor,
-              labelColor: AppColor.secondaryColor,
-              labelStyle: const TextStyle(
-                color: AppColor.secondaryColor,
-              ),
-              unselectedLabelColor: AppColor.text1Color,
-              indicatorColor: AppColor.secondaryColor,
-              indicatorSize: TabBarIndicatorSize.tab,
-              indicatorWeight: AppSize.appSizePoint7,
-              isScrollable: false,
-              tabs: [
-                Tab(
-                  icon: Image.asset(
-                    AppIcon.photos,
-                    width: AppSize.appSize22,
-                    color: profileController.selectedTabIndex.value == 0
-                        ? AppColor.secondaryColor
-                        : AppColor.text1Color,
+                  onTap: (val) {
+                    profileController.selectedTabIndex.value = val;
+                  },
+                  controller: profileController.tabController,
+                  dividerColor: AppColor.backgroundColor,
+                  labelColor: AppColor.secondaryColor,
+                  labelStyle: const TextStyle(
+                    color: AppColor.secondaryColor,
                   ),
-                ),
-                Tab(
-                  icon: Image.asset(
-                    AppIcon.editComment,
-                    width: AppSize.appSize22,
-                    color: profileController.selectedTabIndex.value == 1
-                        ? AppColor.secondaryColor
-                        : AppColor.text1Color,
-                  ),
-                ),
-                Tab(
-                  icon: Image.asset(
-                    AppIcon.reel,
-                    width: AppSize.appSize22,
-                    color: profileController.selectedTabIndex.value == 2
-                        ? AppColor.secondaryColor
-                        : AppColor.text1Color,
-                  ),
-                ),
-                Tab(
-                  icon: Image.asset(
-                    AppIcon.tag,
-                    width: AppSize.appSize22,
-                    color: profileController.selectedTabIndex.value == 3
-                        ? AppColor.secondaryColor
-                        : AppColor.text1Color,
-                  ),
-                ),
-              ],
-            )),
+                  unselectedLabelColor: AppColor.text1Color,
+                  indicatorColor: AppColor.secondaryColor,
+                  indicatorSize: TabBarIndicatorSize.tab,
+                  indicatorWeight: AppSize.appSizePoint7,
+                  isScrollable: false,
+                  tabs: [
+                    Tab(
+                      icon: Image.asset(
+                        AppIcon.photos,
+                        width: AppSize.appSize22,
+                        color: profileController.selectedTabIndex.value == 0
+                            ? AppColor.secondaryColor
+                            : AppColor.text1Color,
+                      ),
+                    ),
+                    Tab(
+                      icon: Image.asset(
+                        AppIcon.editComment,
+                        width: AppSize.appSize22,
+                        color: profileController.selectedTabIndex.value == 1
+                            ? AppColor.secondaryColor
+                            : AppColor.text1Color,
+                      ),
+                    ),
+                    Tab(
+                      icon: Image.asset(
+                        AppIcon.reel,
+                        width: AppSize.appSize22,
+                        color: profileController.selectedTabIndex.value == 2
+                            ? AppColor.secondaryColor
+                            : AppColor.text1Color,
+                      ),
+                    ),
+                    Tab(
+                      icon: Image.asset(
+                        AppIcon.tag,
+                        width: AppSize.appSize22,
+                        color: profileController.selectedTabIndex.value == 3
+                            ? AppColor.secondaryColor
+                            : AppColor.text1Color,
+                      ),
+                    ),
+                  ],
+                )),
           ),
           Expanded(
             child: TabBarView(
@@ -199,15 +202,26 @@ class ProfileView extends StatelessWidget {
                   child: Container(
                     height: AppSize.appSize50,
                     margin: EdgeInsets.only(
-                      left: languageController.selectedLanguageIndex.value == AppSize.size2 ? AppSize.appSize8 : AppSize.appSize30,
-                      right: languageController.selectedLanguageIndex.value == AppSize.size2 ? AppSize.appSize30 : AppSize.appSize0,
+                      left: languageController.selectedLanguageIndex.value ==
+                              AppSize.size2
+                          ? AppSize.appSize8
+                          : AppSize.appSize30,
+                      right: languageController.selectedLanguageIndex.value ==
+                              AppSize.size2
+                          ? AppSize.appSize30
+                          : AppSize.appSize0,
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        _customPostFollowersFollowingCount(AppString.posts176, AppString.posts),
-                        _customPostFollowersFollowingCount(AppString.followers200k, AppString.followers),
-                        _customPostFollowersFollowingCount(AppString.following1123, AppString.following),
+                        _customPostFollowersFollowingCount(
+                            AppString.posts176, AppString.posts),
+                        _customPostFollowersFollowingCount(
+                            profileController.followersCount.toString(),
+                            AppString.followers),
+                        _customPostFollowersFollowingCount(
+                            profileController.followingCount.toString(),
+                            AppString.following),
                       ],
                     ),
                   ),
@@ -215,18 +229,21 @@ class ProfileView extends StatelessWidget {
               ],
             ),
           ),
-          const Padding(
-            padding: EdgeInsets.only(bottom: AppSize.appSize4),
-            child: Text(
-              AppString.eleanorPena,
-              style: TextStyle(
-                fontSize: AppSize.appSize16,
-                fontWeight: FontWeight.w600,
-                fontFamily: AppFont.appFontSemiBold,
-                color: AppColor.secondaryColor,
+          Obx(() {
+            final user = profileController.user.value;
+            return Padding(
+              padding: const EdgeInsets.only(bottom: AppSize.appSize4),
+              child: Text(
+                user?.name ?? "Guest",
+                style: const TextStyle(
+                  fontSize: AppSize.appSize16,
+                  fontWeight: FontWeight.w600,
+                  fontFamily: AppFont.appFontSemiBold,
+                  color: AppColor.secondaryColor,
+                ),
               ),
-            ),
-          ),
+            );
+          }),
           const Text(
             AppString.loremString5,
             style: TextStyle(
@@ -252,7 +269,10 @@ class ProfileView extends StatelessWidget {
                       height: AppSize.appSize32,
                       margin: EdgeInsets.only(
                         right: AppSize.appSize8,
-                        left: languageController.selectedLanguageIndex.value == AppSize.size2 ? AppSize.appSize8 : AppSize.appSize0,
+                        left: languageController.selectedLanguageIndex.value ==
+                                AppSize.size2
+                            ? AppSize.appSize8
+                            : AppSize.appSize0,
                       ),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(AppSize.appSize6),
@@ -313,7 +333,10 @@ class ProfileView extends StatelessWidget {
                       height: AppSize.appSize32,
                       margin: EdgeInsets.only(
                         left: AppSize.appSize8,
-                        right: languageController.selectedLanguageIndex.value == AppSize.size2 ? AppSize.appSize8 : AppSize.appSize0,
+                        right: languageController.selectedLanguageIndex.value ==
+                                AppSize.size2
+                            ? AppSize.appSize8
+                            : AppSize.appSize0,
                       ),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(AppSize.appSize6),
@@ -346,22 +369,23 @@ class ProfileView extends StatelessWidget {
         right: AppSize.appSize20,
       ),
       child: Obx(() => Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          _customHighlights(
-              AppIcon.add3,
-              AppString.add,
-                  () {
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              _customHighlights(AppIcon.add3, AppString.add, () {
                 final index = profileController.highlights.length + 1;
-                profileController.highlights.add(HighlightItem(AppImage.highlight1, "Highlight $index"));
+                profileController.highlights.add(
+                    HighlightItem(AppImage.highlight1, "Highlight $index"));
               }),
-          _customHighlights(AppImage.highlight1, AppString.like, () {}),
-          _customHighlights(AppImage.highlight2, AppString.travel, () {}),
-          ...profileController.highlights.map((highlight) => _customHighlights(highlight.image, highlight.label, () {
-            profileController.highlights.remove(highlight);
-          })).toList(),
-        ],
-      )),
+              _customHighlights(AppImage.highlight1, AppString.like, () {}),
+              _customHighlights(AppImage.highlight2, AppString.travel, () {}),
+              ...profileController.highlights
+                  .map((highlight) =>
+                      _customHighlights(highlight.image, highlight.label, () {
+                        profileController.highlights.remove(highlight);
+                      }))
+                  .toList(),
+            ],
+          )),
     );
   }
 

@@ -11,13 +11,16 @@ class AppButton extends StatelessWidget {
   double? width;
   Color? backgroundColor;
   BorderSide? side;
-  String text;
+  String? text;
+  Widget? child; // 👈 New
   Color? textColor;
   EdgeInsetsGeometry? margin;
+
   AppButton({
     Key? key,
     required this.onPressed,
-    required this.text,
+    this.text,
+    this.child,
     this.height,
     this.width,
     this.textColor,
@@ -42,15 +45,16 @@ class AppButton extends StatelessWidget {
           ),
           elevation: AppSize.appSize0,
         ),
-        child: Text(
-          text,
-          style: TextStyle(
-            fontSize: AppSize.appSize16,
-            fontWeight: FontWeight.w600,
-            fontFamily: AppFont.appFontSemiBold,
-            color: textColor ?? AppColor.secondaryColor,
-          ),
-        ),
+        child: child ??
+            Text(
+              text ?? '',
+              style: TextStyle(
+                fontSize: AppSize.appSize16,
+                fontWeight: FontWeight.w600,
+                fontFamily: AppFont.appFontSemiBold,
+                color: textColor ?? AppColor.secondaryColor,
+              ),
+            ),
       ),
     );
   }

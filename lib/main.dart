@@ -5,6 +5,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_color.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_size.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_string.dart';
+import 'package:prime_social_media_flutter_ui_kit/controller/profile/profile_controller.dart';
 import 'package:prime_social_media_flutter_ui_kit/services/db_service.dart';
 import 'package:prime_social_media_flutter_ui_kit/translation/app_translation.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/splash/splash_view.dart';
@@ -36,6 +37,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     TranslationController translationController =
         Get.put(TranslationController());
+    Get.put(ProfileController());
     return GetMaterialApp(
       title: AppString.appDisplayName,
       translations: AppTranslations(),

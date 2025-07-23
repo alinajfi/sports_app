@@ -9,6 +9,7 @@ import 'package:prime_social_media_flutter_ui_kit/config/app_icon.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_image.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_size.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_string.dart';
+import 'package:prime_social_media_flutter_ui_kit/controller/login_controller.dart';
 import 'package:prime_social_media_flutter_ui_kit/controller/profile/profile_controller.dart';
 import 'package:prime_social_media_flutter_ui_kit/controller/profile/settings_options/language_controller.dart';
 import 'package:prime_social_media_flutter_ui_kit/model/highlight_model.dart';
@@ -26,6 +27,8 @@ class UserProfile extends StatelessWidget {
 
   ProfileController profileController = Get.put(ProfileController());
   late final LanguageController languageController;
+  // final loginController = Get.put(LoginController());
+  // final loginController = Get.find<LoginController>();
 
   @override
   Widget build(BuildContext context) {
@@ -241,6 +244,7 @@ class UserProfile extends StatelessWidget {
               ],
             ),
           ),
+
           const Padding(
             padding: EdgeInsets.only(bottom: AppSize.appSize4),
             child: Text(
@@ -253,6 +257,21 @@ class UserProfile extends StatelessWidget {
               ),
             ),
           ),
+          // Obx(() {
+          //   final user = profileController.user.value;
+          //   return Padding(
+          //     padding: const EdgeInsets.only(bottom: AppSize.appSize4),
+          //     child: Text(
+          //       user?.name ?? "Guest",
+          //       style: const TextStyle(
+          //         fontSize: AppSize.appSize16,
+          //         fontWeight: FontWeight.w600,
+          //         fontFamily: AppFont.appFontSemiBold,
+          //         color: AppColor.secondaryColor,
+          //       ),
+          //     ),
+          //   );
+          // }),
           const Text(
             AppString.loremString5,
             style: TextStyle(

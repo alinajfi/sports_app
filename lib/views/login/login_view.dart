@@ -157,24 +157,40 @@ class LoginView extends StatelessWidget {
                 ),
               ),
             ),
-            AppButton(
-              onPressed: () async {
-                Get.offAllNamed(AppRoutes.welcomeView);
-
-                if (loginController.loginField1Controller.text.isEmpty ||
-                    loginController.password.value.isEmpty) {
-                  loginController.isButtonTapped.value = true;
-                } else {
-                  loginController.isButtonTapped.value = false;
-                  final result = await AuthService().loginUser(
-                      email: loginController.loginField1Controller.text.trim(),
-                      password: loginController.password.value.toString());
-                  await loginController.onLoginSuccessFull(result);
-                }
+            Obx(
+              () {
+                return loginController.isLoading.value
+                    ? Center(
+                        child: CircularProgressIndicator.adaptive(),
+                      )
+                    : AppButton(
+                        onPressed: () async {
+                          loginController.isLoading.value = true;
+                          if (loginController
+                                  .loginField1Controller.text.isEmpty ||
+                              loginController.password.value.isEmpty) {
+                            loginController.isButtonTapped.value = true;
+                          } else {
+                            loginController.isButtonTapped.value = false;
+                            final result = await AuthService().loginUser(
+                                email: loginController
+                                    .loginField1Controller.text
+                                    .trim(),
+                                password:
+                                    loginController.password.value.toString());
+                            if (result.$2 != null) {
+                              await loginController
+                                  .onLoginSuccessFull(result.$2!);
+                            } else {
+                              await loginController.onLoginFailed(result.$1);
+                            }
+                          }
+                        },
+                        text: AppString.buttonTextLogIn,
+                        backgroundColor: AppColor.primaryColor,
+                        margin: const EdgeInsets.only(top: AppSize.appSize32),
+                      );
               },
-              text: AppString.buttonTextLogIn,
-              backgroundColor: AppColor.primaryColor,
-              margin: const EdgeInsets.only(top: AppSize.appSize32),
             ),
             AppButton(
               onPressed: () {
