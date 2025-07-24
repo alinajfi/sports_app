@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:math';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
@@ -21,6 +22,7 @@ class LoginController extends GetxController {
   Rx<UserModel?> user = Rx<UserModel?>(null);
 
   Future<void> onLoginSuccessFull(LoginResponse loginRes) async {
+    isLoading.value = true;
     await DbController.instance.writeData<String>(
       DbConstants.apiToken,
       loginRes.token,
@@ -32,7 +34,10 @@ class LoginController extends GetxController {
     Get.offAllNamed(AppRoutes.welcomeView);
   }
 
-  Future<void> onLoginFailed(String errorMessage) async {}
+  Future<void> onLoginFailed(String errorMessage) async {
+    isLoading.value = true;
+    Fluttertoast.showToast(msg: errorMessage);
+  }
 
   // @override
   // void () {

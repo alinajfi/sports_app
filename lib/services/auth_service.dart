@@ -44,7 +44,7 @@ class AuthService extends CommonApiFunctions {
     }
   }
 
-  Future<LoginResponse> loginUser({
+  Future<(String, LoginResponse?)> loginUser({
     required String email,
     required String password,
   }) async {
@@ -56,24 +56,26 @@ class AuthService extends CommonApiFunctions {
           body: {"email": email, "password": password});
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        return LoginResponse.fromJson(
+        final loginRes = LoginResponse.fromJson(
             jsonDecode(response.body) as Map<String, dynamic>);
+        return (loginRes.message, loginRes);
       } else {
-        final error =
+        String error =
             jsonDecode(response.body)["message"] ?? response.reasonPhrase;
         log("Failed to log in: $error");
-        throw Exception("Login failed: $error");
+
+        return (error, null);
       }
     } catch (e) {
       log("Login error: $e");
-      throw Exception("Login error: $e");
+      return (e.toString(), null);
     }
   }
 
   Future<UserData?> getUser() async {
     final response = await http.get(
         headers: getHeadersWithToken(),
-        getUrlFromEndPoints(endPoint: ApiConstants.user));
+        getUrlFromEndPoints(endPoint: ApiConstants.userProfile));
 
     if (response.statusCode == 200) {
       log(response.body.toString());

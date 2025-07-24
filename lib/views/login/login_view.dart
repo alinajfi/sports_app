@@ -158,69 +158,39 @@ class LoginView extends StatelessWidget {
               ),
             ),
             Obx(
-              () => AppButton(
-                onPressed: () async {
-                  if (loginController.loginField1Controller.text.isEmpty ||
-                      loginController.password.value.isEmpty) {
-                    loginController.isButtonTapped.value = true;
-                  } else {
-                    loginController.isButtonTapped.value = false;
-                    loginController.isLoading.value = true;
-
-                    try {
-                      final result = await AuthService().loginUser(
-                        email:
-                            loginController.loginField1Controller.text.trim(),
-                        password: loginController.password.value.toString(),
+              () {
+                return loginController.isLoading.value
+                    ? Center(
+                        child: CircularProgressIndicator.adaptive(),
+                      )
+                    : AppButton(
+                        onPressed: () async {
+                          loginController.isLoading.value = true;
+                          if (loginController
+                                  .loginField1Controller.text.isEmpty ||
+                              loginController.password.value.isEmpty) {
+                            loginController.isButtonTapped.value = true;
+                          } else {
+                            loginController.isButtonTapped.value = false;
+                            final result = await AuthService().loginUser(
+                                email: loginController
+                                    .loginField1Controller.text
+                                    .trim(),
+                                password:
+                                    loginController.password.value.toString());
+                            if (result.$2 != null) {
+                              await loginController
+                                  .onLoginSuccessFull(result.$2!);
+                            } else {
+                              await loginController.onLoginFailed(result.$1);
+                            }
+                          }
+                        },
+                        text: AppString.buttonTextLogIn,
+                        backgroundColor: AppColor.primaryColor,
+                        margin: const EdgeInsets.only(top: AppSize.appSize32),
                       );
-
-                      await loginController.onLoginSuccessFull(result);
-                    } catch (e) {
-                      await Future.delayed(const Duration(seconds: 1));
-                      Get.snackbar(
-                        "Error",
-                        e.toString(),
-                        backgroundColor: Colors.red,
-                        colorText: Colors.white,
-                        snackPosition: SnackPosition.BOTTOM,
-                        duration: const Duration(seconds: 3),
-                      );
-                    } finally {
-                      loginController.isLoading.value = false;
-                    }
-                  }
-                },
-                backgroundColor: AppColor.primaryColor,
-                margin: const EdgeInsets.only(top: AppSize.appSize32),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      loginController.isLoading.value
-                          ? "Please wait..."
-                          : AppString.buttonTextLogIn,
-                      style: TextStyle(
-                        fontSize: AppSize.appSize16,
-                        fontWeight: FontWeight.w600,
-                        fontFamily: AppFont.appFontSemiBold,
-                        color: AppColor.secondaryColor,
-                      ),
-                    ),
-                    if (loginController.isLoading.value) ...[
-                      const SizedBox(width: 10),
-                      const SizedBox(
-                        width: 18,
-                        height: 18,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ]
-                  ],
-                ),
-              ),
+              },
             ),
             AppButton(
               onPressed: () {

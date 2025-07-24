@@ -4,7 +4,7 @@ class ApiConstants {
   static const String login = "/login";
 
   static const String register = "/signup";
-  static const String user = "/user";
+  static const String userProfile = "/profile";
 
   static const String forgetPasswordRequest = "/forgot_password";
   static const String createPost = "/create_post";
