@@ -165,12 +165,12 @@ class LoginView extends StatelessWidget {
                       )
                     : AppButton(
                         onPressed: () async {
-                          loginController.isLoading.value = true;
                           if (loginController
                                   .loginField1Controller.text.isEmpty ||
                               loginController.password.value.isEmpty) {
                             loginController.isButtonTapped.value = true;
                           } else {
+                            loginController.isLoading.value = true;
                             loginController.isButtonTapped.value = false;
                             final result = await AuthService().loginUser(
                                 email: loginController

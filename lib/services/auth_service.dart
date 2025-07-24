@@ -28,10 +28,10 @@ class AuthService extends CommonApiFunctions {
         },
       );
 
-      if (response.statusCode == 200) {
-        final message = jsonDecode(response.body)["message"];
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final message = jsonDecode(response.body)["message"].toString();
         log("User registered successfully: $message");
-        return (message as String, true);
+        return (message, true);
       } else {
         final error =
             jsonDecode(response.body)["message"] ?? response.reasonPhrase;

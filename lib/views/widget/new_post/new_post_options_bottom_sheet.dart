@@ -64,30 +64,32 @@ newPostOptionsBottomSheet(BuildContext context) {
                     if (index == 0) {
                       Get.back();
                       Get.toNamed(AppRoutes.createReelView);
-                    }
-                    // else if (index == 3) {
-                    //   Get.back();
-                    //   final ImagePicker picker = ImagePicker();
-                    //   final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-                    //   if(image != null) {
-                    //     Get.to(EditPostScreen(image: image,));
-                    //   } else {
-                    //    Get.back();
-                    //   }
-                    // }
-                    // else if (index == 3) {
-                    //   Get.back();
-                    //   final ImagePicker picker = ImagePicker();
-                    //   final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+                    } else if (index == 3) {
+                      Get.back();
+                      final ImagePicker picker = ImagePicker();
+                      final XFile? image =
+                          await picker.pickImage(source: ImageSource.gallery);
+                      if (image != null) {
+                        Get.to(EditPostScreen(
+                          image: image,
+                        ));
+                      } else {
+                        Get.back();
+                      }
+                    } else if (index == 3) {
+                      Get.back();
+                      final ImagePicker picker = ImagePicker();
+                      final XFile? image =
+                          await picker.pickImage(source: ImageSource.gallery);
 
-                    //   if (image != null) {
-                    //     Get.to(EditPostScreen(
-                    //       image: XFile(image.path),
-                    //     ));
-                    //   } else {
-                    //     Get.back();
-                    //   }
-                    // }
+                      if (image != null) {
+                        Get.to(EditPostScreen(
+                          image: XFile(image.path),
+                        ));
+                      } else {
+                        Get.back();
+                      }
+                    }
                   },
                   child: Obx(() => Container(
                         padding:

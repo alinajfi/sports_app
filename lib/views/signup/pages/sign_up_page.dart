@@ -4,6 +4,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_icon.dart';
 import 'package:prime_social_media_flutter_ui_kit/controller/sign_up_controller.dart';
@@ -454,10 +455,12 @@ class SignUpView extends StatelessWidget {
                         } else {
                           log(result.$1);
                           cont.isloading.value = false;
+                          Fluttertoast.showToast(msg: result.$1);
                         }
                       } catch (e) {
                         log("$e");
                         cont.isloading.value = false;
+                        Fluttertoast.showToast(msg: e.toString());
                       }
                     }
                   },

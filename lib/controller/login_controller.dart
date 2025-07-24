@@ -22,7 +22,7 @@ class LoginController extends GetxController {
   Rx<UserModel?> user = Rx<UserModel?>(null);
 
   Future<void> onLoginSuccessFull(LoginResponse loginRes) async {
-    isLoading.value = true;
+    isLoading.value = false;
     await DbController.instance.writeData<String>(
       DbConstants.apiToken,
       loginRes.token,
@@ -35,7 +35,7 @@ class LoginController extends GetxController {
   }
 
   Future<void> onLoginFailed(String errorMessage) async {
-    isLoading.value = true;
+    isLoading.value = false;
     Fluttertoast.showToast(msg: errorMessage);
   }
 
