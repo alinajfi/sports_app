@@ -262,8 +262,9 @@ class ProfileView extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   GestureDetector(
-                    onTap: () {
-                      Get.toNamed(AppRoutes.editProfileView);
+                    onTap: () async {
+                      final res = await Get.toNamed(AppRoutes.editProfileView);
+                      profileController.loadUserProfile();
                     },
                     child: Container(
                       width: kIsWeb ? AppSize.appSize355 : AppSize.appSize147,
