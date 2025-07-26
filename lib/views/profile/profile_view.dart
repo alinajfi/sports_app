@@ -29,6 +29,7 @@ class ProfileView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    profileController.loadUserProfile();
     return Scaffold(
       backgroundColor: AppColor.backgroundColor,
       appBar: _appBar(context),

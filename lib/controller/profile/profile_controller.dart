@@ -10,6 +10,7 @@ import 'package:prime_social_media_flutter_ui_kit/controller/db_controller.dart'
 import 'package:prime_social_media_flutter_ui_kit/model/login_response_model.dart';
 import 'package:prime_social_media_flutter_ui_kit/model/user_model.dart';
 import 'package:http/http.dart' as http;
+import 'package:prime_social_media_flutter_ui_kit/services/auth_service.dart';
 import '../../model/highlight_model.dart';
 
 BottomBarController bottomBarController = Get.put(BottomBarController());
@@ -40,6 +41,8 @@ class ProfileController extends GetxController
       length: AppSize.size4,
       vsync: this,
     );
+
+    loadUserProfile();
   }
 
   @override
@@ -51,10 +54,10 @@ class ProfileController extends GetxController
 
   Rx<User?> currentUser = Rx<User?>(null);
 
-  Future<void> onLoginSuccessFull(LoginResponse response) async {
+  Future<void> onLoginSuccessFull() async {
     // Save token if needed
-    currentUser.value = response.user;
-    await fetchUserProfile();
+    // currentUser.value = response.user;
+    user.value = await AuthService().fetchUserProfile();
 
     // Navigate to ProfileScreen or HomePage
     // Get.offAll(() => HomeScreen());
@@ -69,7 +72,8 @@ class ProfileController extends GetxController
     }
   }
 
-  Future<void> updateProfile() async {
+  Future<void> updateProfile(
+      {String? name, String? nickName, String? phone}) async {
     isLoading.value = true;
 
     try {
@@ -112,24 +116,24 @@ class ProfileController extends GetxController
     }
   }
 
-  Future<UserModel> fetchUserProfile() async {
-    final token =
-        await DbController.instance.readData<String>(DbConstants.apiToken);
+  // Future<UserModel> fetchUserProfile() async {
+  //   final token =
+  //       await DbController.instance.readData<String>(DbConstants.apiToken);
 
-    final response = await http.get(
-      Uri.parse("https://mysportsjourney.co.uk/api/profile"),
-      headers: {
-        'Accept': 'application/json',
-        'Authorization': 'Bearer $token',
-      },
-    );
+  //   final response = await http.get(
+  //     Uri.parse("https://mysportsjourney.co.uk/api/profile"),
+  //     headers: {
+  //       'Accept': 'application/json',
+  //       'Authorization': 'Bearer $token',
+  //     },
+  //   );
 
-    if (response.statusCode == 200) {
-      return UserModel.fromJson(json.decode(response.body));
-    } else {
-      throw Exception("Failed to load user profile");
-    }
-  }
+  //   if (response.statusCode == 200) {
+  //     return UserModel.fromJson(json.decode(response.body));
+  //   } else {
+  //     throw Exception("Failed to load user profile");
+  //   }
+  // }
 
   Future<void> loadUserProfile() async {
     try {

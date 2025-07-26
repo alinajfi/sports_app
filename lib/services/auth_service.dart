@@ -133,4 +133,17 @@ class AuthService extends CommonApiFunctions {
     log("---------------" + response.body.toString());
     return null;
   }
+
+  Future<UserModel> fetchUserProfile() async {
+    final response = await http.get(
+      Uri.parse("https://mysportsjourney.co.uk/api/profile"),
+      headers: getHeadersWithTokenJson(),
+    );
+
+    if (response.statusCode == 200) {
+      return UserModel.fromJson(json.decode(response.body));
+    } else {
+      throw Exception("Failed to load user profile");
+    }
+  }
 }
