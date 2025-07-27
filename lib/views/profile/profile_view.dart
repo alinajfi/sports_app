@@ -29,6 +29,7 @@ class ProfileView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    profileController.loadUserProfile();
     return Scaffold(
       backgroundColor: AppColor.backgroundColor,
       appBar: _appBar(context),
@@ -37,14 +38,15 @@ class ProfileView extends StatelessWidget {
   }
 
   _appBar(BuildContext context) {
+    final user = profileController.user.value;
     return AppBar(
       backgroundColor: AppColor.backgroundColor,
-      title: const Padding(
+      title: Padding(
         padding: EdgeInsets.only(left: AppSize.appSize5),
         child: Align(
           alignment: Alignment.centerLeft,
           child: Text(
-            AppString.eleanorPenaID,
+            user?.nickname ?? "Guest",
             style: TextStyle(
               fontSize: AppSize.appSize20,
               fontWeight: FontWeight.w600,
@@ -189,15 +191,38 @@ class ProfileView extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: AppSize.appSize14),
             child: Row(
               children: [
-                GestureDetector(
-                  onTap: () {
-                    Get.toNamed(AppRoutes.storyWithMessageView);
-                  },
-                  child: Image.asset(
-                    AppImage.story2,
-                    width: AppSize.appSize82,
-                  ),
-                ),
+                Obx(() {
+                  final user = profileController.user.value;
+                  return GestureDetector(
+                    onTap: () {
+                      Get.toNamed(AppRoutes.storyWithMessageView);
+                    },
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(
+                          AppSize.appSize40), // half of 82 for circular
+                      child: user?.photo != null && user!.photo.isNotEmpty
+                          ? Image.network(
+                              user.photo,
+                              width: AppSize.appSize82,
+                              height: AppSize.appSize82,
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) =>
+                                  Image.asset(
+                                AppImage.story2, // fallback image asset
+                                width: AppSize.appSize82,
+                                height: AppSize.appSize82,
+                                fit: BoxFit.cover,
+                              ),
+                            )
+                          : Image.asset(
+                              AppImage.story2,
+                              width: AppSize.appSize82,
+                              height: AppSize.appSize82,
+                              fit: BoxFit.cover,
+                            ),
+                    ),
+                  );
+                }),
                 Expanded(
                   child: Container(
                     height: AppSize.appSize50,
@@ -244,15 +269,18 @@ class ProfileView extends StatelessWidget {
               ),
             );
           }),
-          const Text(
-            AppString.loremString5,
-            style: TextStyle(
-              fontSize: AppSize.appSize14,
-              fontWeight: FontWeight.w400,
-              fontFamily: AppFont.appFontRegular,
-              color: AppColor.secondaryColor,
-            ),
-          ),
+          Obx(() {
+            final user = profileController.user.value;
+            return Text(
+              user?.about ?? AppString.loremString5,
+              style: TextStyle(
+                fontSize: AppSize.appSize14,
+                fontWeight: FontWeight.w400,
+                fontFamily: AppFont.appFontRegular,
+                color: AppColor.secondaryColor,
+              ),
+            );
+          }),
           Padding(
             padding: const EdgeInsets.only(top: AppSize.appSize14),
             child: SizedBox(
@@ -261,8 +289,9 @@ class ProfileView extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   GestureDetector(
-                    onTap: () {
-                      Get.toNamed(AppRoutes.editProfileView);
+                    onTap: () async {
+                      final res = await Get.toNamed(AppRoutes.editProfileView);
+                      profileController.loadUserProfile();
                     },
                     child: Container(
                       width: kIsWeb ? AppSize.appSize355 : AppSize.appSize147,

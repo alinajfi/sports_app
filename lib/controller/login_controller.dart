@@ -23,9 +23,13 @@ class LoginController extends GetxController {
 
   Future<void> onLoginSuccessFull(LoginResponse loginRes) async {
     isLoading.value = false;
-    await DbController.instance.writeData<String>(
+    DbController.instance.writeData<String>(
       DbConstants.apiToken,
       loginRes.token,
+    );
+    DbController.instance.writeData<bool>(
+      DbConstants.isUserLoggedIn,
+      true,
     );
 
     final profileController = Get.find<ProfileController>();

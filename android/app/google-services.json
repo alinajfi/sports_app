@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "577561851476",
+    "project_id": "sportme-e47cd",
+    "storage_bucket": "sportme-e47cd.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:577561851476:android:379eb54a2ff6a606fa9fc1",
+        "android_client_info": {
+          "package_name": "com.example.prime_social_media_flutter_ui_kit"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAAFR9HF4FdEhujDpQ0Ak9b5D0yGStBHyk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

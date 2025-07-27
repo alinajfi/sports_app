@@ -9,12 +9,14 @@ import 'package:prime_social_media_flutter_ui_kit/config/app_string.dart';
 class SignUpController extends GetxController {
   PageController pageController = PageController();
 
+  TextEditingController fullNameController = TextEditingController();
   TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
   TextEditingController dateOfBirthController = TextEditingController();
   TextEditingController usernameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController confirmPasswordController = TextEditingController();
   TextEditingController addressController = TextEditingController();
   TextEditingController postalCodeController = TextEditingController();
 
@@ -26,10 +28,12 @@ class SignUpController extends GetxController {
   RxBool isUsernameValid = false.obs;
   RxBool isShowingUsername = false.obs;
   // RxString isUsername = ''.obs;
+  RxString fullName = ''.obs;
   RxString firstName = ''.obs;
   RxString lastName = ''.obs;
   RxString email = ''.obs;
   RxString password = ''.obs;
+  RxString confirmPassword = ''.obs;
   RxString confirmPass = ''.obs;
   RxString address = ''.obs;
   RxString postalCode = ''.obs;
