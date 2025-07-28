@@ -57,7 +57,9 @@ class _SplashViewState extends State<SplashView> {
             padding: const EdgeInsets.only(bottom: AppSize.appSize24),
             child: Image.asset(
               AppImage.appLogo,
-              width: AppSize.appSize66,
+              width: 200,
+              height: 100,
+              fit: BoxFit.fill,
             ),
           ),
           const Text(
