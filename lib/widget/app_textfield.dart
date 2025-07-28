@@ -43,6 +43,7 @@ class AppTextField extends StatelessWidget {
     this.suffixIcon,
     this.suffixIconConstraints,
     this.suffixIconColor,
+    String? hintText,
   }) : super(key: key);
 
   @override
@@ -52,7 +53,8 @@ class AppTextField extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColor.cardBackgroundColor,
         borderRadius: BorderRadius.circular(AppSize.appSize12),
-        border: Border.all(color: AppColor.borderColor, width: AppSize.appSizePoint7),
+        border: Border.all(
+            color: AppColor.borderColor, width: AppSize.appSizePoint7),
       ),
       child: TextFormField(
         controller: controller,
@@ -94,18 +96,21 @@ class AppTextField extends StatelessWidget {
           isDense: true,
           filled: true,
           fillColor: fillColor,
-          border: border ?? UnderlineInputBorder(
-            borderSide: BorderSide.none,
-            borderRadius: BorderRadius.circular(AppSize.appSize12),
-          ),
-          focusedBorder: focusedBorder ?? UnderlineInputBorder(
-            borderSide: BorderSide.none,
-            borderRadius: BorderRadius.circular(AppSize.appSize12),
-          ),
-          enabledBorder: enabledBorder ?? UnderlineInputBorder(
-            borderSide: BorderSide.none,
-            borderRadius: BorderRadius.circular(AppSize.appSize12),
-          ),
+          border: border ??
+              UnderlineInputBorder(
+                borderSide: BorderSide.none,
+                borderRadius: BorderRadius.circular(AppSize.appSize12),
+              ),
+          focusedBorder: focusedBorder ??
+              UnderlineInputBorder(
+                borderSide: BorderSide.none,
+                borderRadius: BorderRadius.circular(AppSize.appSize12),
+              ),
+          enabledBorder: enabledBorder ??
+              UnderlineInputBorder(
+                borderSide: BorderSide.none,
+                borderRadius: BorderRadius.circular(AppSize.appSize12),
+              ),
           suffixIcon: suffixIcon,
           suffixIconConstraints: suffixIconConstraints,
           suffixIconColor: suffixIconColor,

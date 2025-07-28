@@ -79,22 +79,23 @@ class SignUpView extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // Full Name Field
                 Padding(
                   padding: const EdgeInsets.only(top: AppSize.appSize52),
                   child: AppTextField(
-                    controller: signUpController.firstNameController,
-                    labelText: AppString.firstName,
+                    controller: signUpController.fullNameController,
+                    labelText: AppString.fullName, // Update string
                     keyboardType: TextInputType.text,
                     cursorColor: AppColor.secondaryColor,
                     fillColor: AppColor.cardBackgroundColor,
                     textInputAction: TextInputAction.next,
                     onChanged: (value) {
-                      signUpController.firstName.value = value;
+                      signUpController.fullName.value = value;
                     },
                   ),
                 ),
                 Obx(() => signUpController.isButtonTap.value &&
-                        signUpController.firstName.value.isEmpty
+                        signUpController.fullName.value.isEmpty
                     ? Text(
                         AppString.nameRequired,
                         style: TextStyle(
@@ -105,120 +106,8 @@ class SignUpView extends StatelessWidget {
                         ),
                       )
                     : SizedBox.shrink()),
-                Padding(
-                  padding: const EdgeInsets.only(top: AppSize.appSize24),
-                  child: AppTextField(
-                    controller: signUpController.lastNameController,
-                    labelText: AppString.lastName,
-                    keyboardType: TextInputType.text,
-                    cursorColor: AppColor.secondaryColor,
-                    fillColor: AppColor.cardBackgroundColor,
-                    textInputAction: TextInputAction.next,
-                    onChanged: (value) {
-                      signUpController.lastName.value = value;
-                    },
-                  ),
-                ),
-                Obx(() => signUpController.isButtonTap.value &&
-                        signUpController.lastName.value.isEmpty
-                    ? Text(
-                        AppString.nameRequired,
-                        style: TextStyle(
-                          fontSize: AppSize.appSize14,
-                          fontWeight: FontWeight.w400,
-                          fontFamily: AppFont.appFontRegular,
-                          color: AppColor.redColor,
-                        ),
-                      )
-                    : SizedBox.shrink())
-              ],
-            ),
-            // Obx(() => Column(
-            //       crossAxisAlignment: CrossAxisAlignment.start,
-            //       children: [
-            //         Padding(
-            //           padding: const EdgeInsets.only(top: AppSize.appSize24),
-            //           child: GestureDetector(
-            //             onTap: () {
-            //               signUpController.selectDate(context);
-            //             },
-            //             child: AbsorbPointer(
-            //               child: AppTextField(
-            //                 controller: signUpController.dateOfBirthController,
-            //                 labelText: AppString.dateOfBirth,
-            //                 keyboardType: TextInputType.none,
-            //                 cursorColor: AppColor.secondaryColor,
-            //                 fillColor: AppColor.cardBackgroundColor,
-            //                 textInputAction: TextInputAction.next,
-            //                 suffixIcon: Padding(
-            //                   padding: const EdgeInsets.only(
-            //                       right: AppSize.appSize16),
-            //                   child: Image.asset(AppIcon.calendar),
-            //                 ),
-            //                 suffixIconColor: AppColor.text2Color,
-            //                 suffixIconConstraints: const BoxConstraints(
-            //                   maxWidth: AppSize.appSize35,
-            //                 ),
-            //               ),
-            //             ),
-            //           ),
-            //         ),
-            //         if (signUpController.isDateInvalid.value)
-            //           Text(
-            //             AppString.dateOfBirthRequired,
-            //             style: TextStyle(
-            //               color: AppColor.redColor,
-            //               fontSize: AppSize.appSize12,
-            //             ),
-            //           ),
-            //       ],
-            //     )),
-            // Column(
-            //   crossAxisAlignment: CrossAxisAlignment.start,
-            //   children: [
-            //     // Padding(
-            //     //   padding: const EdgeInsets.only(top: AppSize.appSize24),
-            //     //   child: AppTextField(
-            //     //     controller: signUpController.usernameController,
-            //     //     labelText: AppString.userName,
-            //     //     keyboardType: TextInputType.text,
-            //     //     cursorColor: AppColor.secondaryColor,
-            //     //     fillColor: AppColor.cardBackgroundColor,
-            //     //     textInputAction: TextInputAction.next,
-            //     //     onChanged: (text) {
-            //     //       signUpController.updateUsernameValidity(text);
-            //     //       signUpController.isUsername.value = text;
-            //     //     },
-            //     //   ),
-            //     // ),
-            //     // Obx(() => signUpController.isButtonTap.value &&
-            //     //         signUpController.isUsername.value.isEmpty
-            //     //     ? Text(
-            //     //         AppString.userNameRequired,
-            //     //         style: TextStyle(
-            //     //           fontSize: AppSize.appSize14,
-            //     //           fontWeight: FontWeight.w400,
-            //     //           fontFamily: AppFont.appFontRegular,
-            //     //           color: AppColor.redColor,
-            //     //         ),
-            //     //       )
-            //     //     : signUpController.isButtonTap.value &&
-            //     //             signUpController.isUsername.value.length < 5
-            //     //         ? Text(
-            //     //             AppString.userNameNotValid,
-            //     //             style: TextStyle(
-            //     //               fontSize: AppSize.appSize14,
-            //     //               fontWeight: FontWeight.w400,
-            //     //               fontFamily: AppFont.appFontRegular,
-            //     //               color: AppColor.redColor,
-            //     //             ),
-            //     //           )
-            //     //         : SizedBox.shrink())
-            //   ],
-            // ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+
+                // Email Field
                 Padding(
                   padding: const EdgeInsets.only(top: AppSize.appSize24),
                   child: AppTextField(
@@ -227,9 +116,6 @@ class SignUpView extends StatelessWidget {
                     keyboardType: TextInputType.emailAddress,
                     cursorColor: AppColor.secondaryColor,
                     fillColor: AppColor.cardBackgroundColor,
-                    // inputFormatters: [
-                    //   LengthLimitingTextInputFormatter(AppSize.size10),
-                    // ],
                     textInputAction: TextInputAction.next,
                     onChanged: (value) {
                       signUpController.email.value = value;
@@ -247,12 +133,9 @@ class SignUpView extends StatelessWidget {
                           color: AppColor.redColor,
                         ),
                       )
-                    : SizedBox.shrink())
-              ],
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+                    : SizedBox.shrink()),
+
+                // Password Field
                 Padding(
                   padding: const EdgeInsets.only(top: AppSize.appSize24),
                   child: Obx(() => AppTextField(
@@ -281,9 +164,8 @@ class SignUpView extends StatelessWidget {
                           signUpController.password.value = value;
                         },
                         suffixIconColor: AppColor.text2Color,
-                        suffixIconConstraints: const BoxConstraints(
-                          maxWidth: AppSize.appSize38,
-                        ),
+                        suffixIconConstraints:
+                            const BoxConstraints(maxWidth: AppSize.appSize38),
                       )),
                 ),
                 Obx(() => signUpController.isButtonTap.value &&
@@ -297,9 +179,73 @@ class SignUpView extends StatelessWidget {
                           color: AppColor.redColor,
                         ),
                       )
-                    : SizedBox.shrink())
+                    : SizedBox.shrink()),
+
+                // Confirm Password Field
+                Padding(
+                  padding: const EdgeInsets.only(top: AppSize.appSize24),
+                  child: Obx(() => AppTextField(
+                        controller: signUpController.confirmPasswordController,
+                        labelText: AppString.confirmPassword,
+                        keyboardType: TextInputType.text,
+                        cursorColor: AppColor.secondaryColor,
+                        fillColor: AppColor.cardBackgroundColor,
+                        obscureText:
+                            signUpController.isConfirmPasswordVisible.value,
+                        textInputAction: TextInputAction.done,
+                        suffixIcon: Padding(
+                          padding:
+                              const EdgeInsets.only(right: AppSize.appSize16),
+                          child: GestureDetector(
+                            onTap: () {
+                              signUpController
+                                  .toggleConfirmPasswordVisibility();
+                            },
+                            child: Image.asset(
+                              signUpController.isConfirmPasswordVisible.value
+                                  ? AppIcon.eyeClose
+                                  : AppIcon.eyeOpen,
+                            ),
+                          ),
+                        ),
+                        onChanged: (value) {
+                          signUpController.confirmPassword.value = value;
+                        },
+                        suffixIconColor: AppColor.text2Color,
+                        suffixIconConstraints:
+                            const BoxConstraints(maxWidth: AppSize.appSize38),
+                      )),
+                ),
+                Obx(() {
+                  if (!signUpController.isButtonTap.value)
+                    return SizedBox.shrink();
+                  if (signUpController.confirmPassword.value.isEmpty) {
+                    return Text(
+                      AppString.confirmPasswordRequired,
+                      style: TextStyle(
+                        fontSize: AppSize.appSize14,
+                        fontWeight: FontWeight.w400,
+                        fontFamily: AppFont.appFontRegular,
+                        color: AppColor.redColor,
+                      ),
+                    );
+                  } else if (signUpController.password.value !=
+                      signUpController.confirmPassword.value) {
+                    return Text(
+                      AppString.confirmPasswordValid,
+                      style: TextStyle(
+                        fontSize: AppSize.appSize14,
+                        fontWeight: FontWeight.w400,
+                        fontFamily: AppFont.appFontRegular,
+                        color: AppColor.redColor,
+                      ),
+                    );
+                  }
+                  return SizedBox.shrink();
+                }),
               ],
             ),
+
             // Column(
             //   crossAxisAlignment: CrossAxisAlignment.start,
             //   children: [
@@ -434,36 +380,44 @@ class SignUpView extends StatelessWidget {
               builder: (cont) {
                 return AppButton(
                   onPressed: () async {
-                    //  cont.pageController.jumpToPage(0);
-                    if (signUpController.firstName.value.isEmpty ||
-                        signUpController.password.value.isEmpty ||
-                        signUpController.email.value.isEmpty) {
-                      signUpController.isButtonTap.value = true;
-                      signUpController.isShowingUsername.value = true;
-                      signUpController.isDateInvalid.value =
-                          signUpController.selectedDate.value == null;
-                    } else {
-                      cont.isloading.value = true;
-                      signUpController.isButtonTap.value = false;
-                      signUpController.isDateInvalid.value = false;
+                    cont.isButtonTap.value = true;
 
-                      try {
-                        final result = await AuthService().registerUser(
-                            email: cont.emailController.text.trim(),
-                            password: cont.passwordController.text.trim());
-                        if (result.$2) {
-                          cont.isloading.value = false;
-                          Get.toNamed(AppRoutes.welcomeView);
-                        } else {
-                          log(result.$1);
-                          cont.isloading.value = false;
-                          Fluttertoast.showToast(msg: result.$1);
-                        }
-                      } catch (e) {
-                        log("$e");
-                        cont.isloading.value = false;
-                        Fluttertoast.showToast(msg: e.toString());
+                    // Validate fields
+                    bool isFormInvalid = cont.fullName.value.isEmpty ||
+                        cont.email.value.isEmpty ||
+                        cont.password.value.isEmpty ||
+                        cont.confirmPassword.value.isEmpty ||
+                        cont.password.value != cont.confirmPassword.value;
+
+                    cont.isDateInvalid.value = cont.selectedDate.value == null;
+
+                    if (isFormInvalid) {
+                      cont.isShowingUsername.value = true;
+                      return;
+                    }
+
+                    cont.isloading.value = true;
+                    cont.isButtonTap.value = false;
+                    cont.isDateInvalid.value = false;
+
+                    try {
+                      final result = await AuthService().registerUser(
+                        email: cont.emailController.text.trim(),
+                        password: cont.passwordController.text.trim(),
+                      );
+
+                      cont.isloading.value = false;
+
+                      if (result.$2) {
+                        Get.toNamed(AppRoutes.welcomeView);
+                      } else {
+                        log(result.$1);
+                        Fluttertoast.showToast(msg: result.$1);
                       }
+                    } catch (e) {
+                      log("$e");
+                      cont.isloading.value = false;
+                      Fluttertoast.showToast(msg: e.toString());
                     }
                   },
                   text: cont.isloading.value
@@ -474,6 +428,7 @@ class SignUpView extends StatelessWidget {
                 );
               },
             ),
+
             // AppButton(
             //   onPressed: () {
             //     Get.toNamed(AppRoutes.loginView);
@@ -488,17 +443,17 @@ class SignUpView extends StatelessWidget {
               height: AppSize.appSize24,
             ),
 
-            AppButton(
-                text: 'Continue',
-                backgroundColor: AppColor.primaryColor,
-                margin: const EdgeInsets.only(top: AppSize.appSize32),
-                onPressed: () async {
-                  signUpController.pageController.jumpToPage(1);
-                }),
+            // AppButton(
+            //     text: 'Continue',
+            //     backgroundColor: AppColor.primaryColor,
+            //     margin: const EdgeInsets.only(top: AppSize.appSize32),
+            //     onPressed: () async {
+            //       signUpController.pageController.jumpToPage(1);
+            //     }),
 
-            SizedBox(
-              height: AppSize.appSize34,
-            ),
+            // SizedBox(
+            //   height: AppSize.appSize34,
+            // ),
 
             const Text(
               AppString.signUpWithSocial,

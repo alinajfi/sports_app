@@ -7,9 +7,13 @@ import 'package:path_provider/path_provider.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_image.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_size.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_string.dart';
+import 'package:prime_social_media_flutter_ui_kit/model/post_model.dart';
+import 'package:prime_social_media_flutter_ui_kit/services/home_services.dart';
 import 'package:share_plus/share_plus.dart';
 
 class HomeController extends GetxController {
+  RxList<PostModel> timeLinePosts = <PostModel>[].obs;
+
   Rx<int> selectedLabelIndex = Rx<int>(0);
   RxDouble progress = 0.0.obs;
   RxBool isLiked = false.obs;
@@ -19,6 +23,16 @@ class HomeController extends GetxController {
   RxBool isLiked4 = false.obs;
   RxBool isLiked5 = false.obs;
   RxBool isLiked6 = false.obs;
+
+  getTimeLinePosts() async {
+    timeLinePosts.value = await HomeServices().fetchTimelinePosts();
+  }
+
+  @override
+  void onInit() {
+    super.onInit();
+    getTimeLinePosts();
+  }
 
   void startAnimation() async {
     await Future.delayed(const Duration(seconds: AppSize.size2));

@@ -122,6 +122,21 @@ class EditProfileView extends StatelessWidget {
               ],
             ),
           ),
+          Obx(() => ElevatedButton.icon(
+                onPressed: editProfileController.isLoading.value
+                    ? null
+                    : () => editProfileController.uploadProfilePicture(),
+                icon: const Icon(Icons.upload),
+                label: Text(
+                  editProfileController.isLoading.value
+                      ? "Uploading..."
+                      : "Update Profile Picture",
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColor.primaryColor,
+                  foregroundColor: Colors.white,
+                ),
+              )),
           _field(AppString.name, editProfileController.nameController),
           _field(AppString.username, editProfileController.usernameController),
           _field(AppString.bio, editProfileController.bioController),
