@@ -9,6 +9,7 @@ import 'package:prime_social_media_flutter_ui_kit/config/app_size.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_string.dart';
 import 'package:prime_social_media_flutter_ui_kit/controller/home/comments_controller.dart';
 import 'package:prime_social_media_flutter_ui_kit/controller/profile/settings_options/language_controller.dart';
+import 'package:prime_social_media_flutter_ui_kit/services/home_services.dart';
 
 LanguageController languageController = Get.put(LanguageController());
 
@@ -58,7 +59,9 @@ commentsBottomSheet(BuildContext context) {
             ),
             Padding(
               padding: const EdgeInsets.only(
-                bottom: AppSize.appSize16, left: AppSize.appSize20, right: AppSize.appSize20,
+                bottom: AppSize.appSize16,
+                left: AppSize.appSize20,
+                right: AppSize.appSize20,
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -95,7 +98,9 @@ commentsBottomSheet(BuildContext context) {
               child: SingleChildScrollView(
                 physics: const ClampingScrollPhysics(),
                 padding: const EdgeInsets.only(
-                  top: AppSize.appSize24, left: AppSize.appSize20, right: AppSize.appSize20,
+                  top: AppSize.appSize24,
+                  left: AppSize.appSize20,
+                  right: AppSize.appSize20,
                 ),
                 child: Column(
                   children: [
@@ -104,8 +109,16 @@ commentsBottomSheet(BuildContext context) {
                       children: [
                         Padding(
                           padding: EdgeInsets.only(
-                            left: languageController.selectedLanguageIndex.value == AppSize.size2 ? AppSize.appSize8 : AppSize.appSize0,
-                            right: languageController.selectedLanguageIndex.value == AppSize.size2 ? AppSize.appSize0 : AppSize.appSize8,
+                            left: languageController
+                                        .selectedLanguageIndex.value ==
+                                    AppSize.size2
+                                ? AppSize.appSize8
+                                : AppSize.appSize0,
+                            right: languageController
+                                        .selectedLanguageIndex.value ==
+                                    AppSize.size2
+                                ? AppSize.appSize0
+                                : AppSize.appSize8,
                           ),
                           child: Image.asset(
                             AppImage.comment1,
@@ -117,14 +130,25 @@ commentsBottomSheet(BuildContext context) {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Row(
                                     children: [
                                       Padding(
                                         padding: EdgeInsets.only(
-                                          left: languageController.selectedLanguageIndex.value == AppSize.size2 ? AppSize.appSize8 : AppSize.appSize0,
-                                          right: languageController.selectedLanguageIndex.value == AppSize.size2 ? AppSize.appSize0 : AppSize.appSize8,
+                                          left: languageController
+                                                      .selectedLanguageIndex
+                                                      .value ==
+                                                  AppSize.size2
+                                              ? AppSize.appSize8
+                                              : AppSize.appSize0,
+                                          right: languageController
+                                                      .selectedLanguageIndex
+                                                      .value ==
+                                                  AppSize.size2
+                                              ? AppSize.appSize0
+                                              : AppSize.appSize8,
                                         ),
                                         child: const Text(
                                           AppString.eleanorPena,
@@ -151,8 +175,18 @@ commentsBottomSheet(BuildContext context) {
                                     children: [
                                       Padding(
                                         padding: EdgeInsets.only(
-                                          left: languageController.selectedLanguageIndex.value == AppSize.size2 ? AppSize.appSize4 : AppSize.appSize0,
-                                          right: languageController.selectedLanguageIndex.value == AppSize.size2 ? AppSize.appSize0 : AppSize.appSize4,
+                                          left: languageController
+                                                      .selectedLanguageIndex
+                                                      .value ==
+                                                  AppSize.size2
+                                              ? AppSize.appSize4
+                                              : AppSize.appSize0,
+                                          right: languageController
+                                                      .selectedLanguageIndex
+                                                      .value ==
+                                                  AppSize.size2
+                                              ? AppSize.appSize0
+                                              : AppSize.appSize4,
                                         ),
                                         child: Image.asset(
                                           AppIcon.emptyLike,
@@ -197,14 +231,25 @@ commentsBottomSheet(BuildContext context) {
                                 ),
                               ),
                               Padding(
-                                padding: const EdgeInsets.only(top: AppSize.appSize18),
+                                padding: const EdgeInsets.only(
+                                    top: AppSize.appSize18),
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Padding(
                                       padding: EdgeInsets.only(
-                                        left: languageController.selectedLanguageIndex.value == AppSize.size2 ? AppSize.appSize8 : AppSize.appSize0,
-                                        right: languageController.selectedLanguageIndex.value == AppSize.size2 ? AppSize.appSize0 : AppSize.appSize8,
+                                        left: languageController
+                                                    .selectedLanguageIndex
+                                                    .value ==
+                                                AppSize.size2
+                                            ? AppSize.appSize8
+                                            : AppSize.appSize0,
+                                        right: languageController
+                                                    .selectedLanguageIndex
+                                                    .value ==
+                                                AppSize.size2
+                                            ? AppSize.appSize0
+                                            : AppSize.appSize8,
                                       ),
                                       child: Image.asset(
                                         AppImage.comment2,
@@ -213,35 +258,55 @@ commentsBottomSheet(BuildContext context) {
                                     ),
                                     Expanded(
                                       child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
                                             children: [
                                               Row(
                                                 children: [
                                                   Padding(
                                                     padding: EdgeInsets.only(
-                                                      left: languageController.selectedLanguageIndex.value == AppSize.size2 ? AppSize.appSize8 : AppSize.appSize0,
-                                                      right: languageController.selectedLanguageIndex.value == AppSize.size2 ? AppSize.appSize0 : AppSize.appSize8,
+                                                      left: languageController
+                                                                  .selectedLanguageIndex
+                                                                  .value ==
+                                                              AppSize.size2
+                                                          ? AppSize.appSize8
+                                                          : AppSize.appSize0,
+                                                      right: languageController
+                                                                  .selectedLanguageIndex
+                                                                  .value ==
+                                                              AppSize.size2
+                                                          ? AppSize.appSize0
+                                                          : AppSize.appSize8,
                                                     ),
                                                     child: const Text(
                                                       AppString.bessieCooper,
                                                       style: TextStyle(
-                                                        fontSize: AppSize.appSize12,
-                                                        fontWeight: FontWeight.w600,
-                                                        fontFamily: AppFont.appFontSemiBold,
-                                                        color: AppColor.secondaryColor,
+                                                        fontSize:
+                                                            AppSize.appSize12,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        fontFamily: AppFont
+                                                            .appFontSemiBold,
+                                                        color: AppColor
+                                                            .secondaryColor,
                                                       ),
                                                     ),
                                                   ),
                                                   const Text(
                                                     AppString.day1,
                                                     style: TextStyle(
-                                                      fontSize: AppSize.appSize12,
-                                                      fontWeight: FontWeight.w400,
-                                                      fontFamily: AppFont.appFontRegular,
-                                                      color: AppColor.text1Color,
+                                                      fontSize:
+                                                          AppSize.appSize12,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      fontFamily: AppFont
+                                                          .appFontRegular,
+                                                      color:
+                                                          AppColor.text1Color,
                                                     ),
                                                   ),
                                                 ],
@@ -250,8 +315,18 @@ commentsBottomSheet(BuildContext context) {
                                                 children: [
                                                   Padding(
                                                     padding: EdgeInsets.only(
-                                                      left: languageController.selectedLanguageIndex.value == AppSize.size2 ? AppSize.appSize4 : AppSize.appSize0,
-                                                      right: languageController.selectedLanguageIndex.value == AppSize.size2 ? AppSize.appSize0 : AppSize.appSize4,
+                                                      left: languageController
+                                                                  .selectedLanguageIndex
+                                                                  .value ==
+                                                              AppSize.size2
+                                                          ? AppSize.appSize4
+                                                          : AppSize.appSize0,
+                                                      right: languageController
+                                                                  .selectedLanguageIndex
+                                                                  .value ==
+                                                              AppSize.size2
+                                                          ? AppSize.appSize0
+                                                          : AppSize.appSize4,
                                                     ),
                                                     child: Image.asset(
                                                       AppIcon.emptyLike,
@@ -261,10 +336,14 @@ commentsBottomSheet(BuildContext context) {
                                                   const Text(
                                                     AppString.likes15k,
                                                     style: TextStyle(
-                                                      fontSize: AppSize.appSize12,
-                                                      fontWeight: FontWeight.w600,
-                                                      fontFamily: AppFont.appFontSemiBold,
-                                                      color: AppColor.secondaryColor,
+                                                      fontSize:
+                                                          AppSize.appSize12,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      fontFamily: AppFont
+                                                          .appFontSemiBold,
+                                                      color: AppColor
+                                                          .secondaryColor,
                                                     ),
                                                   ),
                                                 ],
@@ -272,25 +351,29 @@ commentsBottomSheet(BuildContext context) {
                                             ],
                                           ),
                                           const Padding(
-                                            padding: EdgeInsets.only(top: AppSize.appSize4),
+                                            padding: EdgeInsets.only(
+                                                top: AppSize.appSize4),
                                             child: Text(
                                               AppString.loremString2,
                                               style: TextStyle(
                                                 fontSize: AppSize.appSize14,
                                                 fontWeight: FontWeight.w400,
-                                                fontFamily: AppFont.appFontRegular,
+                                                fontFamily:
+                                                    AppFont.appFontRegular,
                                                 color: AppColor.text2Color,
                                               ),
                                             ),
                                           ),
                                           const Padding(
-                                            padding: EdgeInsets.only(top: AppSize.appSize4),
+                                            padding: EdgeInsets.only(
+                                                top: AppSize.appSize4),
                                             child: Text(
                                               AppString.reply,
                                               style: TextStyle(
                                                 fontSize: AppSize.appSize14,
                                                 fontWeight: FontWeight.w600,
-                                                fontFamily: AppFont.appFontSemiBold,
+                                                fontFamily:
+                                                    AppFont.appFontSemiBold,
                                                 color: AppColor.text2Color,
                                               ),
                                             ),
@@ -302,14 +385,25 @@ commentsBottomSheet(BuildContext context) {
                                 ),
                               ),
                               Padding(
-                                padding: const EdgeInsets.only(top: AppSize.appSize18),
+                                padding: const EdgeInsets.only(
+                                    top: AppSize.appSize18),
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Padding(
                                       padding: EdgeInsets.only(
-                                        left: languageController.selectedLanguageIndex.value == AppSize.size2 ? AppSize.appSize8 : AppSize.appSize0,
-                                        right: languageController.selectedLanguageIndex.value == AppSize.size2 ? AppSize.appSize0 : AppSize.appSize8,
+                                        left: languageController
+                                                    .selectedLanguageIndex
+                                                    .value ==
+                                                AppSize.size2
+                                            ? AppSize.appSize8
+                                            : AppSize.appSize0,
+                                        right: languageController
+                                                    .selectedLanguageIndex
+                                                    .value ==
+                                                AppSize.size2
+                                            ? AppSize.appSize0
+                                            : AppSize.appSize8,
                                       ),
                                       child: Image.asset(
                                         AppImage.comment3,
@@ -318,35 +412,55 @@ commentsBottomSheet(BuildContext context) {
                                     ),
                                     Expanded(
                                       child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
                                             children: [
                                               Row(
                                                 children: [
                                                   Padding(
                                                     padding: EdgeInsets.only(
-                                                      left: languageController.selectedLanguageIndex.value == AppSize.size2 ? AppSize.appSize8 : AppSize.appSize0,
-                                                      right: languageController.selectedLanguageIndex.value == AppSize.size2 ? AppSize.appSize0 : AppSize.appSize8,
+                                                      left: languageController
+                                                                  .selectedLanguageIndex
+                                                                  .value ==
+                                                              AppSize.size2
+                                                          ? AppSize.appSize8
+                                                          : AppSize.appSize0,
+                                                      right: languageController
+                                                                  .selectedLanguageIndex
+                                                                  .value ==
+                                                              AppSize.size2
+                                                          ? AppSize.appSize0
+                                                          : AppSize.appSize8,
                                                     ),
                                                     child: const Text(
                                                       AppString.kathrynMurphy,
                                                       style: TextStyle(
-                                                        fontSize: AppSize.appSize12,
-                                                        fontWeight: FontWeight.w600,
-                                                        fontFamily: AppFont.appFontSemiBold,
-                                                        color: AppColor.secondaryColor,
+                                                        fontSize:
+                                                            AppSize.appSize12,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        fontFamily: AppFont
+                                                            .appFontSemiBold,
+                                                        color: AppColor
+                                                            .secondaryColor,
                                                       ),
                                                     ),
                                                   ),
                                                   const Text(
                                                     AppString.day2,
                                                     style: TextStyle(
-                                                      fontSize: AppSize.appSize12,
-                                                      fontWeight: FontWeight.w400,
-                                                      fontFamily: AppFont.appFontRegular,
-                                                      color: AppColor.text1Color,
+                                                      fontSize:
+                                                          AppSize.appSize12,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      fontFamily: AppFont
+                                                          .appFontRegular,
+                                                      color:
+                                                          AppColor.text1Color,
                                                     ),
                                                   ),
                                                 ],
@@ -355,8 +469,18 @@ commentsBottomSheet(BuildContext context) {
                                                 children: [
                                                   Padding(
                                                     padding: EdgeInsets.only(
-                                                      left: languageController.selectedLanguageIndex.value == AppSize.size2 ? AppSize.appSize4 : AppSize.appSize0,
-                                                      right: languageController.selectedLanguageIndex.value == AppSize.size2 ? AppSize.appSize0 : AppSize.appSize4,
+                                                      left: languageController
+                                                                  .selectedLanguageIndex
+                                                                  .value ==
+                                                              AppSize.size2
+                                                          ? AppSize.appSize4
+                                                          : AppSize.appSize0,
+                                                      right: languageController
+                                                                  .selectedLanguageIndex
+                                                                  .value ==
+                                                              AppSize.size2
+                                                          ? AppSize.appSize0
+                                                          : AppSize.appSize4,
                                                     ),
                                                     child: Image.asset(
                                                       AppIcon.emptyLike,
@@ -366,10 +490,14 @@ commentsBottomSheet(BuildContext context) {
                                                   const Text(
                                                     AppString.likes5k,
                                                     style: TextStyle(
-                                                      fontSize: AppSize.appSize12,
-                                                      fontWeight: FontWeight.w600,
-                                                      fontFamily: AppFont.appFontSemiBold,
-                                                      color: AppColor.secondaryColor,
+                                                      fontSize:
+                                                          AppSize.appSize12,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      fontFamily: AppFont
+                                                          .appFontSemiBold,
+                                                      color: AppColor
+                                                          .secondaryColor,
                                                     ),
                                                   ),
                                                 ],
@@ -377,25 +505,29 @@ commentsBottomSheet(BuildContext context) {
                                             ],
                                           ),
                                           const Padding(
-                                            padding: EdgeInsets.only(top: AppSize.appSize4),
+                                            padding: EdgeInsets.only(
+                                                top: AppSize.appSize4),
                                             child: Text(
                                               AppString.loremString3,
                                               style: TextStyle(
                                                 fontSize: AppSize.appSize14,
                                                 fontWeight: FontWeight.w400,
-                                                fontFamily: AppFont.appFontRegular,
+                                                fontFamily:
+                                                    AppFont.appFontRegular,
                                                 color: AppColor.text2Color,
                                               ),
                                             ),
                                           ),
                                           const Padding(
-                                            padding: EdgeInsets.only(top: AppSize.appSize4),
+                                            padding: EdgeInsets.only(
+                                                top: AppSize.appSize4),
                                             child: Text(
                                               AppString.reply,
                                               style: TextStyle(
                                                 fontSize: AppSize.appSize14,
                                                 fontWeight: FontWeight.w600,
-                                                fontFamily: AppFont.appFontSemiBold,
+                                                fontFamily:
+                                                    AppFont.appFontSemiBold,
                                                 color: AppColor.text2Color,
                                               ),
                                             ),
@@ -411,11 +543,26 @@ commentsBottomSheet(BuildContext context) {
                         )
                       ],
                     ),
-                    _customChatMessage(AppImage.comment4, AppString.codyFisher, AppString.minutes2, AppString.loremString2, AppString.likes55k),
-                    _customChatMessage(AppImage.comment5, AppString.courtneyHenry, AppString.min33, AppString.loremString3, AppString.likes15k),
+                    _customChatMessage(
+                        AppImage.comment4,
+                        AppString.codyFisher,
+                        AppString.minutes2,
+                        AppString.loremString2,
+                        AppString.likes55k),
+                    _customChatMessage(
+                        AppImage.comment5,
+                        AppString.courtneyHenry,
+                        AppString.min33,
+                        AppString.loremString3,
+                        AppString.likes15k),
                     Padding(
                       padding: const EdgeInsets.only(bottom: AppSize.appSize12),
-                      child: _customChatMessage(AppImage.comment6, AppString.theresaWebb, AppString.day2, AppString.loremString2, AppString.likes15k),
+                      child: _customChatMessage(
+                          AppImage.comment6,
+                          AppString.theresaWebb,
+                          AppString.day2,
+                          AppString.loremString2,
+                          AppString.likes15k),
                     ),
                   ],
                 ),
@@ -424,7 +571,8 @@ commentsBottomSheet(BuildContext context) {
             Container(
               height: AppSize.appSize58,
               padding: const EdgeInsets.only(
-                left: AppSize.appSize20, right: AppSize.appSize20,
+                left: AppSize.appSize20,
+                right: AppSize.appSize20,
               ),
               margin: EdgeInsets.only(
                 bottom: MediaQuery.of(context).viewInsets.bottom,
@@ -468,6 +616,7 @@ commentsBottomSheet(BuildContext context) {
                 ),
                 trailing: GestureDetector(
                   onTap: () {
+                    HomeServices().addCommentToPost();
                     commentsController.commentsFieldController.clear();
                   },
                   child: Image.asset(
@@ -491,7 +640,8 @@ commentsBottomSheet(BuildContext context) {
   });
 }
 
-_customChatMessage(String image, String username, String time, String description, String likes) {
+_customChatMessage(String image, String username, String time,
+    String description, String likes) {
   return Padding(
     padding: const EdgeInsets.only(top: AppSize.appSize16),
     child: Row(
@@ -499,8 +649,14 @@ _customChatMessage(String image, String username, String time, String descriptio
       children: [
         Padding(
           padding: EdgeInsets.only(
-            left: languageController.selectedLanguageIndex.value == AppSize.size2 ? AppSize.appSize8 : AppSize.appSize0,
-            right: languageController.selectedLanguageIndex.value == AppSize.size2 ? AppSize.appSize0 : AppSize.appSize8,
+            left:
+                languageController.selectedLanguageIndex.value == AppSize.size2
+                    ? AppSize.appSize8
+                    : AppSize.appSize0,
+            right:
+                languageController.selectedLanguageIndex.value == AppSize.size2
+                    ? AppSize.appSize0
+                    : AppSize.appSize8,
           ),
           child: Image.asset(
             image,
@@ -518,8 +674,16 @@ _customChatMessage(String image, String username, String time, String descriptio
                     children: [
                       Padding(
                         padding: EdgeInsets.only(
-                          left: languageController.selectedLanguageIndex.value == AppSize.size2 ? AppSize.appSize8 : AppSize.appSize0,
-                          right: languageController.selectedLanguageIndex.value == AppSize.size2 ? AppSize.appSize0 : AppSize.appSize8,
+                          left:
+                              languageController.selectedLanguageIndex.value ==
+                                      AppSize.size2
+                                  ? AppSize.appSize8
+                                  : AppSize.appSize0,
+                          right:
+                              languageController.selectedLanguageIndex.value ==
+                                      AppSize.size2
+                                  ? AppSize.appSize0
+                                  : AppSize.appSize8,
                         ),
                         child: Text(
                           username,
@@ -546,8 +710,16 @@ _customChatMessage(String image, String username, String time, String descriptio
                     children: [
                       Padding(
                         padding: EdgeInsets.only(
-                          left: languageController.selectedLanguageIndex.value == AppSize.size2 ? AppSize.appSize4 : AppSize.appSize0,
-                          right: languageController.selectedLanguageIndex.value == AppSize.size2 ? AppSize.appSize0 : AppSize.appSize4,
+                          left:
+                              languageController.selectedLanguageIndex.value ==
+                                      AppSize.size2
+                                  ? AppSize.appSize4
+                                  : AppSize.appSize0,
+                          right:
+                              languageController.selectedLanguageIndex.value ==
+                                      AppSize.size2
+                                  ? AppSize.appSize0
+                                  : AppSize.appSize4,
                         ),
                         child: Image.asset(
                           AppIcon.emptyLike,

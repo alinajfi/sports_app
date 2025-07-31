@@ -1,4 +1,6 @@
 // home_view.dart
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_color.dart';
@@ -66,6 +68,8 @@ class HomeView extends StatelessWidget {
                 .timeLinePosts
                 .value
                 .map((post) => PostItem(
+                      onReactionAdd: (val) {},
+                      onReactionRemove: (vale) {},
                       socialPost: post,
                       onLike: () => homeController.toggleLike(),
                       isLiked: homeController.isLiked,

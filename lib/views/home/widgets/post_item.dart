@@ -1,6 +1,8 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 // components/post_item.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import 'package:prime_social_media_flutter_ui_kit/config/app_color.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_font.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_icon.dart';
@@ -20,12 +22,16 @@ class PostItem extends StatelessWidget {
   final PostModel socialPost;
   final VoidCallback onLike;
   final RxBool isLiked;
+  final dynamic Function(String)? onReactionAdd;
+  final dynamic Function(String)? onReactionRemove;
 
   const PostItem({
     Key? key,
     required this.socialPost,
     required this.onLike,
     required this.isLiked,
+    this.onReactionAdd,
+    this.onReactionRemove,
   }) : super(key: key);
 
   @override
@@ -45,7 +51,8 @@ class PostItem extends StatelessWidget {
           _buildPostImage(),
           PostActions(
             onComment: () => commentsBottomSheet(context),
-            onRepost: () => repostBottomSheet(context),
+            onReactionRemove: onReactionRemove,
+            onReactionAdd: onReactionAdd,
             onLike: onLike,
             onLikesText: () => likesBottomSheet(context),
             // onShare: () => homeController.shareAssetImage(socialPost.i),
@@ -59,62 +66,71 @@ class PostItem extends StatelessWidget {
   }
 
   Widget _buildPostHeader(LanguageController languageController) {
+    final isRTL =
+        languageController.selectedLanguageIndex.value == AppSize.size2;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        GestureDetector(
-          onTap: () => Get.toNamed(AppRoutes.userProfile),
-          child: Row(
-            children: [
-              Padding(
-                padding: EdgeInsets.only(
-                  right: languageController.selectedLanguageIndex.value ==
-                          AppSize.size2
-                      ? AppSize.appSize0
-                      : AppSize.appSize10,
-                  left: languageController.selectedLanguageIndex.value ==
-                          AppSize.size2
-                      ? AppSize.appSize10
-                      : AppSize.appSize0,
+        Expanded(
+          child: GestureDetector(
+            onTap: () => Get.toNamed(AppRoutes.userProfile),
+            child: Row(
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(
+                    right: isRTL ? 0 : 10,
+                    left: isRTL ? 10 : 0,
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: Image.network(
+                      socialPost.photo,
+                      width: 36,
+                      height: 36,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                 ),
-                child:
-                    Image.network(socialPost.photo, width: AppSize.appSize36),
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    socialPost.name,
-                    style: const TextStyle(
-                      fontSize: AppSize.appSize14,
-                      fontWeight: FontWeight.w600,
-                      fontFamily: AppFont.appFontSemiBold,
-                      color: AppColor.secondaryColor,
-                    ),
+                const SizedBox(width: 8),
+                Flexible(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        socialPost.name,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontSize: AppSize.appSize14,
+                          fontWeight: FontWeight.w600,
+                          fontFamily: AppFont.appFontSemiBold,
+                          color: AppColor.secondaryColor,
+                        ),
+                      ),
+                      Text(
+                        socialPost.location,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                          fontSize: AppSize.appSize12,
+                          fontWeight: FontWeight.w400,
+                          fontFamily: AppFont.appFontRegular,
+                          color: AppColor.text2Color,
+                        ),
+                      ),
+                    ],
                   ),
-                  Text(
-                    socialPost.location,
-                    style: const TextStyle(
-                      fontSize: AppSize.appSize12,
-                      fontWeight: FontWeight.w400,
-                      fontFamily: AppFont.appFontRegular,
-                      color: AppColor.text2Color,
-                    ),
-                  ),
-                ],
-              ),
-            ],
+                ),
+              ],
+            ),
           ),
         ),
         Row(
           children: [
             Padding(
               padding: EdgeInsets.only(
-                right: AppSize.appSize8,
-                left: languageController.selectedLanguageIndex.value ==
-                        AppSize.size2
-                    ? AppSize.appSize8
-                    : AppSize.appSize0,
+                right: 8,
+                left: isRTL ? 8 : 0,
               ),
               child: Text(
                 socialPost.createdAt,
@@ -126,7 +142,10 @@ class PostItem extends StatelessWidget {
                 ),
               ),
             ),
-            Image.asset(AppIcon.more, width: AppSize.appSize20),
+            Image.asset(
+              AppIcon.more,
+              width: 20,
+            ),
           ],
         ),
       ],
@@ -139,7 +158,9 @@ class PostItem extends StatelessWidget {
       child: Stack(
         alignment: Alignment.bottomLeft,
         children: [
-          Image.network(socialPost.photo, fit: BoxFit.cover),
+          Container(
+              width: 500,
+              child: Image.network(socialPost.photo, fit: BoxFit.fitWidth)),
           // if (socialPost.showTagUserIcon)
           //   Padding(
           //     padding: const EdgeInsets.only(

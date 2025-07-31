@@ -1,8 +1,10 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:http/http.dart' as http;
 
 import 'package:prime_social_media_flutter_ui_kit/model/post_model.dart';
+import 'package:prime_social_media_flutter_ui_kit/model/social_media_post_model.dart';
 import 'package:prime_social_media_flutter_ui_kit/utils/common_api_functions.dart';
 
 class HomeServices extends CommonApiFunctions {
@@ -18,5 +20,21 @@ class HomeServices extends CommonApiFunctions {
     } else {
       throw Exception('Failed to load timeline posts');
     }
+  }
+
+  addCommentToPost() async {
+    final url = getUrlFromEndPoints(endPoint: "/post_comment");
+
+    final response =
+        await http.post(headers: getHeadersWithTokenJson(), url, body: {});
+
+    log(response.body.toString());
+  }
+
+  getCommentOnPosts(String postId) async {
+    final url = getUrlFromEndPoints(endPoint: "/get_comment/$postId");
+    final response = await http.get(headers: getHeadersWithTokenJson(), url);
+
+    log(response.body.toString());
   }
 }
