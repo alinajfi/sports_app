@@ -1,4 +1,5 @@
 // ignore_for_file: deprecated_member_use
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/services.dart';
@@ -7,6 +8,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_image.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_size.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_string.dart';
+import 'package:prime_social_media_flutter_ui_kit/model/comment_model.dart';
 import 'package:prime_social_media_flutter_ui_kit/model/post_model.dart';
 import 'package:prime_social_media_flutter_ui_kit/services/home_services.dart';
 import 'package:share_plus/share_plus.dart';
@@ -25,7 +27,12 @@ class HomeController extends GetxController {
   RxBool isLiked6 = false.obs;
 
   getTimeLinePosts() async {
-    timeLinePosts.value = await HomeServices().fetchTimelinePosts();
+    try {
+      timeLinePosts.value = await HomeServices().fetchTimelinePosts();
+    } catch (e) {
+      timeLinePosts.value = [];
+      log("error getting timeline posts$e");
+    }
   }
 
   @override

@@ -64,3 +64,6 @@ app.*.map.json
 !gradle-wrapper.jar
 !**/android/**/gradle-wrapper.jar
 EOF
+
+
+lib/services/notification_service.dart

@@ -7,6 +7,8 @@ import 'package:prime_social_media_flutter_ui_kit/config/app_color.dart';
 import 'package:prime_social_media_flutter_ui_kit/controller/home/home_controller.dart';
 import 'package:prime_social_media_flutter_ui_kit/controller/profile/settings_options/language_controller.dart';
 import 'package:prime_social_media_flutter_ui_kit/model/social_media_post_model.dart';
+import 'package:prime_social_media_flutter_ui_kit/services/home_services.dart';
+import 'package:prime_social_media_flutter_ui_kit/services/user_service.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/home/widgets/home_app_bar.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/home/widgets/my_drawer.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/home/widgets/post_item.dart';
@@ -39,9 +41,12 @@ class HomeView extends StatelessWidget {
   Widget _buildFloatingActionButton() {
     return FloatingActionButton(
       onPressed: () {
+        //   HomeServices().getCommentOnPosts();
+        //   HomeServices().addReactionToPost();
+
         // UserService().getUserPosts();
         // PostService().getPostOnTimeLine();
-        // _scaffoldKey.currentState?.openDrawer();
+        _scaffoldKey.currentState?.openDrawer();
       },
     );
   }
@@ -68,6 +73,7 @@ class HomeView extends StatelessWidget {
                 .timeLinePosts
                 .value
                 .map((post) => PostItem(
+                      controller: Get.find<HomeController>(),
                       onReactionAdd: (val) {},
                       onReactionRemove: (vale) {},
                       socialPost: post,

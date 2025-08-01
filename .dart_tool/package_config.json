@@ -746,6 +746,12 @@
       "languageVersion": "3.2"
     },
     {
+      "name": "timeago",
+      "rootUri": "file:///Users/mac/.pub-cache/hosted/pub.dev/timeago-3.7.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "timezone",
       "rootUri": "file:///Users/mac/.pub-cache/hosted/pub.dev/timezone-0.10.1",
       "packageUri": "lib/",
@@ -878,7 +884,7 @@
       "languageVersion": "3.1"
     }
   ],
-  "generated": "2025-07-27T13:19:58.117701Z",
+  "generated": "2025-08-01T05:30:04.203006Z",
   "generator": "pub",
   "generatorVersion": "3.5.1",
   "flutterRoot": "file:///Users/mac/development/flutter",

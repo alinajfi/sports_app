@@ -26,8 +26,8 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  await NotificationService().initialize();
-  await NotificationService().initializeLocalNotifications();
+  // await NotificationService().initialize();
+  // await NotificationService().initializeLocalNotifications();
 
   Get.put(
     DbService.init(GetStorage()),

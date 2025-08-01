@@ -26,10 +26,10 @@ class LoginController extends GetxController {
 
   Future<void> onLoginSuccessFull(LoginResponse loginRes) async {
     isLoading.value = false;
-    NotificationService().showLocalNotification(
-        id: DateTime.now().microsecondsSinceEpoch,
-        body: "dsfasdfaf",
-        title: "sdfasjflkad");
+    // NotificationService().showLocalNotification(
+    //     id: DateTime.now().microsecondsSinceEpoch,
+    //     body: "dsfasdfaf",
+    //     title: "sdfasjflkad");
 
     DbController.instance.writeData<String>(
       DbConstants.apiToken,

@@ -42,15 +42,9 @@ class _PostActionsState extends State<PostActions> {
   bool _isReactionPickerVisible = false;
 
   // Available reactions
-  final List<String> _availableReactions = [
-    '👍',
-    '❤️',
-    '😍',
-    '😂',
-    '😮',
-    '😢',
-    '😡'
-  ];
+  // final List<String> _availableReactions = [
+  //   '❤️',
+  // ];
 
   @override
   void dispose() {
@@ -66,6 +60,7 @@ class _PostActionsState extends State<PostActions> {
         vertical: 14.0,
       ),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           // Comment section - Flexible to prevent overflow
           if (widget.onComment != null)
@@ -105,10 +100,10 @@ class _PostActionsState extends State<PostActions> {
             ),
 
           // Reaction section - Fixed width to prevent layout issues
-          SizedBox(
-            width: 100,
-            child: _buildReactionButton(),
-          ),
+          // SizedBox(
+          //   width: 100,
+          //   child: _buildReactionButton(),
+          // ),
         ],
       ),
     );
@@ -174,83 +169,83 @@ class _PostActionsState extends State<PostActions> {
     );
   }
 
-  Widget _buildReactionButton() {
-    final reactions = widget.reactions ?? {};
-    final totalReactions =
-        reactions.values.fold(0, (sum, count) => sum + count);
-    final topReactions = _getTopReactions(reactions, 3);
+  // Widget _buildReactionButton() {
+  //   final reactions = widget.reactions ?? {};
+  //   final totalReactions =
+  //       reactions.values.fold(0, (sum, count) => sum + count);
+  //   final topReactions = _getTopReactions(reactions, 3);
 
-    return GestureDetector(
-      key: _reactionButtonKey,
-      onTap: _showReactionPicker,
-      onLongPress: _showReactionPicker,
-      child: Container(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 8.0,
-          vertical: 4.0,
-        ),
-        decoration: BoxDecoration(
-          color: widget.userReaction != null
-              ? AppColor.primaryColor.withOpacity(0.1)
-              : AppColor.backgroundColor,
-          borderRadius: BorderRadius.circular(20.0),
-          border: Border.all(
-            color: widget.userReaction != null
-                ? AppColor.primaryColor.withOpacity(0.3)
-                : AppColor.lineColor,
-            width: 1.0,
-          ),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (topReactions.isNotEmpty) ...[
-              // Show top reactions with proper constraints
-              Container(
-                width: 40.0,
-                height: 20.0,
-                child: Stack(
-                  clipBehavior: Clip.none,
-                  children: topReactions.asMap().entries.map((entry) {
-                    int index = entry.key;
-                    String emoji = entry.value;
-                    return Positioned(
-                      left: index * 12.0,
-                      child: _buildReactionEmoji(emoji),
-                    );
-                  }).toList(),
-                ),
-              ),
-              const SizedBox(width: 4.0),
-            ] else ...[
-              // Show default reaction icon when no reactions
-              const Icon(
-                Icons.add_reaction_outlined,
-                size: 18.0,
-                color: AppColor.secondaryColor,
-              ),
-              const SizedBox(width: 4.0),
-            ],
-            Flexible(
-              child: Text(
-                totalReactions > 0 ? _formatCount(totalReactions) : 'React',
-                style: TextStyle(
-                  fontSize: 12.0,
-                  fontWeight: FontWeight.w600,
-                  fontFamily: AppFont.appFontSemiBold,
-                  color: widget.userReaction != null
-                      ? AppColor.primaryColor
-                      : AppColor.secondaryColor,
-                ),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+  //   return GestureDetector(
+  //     key: _reactionButtonKey,
+  //     onTap: _showReactionPicker,
+  //     onLongPress: _showReactionPicker,
+  //     child: Container(
+  //       padding: const EdgeInsets.symmetric(
+  //         horizontal: 8.0,
+  //         vertical: 4.0,
+  //       ),
+  //       decoration: BoxDecoration(
+  //         color: widget.userReaction != null
+  //             ? AppColor.primaryColor.withOpacity(0.1)
+  //             : AppColor.backgroundColor,
+  //         borderRadius: BorderRadius.circular(20.0),
+  //         border: Border.all(
+  //           color: widget.userReaction != null
+  //               ? AppColor.primaryColor.withOpacity(0.3)
+  //               : AppColor.lineColor,
+  //           width: 1.0,
+  //         ),
+  //       ),
+  //       child: Row(
+  //         mainAxisSize: MainAxisSize.min,
+  //         children: [
+  //           if (topReactions.isNotEmpty) ...[
+  //             // Show top reactions with proper constraints
+  //             Container(
+  //               width: 40.0,
+  //               height: 20.0,
+  //               child: Stack(
+  //                 clipBehavior: Clip.none,
+  //                 children: topReactions.asMap().entries.map((entry) {
+  //                   int index = entry.key;
+  //                   String emoji = entry.value;
+  //                   return Positioned(
+  //                     left: index * 12.0,
+  //                     child: _buildReactionEmoji(emoji),
+  //                   );
+  //                 }).toList(),
+  //               ),
+  //             ),
+  //             const SizedBox(width: 4.0),
+  //           ] else ...[
+  //             // Show default reaction icon when no reactions
+  //             const Icon(
+  //               Icons.add_reaction_outlined,
+  //               size: 18.0,
+  //               color: AppColor.secondaryColor,
+  //             ),
+  //             const SizedBox(width: 4.0),
+  //           ],
+  //           // Flexible(
+  //           //   child: Text(
+  //           //     totalReactions > 0 ? _formatCount(totalReactions) : 'React',
+  //           //     style: TextStyle(
+  //           //       fontSize: 12.0,
+  //           //       fontWeight: FontWeight.w600,
+  //           //       fontFamily: AppFont.appFontSemiBold,
+  //           //       color: widget.userReaction != null
+  //           //           ? AppColor.primaryColor
+  //           //           : AppColor.secondaryColor,
+  //           //     ),
+  //           //     maxLines: 1,
+  //           //     overflow: TextOverflow.ellipsis,
+  //           //   ),
+  //           // ),
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Widget _buildReactionEmoji(String emoji) {
     return Container(
@@ -288,14 +283,14 @@ class _PostActionsState extends State<PostActions> {
     return sortedReactions.take(limit).map((e) => e.key).toList();
   }
 
-  String _formatCount(int count) {
-    if (count >= 1000000) {
-      return '${(count / 1000000).toStringAsFixed(1)}M';
-    } else if (count >= 1000) {
-      return '${(count / 1000).toStringAsFixed(1)}k';
-    }
-    return count.toString();
-  }
+  // String _formatCount(int count) {
+  //   if (count >= 1000000) {
+  //     return '${(count / 1000000).toStringAsFixed(1)}M';
+  //   } else if (count >= 1000) {
+  //     return '${(count / 1000).toStringAsFixed(1)}k';
+  //   }
+  //   return count.toString();
+  // }
 
   void _showReactionPicker() {
     if (_isReactionPickerVisible) {
@@ -356,31 +351,31 @@ class _PostActionsState extends State<PostActions> {
                     ),
                   ],
                 ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: _availableReactions.map((emoji) {
-                    final isSelected = widget.userReaction == emoji;
-                    return GestureDetector(
-                      onTap: () => _onReactionTap(emoji),
-                      child: Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 2),
-                        padding: const EdgeInsets.all(8.0),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: isSelected
-                              ? AppColor.primaryColor.withOpacity(0.2)
-                              : Colors.transparent,
-                        ),
-                        child: Text(
-                          emoji,
-                          style: const TextStyle(
-                            fontSize: 20.0,
-                          ),
-                        ),
-                      ),
-                    );
-                  }).toList(),
-                ),
+                // child: Row(
+                //   mainAxisSize: MainAxisSize.min,
+                //   children: _availableReactions.map((emoji) {
+                //     final isSelected = widget.userReaction == emoji;
+                //     return GestureDetector(
+                //       onTap: () => _onReactionTap(emoji),
+                //       child: Container(
+                //         margin: const EdgeInsets.symmetric(horizontal: 2),
+                //         padding: const EdgeInsets.all(8.0),
+                //         decoration: BoxDecoration(
+                //           shape: BoxShape.circle,
+                //           color: isSelected
+                //               ? AppColor.primaryColor.withOpacity(0.2)
+                //               : Colors.transparent,
+                //         ),
+                //         child: Text(
+                //           emoji,
+                //           style: const TextStyle(
+                //             fontSize: 20.0,
+                //           ),
+                //         ),
+                //       ),
+                //     );
+                //   }).toList(),
+                // ),
               ),
             ),
           ),

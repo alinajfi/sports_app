@@ -24,6 +24,7 @@ class PostItem extends StatelessWidget {
   final RxBool isLiked;
   final dynamic Function(String)? onReactionAdd;
   final dynamic Function(String)? onReactionRemove;
+  final HomeController controller;
 
   const PostItem({
     Key? key,
@@ -32,6 +33,7 @@ class PostItem extends StatelessWidget {
     required this.isLiked,
     this.onReactionAdd,
     this.onReactionRemove,
+    required this.controller,
   }) : super(key: key);
 
   @override
@@ -50,7 +52,9 @@ class PostItem extends StatelessWidget {
           _buildPostHeader(languageController),
           _buildPostImage(),
           PostActions(
-            onComment: () => commentsBottomSheet(context),
+            onComment: () async {
+              commentsBottomSheet(context, socialPost.postId.toString());
+            },
             onReactionRemove: onReactionRemove,
             onReactionAdd: onReactionAdd,
             onLike: onLike,
@@ -86,7 +90,7 @@ class PostItem extends StatelessWidget {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(20),
                     child: Image.network(
-                      socialPost.photo,
+                      socialPost.photo!,
                       width: 36,
                       height: 36,
                       fit: BoxFit.cover,
@@ -99,7 +103,7 @@ class PostItem extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        socialPost.name,
+                        socialPost.name ?? "",
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
                           fontSize: AppSize.appSize14,
@@ -109,7 +113,7 @@ class PostItem extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        socialPost.location,
+                        socialPost.location ?? "",
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
                           fontSize: AppSize.appSize12,
@@ -133,7 +137,7 @@ class PostItem extends StatelessWidget {
                 left: isRTL ? 8 : 0,
               ),
               child: Text(
-                socialPost.createdAt,
+                socialPost.createdAt ?? "",
                 style: const TextStyle(
                   fontSize: AppSize.appSize14,
                   fontWeight: FontWeight.w400,
@@ -160,7 +164,7 @@ class PostItem extends StatelessWidget {
         children: [
           Container(
               width: 500,
-              child: Image.network(socialPost.photo, fit: BoxFit.fitWidth)),
+              child: Image.network(socialPost.photo!, fit: BoxFit.fitWidth)),
           // if (socialPost.showTagUserIcon)
           //   Padding(
           //     padding: const EdgeInsets.only(

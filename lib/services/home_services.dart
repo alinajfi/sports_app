@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:http/http.dart' as http;
+import 'package:prime_social_media_flutter_ui_kit/model/comment_model.dart';
 
 import 'package:prime_social_media_flutter_ui_kit/model/post_model.dart';
 import 'package:prime_social_media_flutter_ui_kit/model/social_media_post_model.dart';
@@ -22,19 +23,62 @@ class HomeServices extends CommonApiFunctions {
     }
   }
 
-  addCommentToPost() async {
+  Future<void> addCommentToPost(
+      {required String comment, required String postId}) async {
     final url = getUrlFromEndPoints(endPoint: "/post_comment");
 
-    final response =
-        await http.post(headers: getHeadersWithTokenJson(), url, body: {});
+    try {
+      final response =
+          await http.post(headers: getHeaderWithToken(), url, body: {
+        "comment_id": "",
+        "comment": "comment",
+        //if you are replying on a comment then you have to pass the parent id
+        "parent_id": "0",
+        "is_type": "post",
+        //pass the post id here
+        "id_of_type": postId,
+        "description": comment,
+        "react": "",
+      });
+      log(response.body.toString());
+    } catch (e) {
+      log("add comments response$e");
+    }
+  }
 
+//okay 32 post id has comments
+  Future<List<Comment>> getCommentOnPosts({required String postId}) async {
+    final url = getUrlFromEndPoints(endPoint: "/get_comment/$postId");
+    final headers = getHeadersWithTokenJson();
+    try {
+      final response = await http.get(headers: headers, url);
+      List<Comment> comments = [];
+      final decodedList = jsonDecode(response.body) as List;
+      for (var e in decodedList) {
+        comments.add(Comment.fromJson(e));
+      }
+      return comments;
+    } catch (e) {
+      log("get comments response$e");
+      return [];
+    }
+  }
+
+  //oka
+  addReactionToPost() async {
+    final url = getUrlFromEndPoints(endPoint: "/reaction");
+    final response = await http.post(url,
+        headers: getHeadersWithToken(),
+        body: {"react": "love", "post_id": "30"});
     log(response.body.toString());
   }
 
-  getCommentOnPosts(String postId) async {
-    final url = getUrlFromEndPoints(endPoint: "/get_comment/$postId");
-    final response = await http.get(headers: getHeadersWithTokenJson(), url);
-
+  getPostReactions() async {
+    final url = getUrlFromEndPoints(endPoint: "/getPostReactions/39");
+    final response = await http.get(
+      url,
+      headers: getHeadersWithToken(),
+    );
     log(response.body.toString());
   }
 }

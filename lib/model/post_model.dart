@@ -1,46 +1,46 @@
 class PostModel {
-  final int postId;
-  final int userId;
-  final String name;
-  final String photo;
-  final String publisher;
-  final int publisherId;
-  final String postType;
-  final String fileType;
-  final String privacy;
-  final String location;
-  final List<String> postImages;
-  final String thumbnail;
+  final int? postId;
+  final int? userId;
+  final String? name;
+  final String? photo;
+  final String? publisher;
+  final int? publisherId;
+  final String? postType;
+  final String? fileType;
+  final String? privacy;
+  final String? location;
+  final List<String>? postImages;
+  final String? thumbnail;
   final dynamic userReaction;
-  final String description;
-  final int commentsCount;
-  final ReactionCounts reactionCounts;
-  final int total;
-  final String createdAt;
-  final String follow;
-  final List<dynamic> taggedUserList;
+  final String? description;
+  final int? commentsCount;
+  final ReactionCounts? reactionCounts;
+  final int? total;
+  final String? createdAt;
+  final String? follow;
+  final List<dynamic>? taggedUserList;
 
   PostModel({
-    required this.postId,
-    required this.userId,
-    required this.name,
-    required this.photo,
-    required this.publisher,
-    required this.publisherId,
-    required this.postType,
-    required this.fileType,
-    required this.privacy,
-    required this.location,
-    required this.postImages,
-    required this.thumbnail,
-    required this.userReaction,
-    required this.description,
-    required this.commentsCount,
-    required this.reactionCounts,
-    required this.total,
-    required this.createdAt,
-    required this.follow,
-    required this.taggedUserList,
+    this.postId,
+    this.userId,
+    this.name,
+    this.photo,
+    this.publisher,
+    this.publisherId,
+    this.postType,
+    this.fileType,
+    this.privacy,
+    this.location,
+    this.postImages,
+    this.thumbnail,
+    this.userReaction,
+    this.description,
+    this.commentsCount,
+    this.reactionCounts,
+    this.total,
+    this.createdAt,
+    this.follow,
+    this.taggedUserList,
   });
 
   factory PostModel.fromJson(Map<String, dynamic> json) {
@@ -55,16 +55,19 @@ class PostModel {
       fileType: json['fileType'],
       privacy: json['privacy'],
       location: json['location'],
-      postImages: List<String>.from(json['post_images']),
+      postImages:
+          (json['post_images'] as List?)?.map((e) => e.toString()).toList(),
       thumbnail: json['thumbnail'],
       userReaction: json['userReaction'],
       description: json['description'],
       commentsCount: json['commentsCount'],
-      reactionCounts: ReactionCounts.fromJson(json['reaction_counts']),
+      reactionCounts: json['reaction_counts'] != null
+          ? ReactionCounts.fromJson(json['reaction_counts'])
+          : null,
       total: json['total'],
       createdAt: json['created_at'],
       follow: json['follow'],
-      taggedUserList: List<dynamic>.from(json['taggedUserList']),
+      taggedUserList: json['taggedUserList'] as List?,
     );
   }
 
@@ -85,7 +88,7 @@ class PostModel {
       'userReaction': userReaction,
       'description': description,
       'commentsCount': commentsCount,
-      'reaction_counts': reactionCounts.toJson(),
+      'reaction_counts': reactionCounts?.toJson(),
       'total': total,
       'created_at': createdAt,
       'follow': follow,
@@ -95,18 +98,18 @@ class PostModel {
 }
 
 class ReactionCounts {
-  final int like;
-  final int love;
-  final int sad;
-  final int haha;
-  final int angry;
+  final int? like;
+  final int? love;
+  final int? sad;
+  final int? haha;
+  final int? angry;
 
   ReactionCounts({
-    required this.like,
-    required this.love,
-    required this.sad,
-    required this.haha,
-    required this.angry,
+    this.like,
+    this.love,
+    this.sad,
+    this.haha,
+    this.angry,
   });
 
   factory ReactionCounts.fromJson(Map<String, dynamic> json) {
