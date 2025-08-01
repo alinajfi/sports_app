@@ -9,6 +9,7 @@ import 'package:prime_social_media_flutter_ui_kit/config/app_string.dart';
 import 'package:prime_social_media_flutter_ui_kit/constants/db_constants.dart';
 import 'package:prime_social_media_flutter_ui_kit/controller/db_controller.dart';
 import 'package:http/http.dart' as http;
+import 'package:prime_social_media_flutter_ui_kit/model/user_model.dart';
 import '../../config/app_color.dart';
 
 class EditProfileController extends GetxController {
@@ -17,6 +18,7 @@ class EditProfileController extends GetxController {
       TextEditingController(text: AppString.eleanorPena);
   TextEditingController usernameController =
       TextEditingController(text: AppString.eleanorPenaID);
+
   TextEditingController bioController =
       TextEditingController(text: AppString.loremString6);
   TextEditingController genderController =
@@ -35,7 +37,7 @@ class EditProfileController extends GetxController {
   Rx<DateTime?> selectedDate = DateTime.now().obs;
   RxInt selectedGenderIndex = 0.obs;
   RxString profileImagePath = ''.obs;
-
+  Rx<UserModel?> user = Rx<UserModel?>(null);
   Rx<File?> profileImage = Rx<File?>(null);
   RxBool isLoading = false.obs;
 
@@ -242,25 +244,64 @@ class EditProfileController extends GetxController {
   }
 
   // Method to load user data from API or local storage
+  // Future<void> loadUserData() async {
+  //   try {
+  //     isLoading.value = true;
+
+  //     final token =
+  //         await DbController.instance.readData<String>(DbConstants.apiToken);
+
+  //     // You can add API call to fetch current user data
+  //     // final response = await http.get(
+  //     //   Uri.parse("https://mysportsjourney.co.uk/api/user_profile"),
+  //     //   headers: {
+  //     //     "Authorization": "Bearer $token",
+  //     //     "Accept": "application/json",
+  //     //   },
+  //     // );
+
+  //     // For now, keeping the default values set in controllers
+  //   } catch (e) {
+  //     print("Error loading user data: $e");
+  //   } finally {
+  //     isLoading.value = false;
+  //   }
+  // }
+
   Future<void> loadUserData() async {
     try {
       isLoading.value = true;
-
       final token =
           await DbController.instance.readData<String>(DbConstants.apiToken);
 
-      // You can add API call to fetch current user data
-      // final response = await http.get(
-      //   Uri.parse("https://mysportsjourney.co.uk/api/user_profile"),
-      //   headers: {
-      //     "Authorization": "Bearer $token",
-      //     "Accept": "application/json",
-      //   },
-      // );
+      final response = await http.get(
+        Uri.parse("https://mysportsjourney.co.uk/api/profile"),
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
 
-      // For now, keeping the default values set in controllers
+      if (response.statusCode == 200) {
+        final jsonData = json.decode(response.body);
+        user.value = UserModel.fromJson(jsonData);
+
+        // Set the values in controllers
+        nameController.text = user.value?.name ?? '';
+        usernameController.text = user.value?.nickname ?? '';
+        emailController.text = user.value?.email ?? '';
+
+        mobileNumberController.text = user.value?.phone ?? '';
+        genderController.text = user.value?.gender ?? '';
+
+        bioController.text = user.value?.about ?? '';
+
+        print("Profile loaded: ${user.value?.username}");
+      } else {
+        throw Exception("Failed to load user profile");
+      }
     } catch (e) {
-      print("Error loading user data: $e");
+      print("Profile error: $e");
     } finally {
       isLoading.value = false;
     }
