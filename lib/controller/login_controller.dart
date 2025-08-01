@@ -13,7 +13,6 @@ import 'package:prime_social_media_flutter_ui_kit/model/login_response_model.dar
 import 'package:prime_social_media_flutter_ui_kit/model/user_model.dart';
 import 'package:prime_social_media_flutter_ui_kit/routes/app_routes.dart';
 import 'package:prime_social_media_flutter_ui_kit/services/auth_service.dart';
-import 'package:prime_social_media_flutter_ui_kit/services/notification_service.dart';
 
 class LoginController extends GetxController {
   TextEditingController loginField1Controller = TextEditingController();

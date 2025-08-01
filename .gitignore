@@ -66,4 +66,9 @@ app.*.map.json
 EOF
 
 
+# Add this line
 lib/services/notification_service.dart
+
+# Or if you want to ignore all credential-containing files:
+**/notification_service.dart
+*.credentials.dart
