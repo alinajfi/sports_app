@@ -35,6 +35,10 @@ class HomeController extends GetxController {
     }
   }
 
+  Future<void> addReactionToPost(String postId) async {
+    HomeServices().addReactionToPost(postId: postId);
+  }
+
   @override
   void onInit() {
     super.onInit();

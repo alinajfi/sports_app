@@ -65,16 +65,16 @@ class HomeServices extends CommonApiFunctions {
   }
 
   //oka
-  addReactionToPost() async {
+  addReactionToPost({required String postId}) async {
     final url = getUrlFromEndPoints(endPoint: "/reaction");
     final response = await http.post(url,
         headers: getHeadersWithToken(),
-        body: {"react": "love", "post_id": "30"});
+        body: {"react": "love", "post_id": postId});
     log(response.body.toString());
   }
 
-  getPostReactions() async {
-    final url = getUrlFromEndPoints(endPoint: "/getPostReactions/39");
+  getPostReactions({required String postId}) async {
+    final url = getUrlFromEndPoints(endPoint: "/getPostReactions/$postId");
     final response = await http.get(
       url,
       headers: getHeadersWithToken(),

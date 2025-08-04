@@ -75,9 +75,12 @@ class HomeView extends StatelessWidget {
                 .map((post) => PostItem(
                       controller: Get.find<HomeController>(),
                       onReactionAdd: (val) {},
-                      onReactionRemove: (vale) {},
                       socialPost: post,
-                      onLike: () => homeController.toggleLike(),
+                      onLike: () {
+                        log("called");
+                        Get.find<HomeController>()
+                            .addReactionToPost(post.postId.toString());
+                      },
                       isLiked: homeController.isLiked,
                     )),
 

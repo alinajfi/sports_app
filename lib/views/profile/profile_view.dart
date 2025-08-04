@@ -99,7 +99,7 @@ class ProfileView extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _buildProfileHeader(),
-                  _buildHighlights(),
+                  // _buildHighlights(),
                 ],
               ),
             ),
@@ -131,33 +131,33 @@ class ProfileView extends StatelessWidget {
                             : AppColor.text1Color,
                       ),
                     ),
-                    Tab(
-                      icon: Image.asset(
-                        AppIcon.editComment,
-                        width: AppSize.appSize22,
-                        color: profileController.selectedTabIndex.value == 1
-                            ? AppColor.secondaryColor
-                            : AppColor.text1Color,
-                      ),
-                    ),
-                    Tab(
-                      icon: Image.asset(
-                        AppIcon.reel,
-                        width: AppSize.appSize22,
-                        color: profileController.selectedTabIndex.value == 2
-                            ? AppColor.secondaryColor
-                            : AppColor.text1Color,
-                      ),
-                    ),
-                    Tab(
-                      icon: Image.asset(
-                        AppIcon.tag,
-                        width: AppSize.appSize22,
-                        color: profileController.selectedTabIndex.value == 3
-                            ? AppColor.secondaryColor
-                            : AppColor.text1Color,
-                      ),
-                    ),
+                    // Tab(
+                    //   icon: Image.asset(
+                    //     AppIcon.editComment,
+                    //     width: AppSize.appSize22,
+                    //     color: profileController.selectedTabIndex.value == 1
+                    //         ? AppColor.secondaryColor
+                    //         : AppColor.text1Color,
+                    //   ),
+                    // ),
+                    // Tab(
+                    //   icon: Image.asset(
+                    //     AppIcon.reel,
+                    //     width: AppSize.appSize22,
+                    //     color: profileController.selectedTabIndex.value == 2
+                    //         ? AppColor.secondaryColor
+                    //         : AppColor.text1Color,
+                    //   ),
+                    // ),
+                    // Tab(
+                    //   icon: Image.asset(
+                    //     AppIcon.tag,
+                    //     width: AppSize.appSize22,
+                    //     color: profileController.selectedTabIndex.value == 3
+                    //         ? AppColor.secondaryColor
+                    //         : AppColor.text1Color,
+                    //   ),
+                    // ),
                   ],
                 )),
           ),
@@ -166,9 +166,9 @@ class ProfileView extends StatelessWidget {
               controller: profileController.tabController,
               children: [
                 ProfilePostsTabView(),
-                const ProfileCommentsTabView(),
-                ProfileReelsTabView(),
-                ProfileTagsTabView(),
+                // const ProfileCommentsTabView(),
+                // ProfileReelsTabView(),
+                // ProfileTagsTabView(),
               ],
             ),
           ),
@@ -272,7 +272,7 @@ class ProfileView extends StatelessWidget {
           Obx(() {
             final user = profileController.user.value;
             return Text(
-              user?.about ?? AppString.loremString5,
+              user?.about ?? '',
               style: TextStyle(
                 fontSize: AppSize.appSize14,
                 fontWeight: FontWeight.w400,
@@ -388,35 +388,35 @@ class ProfileView extends StatelessWidget {
     );
   }
 
-  Widget _buildHighlights() {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      padding: const EdgeInsets.only(
-        top: AppSize.appSize36,
-        bottom: AppSize.appSize32,
-        left: AppSize.appSize20,
-        right: AppSize.appSize20,
-      ),
-      child: Obx(() => Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              _customHighlights(AppIcon.add3, AppString.add, () {
-                final index = profileController.highlights.length + 1;
-                profileController.highlights.add(
-                    HighlightItem(AppImage.highlight1, "Highlight $index"));
-              }),
-              _customHighlights(AppImage.highlight1, AppString.like, () {}),
-              _customHighlights(AppImage.highlight2, AppString.travel, () {}),
-              ...profileController.highlights
-                  .map((highlight) =>
-                      _customHighlights(highlight.image, highlight.label, () {
-                        profileController.highlights.remove(highlight);
-                      }))
-                  .toList(),
-            ],
-          )),
-    );
-  }
+  // Widget _buildHighlights() {
+  //   return SingleChildScrollView(
+  //     scrollDirection: Axis.horizontal,
+  //     padding: const EdgeInsets.only(
+  //       top: AppSize.appSize36,
+  //       bottom: AppSize.appSize32,
+  //       left: AppSize.appSize20,
+  //       right: AppSize.appSize20,
+  //     ),
+  //     child: Obx(() => Row(
+  //           mainAxisAlignment: MainAxisAlignment.start,
+  //           children: [
+  //             _customHighlights(AppIcon.add3, AppString.add, () {
+  //               final index = profileController.highlights.length + 1;
+  //               profileController.highlights.add(
+  //                   HighlightItem(AppImage.highlight1, "Highlight $index"));
+  //             }),
+  //             _customHighlights(AppImage.highlight1, AppString.like, () {}),
+  //             _customHighlights(AppImage.highlight2, AppString.travel, () {}),
+  //             ...profileController.highlights
+  //                 .map((highlight) =>
+  //                     _customHighlights(highlight.image, highlight.label, () {
+  //                       profileController.highlights.remove(highlight);
+  //                     }))
+  //                 .toList(),
+  //           ],
+  //         )),
+  //   );
+  // }
 
   _customPostFollowersFollowingCount(String text1, String text2) {
     return Column(

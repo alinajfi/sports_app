@@ -37,6 +37,7 @@ class TextPostItem extends StatelessWidget {
           _buildPostHeader(languageController),
           _buildPostContent(),
           PostActions(
+            comomentsCount: "0",
             onLike: onLike,
             onShare: () => homeController.shareAssetImage(AppImage.profile3),
             isLiked: isLiked,

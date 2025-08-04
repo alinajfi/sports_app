@@ -52,6 +52,7 @@ class PostItem extends StatelessWidget {
           _buildPostHeader(languageController),
           _buildPostImage(),
           PostActions(
+            comomentsCount: socialPost.commentsCount?.toString() ?? "",
             onComment: () async {
               commentsBottomSheet(context, socialPost.postId.toString());
             },

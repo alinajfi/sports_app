@@ -81,6 +81,7 @@ class EditProfileView extends StatelessWidget {
   }
 
   Widget _body(BuildContext context) {
+    final user = profileController.user.value;
     return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(
           horizontal: AppSize.appSize20, vertical: AppSize.appSize16),

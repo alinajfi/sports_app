@@ -1,6 +1,8 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 // shared/post_actions.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import 'package:prime_social_media_flutter_ui_kit/config/app_color.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_font.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_icon.dart';
@@ -18,6 +20,7 @@ class PostActions extends StatefulWidget {
   final RxBool isLiked;
   final Map<String, int>? reactions; // Map of emoji -> count
   final String? userReaction; // Current user's reaction
+  final String comomentsCount;
 
   const PostActions({
     Key? key,
@@ -30,6 +33,7 @@ class PostActions extends StatefulWidget {
     required this.isLiked,
     this.reactions,
     this.userReaction,
+    required this.comomentsCount,
   }) : super(key: key);
 
   @override
