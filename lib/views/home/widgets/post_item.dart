@@ -21,7 +21,7 @@ import 'package:prime_social_media_flutter_ui_kit/views/widget/home/repost_botto
 class PostItem extends StatelessWidget {
   final PostModel socialPost;
   final VoidCallback onLike;
-  final RxBool isLiked;
+  final bool isLiked;
   final dynamic Function(String)? onReactionAdd;
   final dynamic Function(String)? onReactionRemove;
   final HomeController controller;

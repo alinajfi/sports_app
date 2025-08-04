@@ -20,4 +20,8 @@ class ReelUploadController extends GetxController {
   void toggleComment() {
     isSwitchComment.value = !isSwitchComment.value;
   }
+
+  pickMediaFiles() {}
+
+  uploadPost() {}
 }

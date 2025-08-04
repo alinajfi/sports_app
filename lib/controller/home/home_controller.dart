@@ -8,6 +8,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_image.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_size.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_string.dart';
+import 'package:prime_social_media_flutter_ui_kit/constants/db_constants.dart';
+import 'package:prime_social_media_flutter_ui_kit/controller/db_controller.dart';
 import 'package:prime_social_media_flutter_ui_kit/model/comment_model.dart';
 import 'package:prime_social_media_flutter_ui_kit/model/post_model.dart';
 import 'package:prime_social_media_flutter_ui_kit/services/home_services.dart';
@@ -35,14 +37,28 @@ class HomeController extends GetxController {
     }
   }
 
-  Future<void> addReactionToPost(String postId) async {
-    HomeServices().addReactionToPost(postId: postId);
+  Future<bool> addReactionToPost(String postId) async {
+    final result = await HomeServices().addReactionToPost(postId: postId);
+    getReactions(postId);
+    return result;
   }
 
+  getReactions(String postId) {
+    HomeServices().getPostReactions(postId: postId);
+  }
+
+  bool isFavourite(String postId) {
+    return favIds.contains(postId);
+  }
+
+  Set<String> favIds = {};
   @override
   void onInit() {
     super.onInit();
     getTimeLinePosts();
+    final storedList =
+        DbController.instance.readData(DbConstants.itemAddedToFav);
+    favIds = storedList != null ? Set<String>.from(storedList) : {};
   }
 
   void startAnimation() async {

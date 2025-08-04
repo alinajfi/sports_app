@@ -35,8 +35,12 @@ class ReelUploadView extends StatelessWidget {
       backgroundColor: AppColor.backgroundColor,
       leading: Padding(
         padding: EdgeInsets.only(
-          left: languageController.selectedLanguageIndex.value == AppSize.size2 ? AppSize.appSize0 : AppSize.appSize20,
-          right: languageController.selectedLanguageIndex.value == AppSize.size2 ? AppSize.appSize20 : AppSize.appSize0,
+          left: languageController.selectedLanguageIndex.value == AppSize.size2
+              ? AppSize.appSize0
+              : AppSize.appSize20,
+          right: languageController.selectedLanguageIndex.value == AppSize.size2
+              ? AppSize.appSize20
+              : AppSize.appSize0,
           top: AppSize.appSize12,
         ),
         child: GestureDetector(
@@ -45,7 +49,9 @@ class ReelUploadView extends StatelessWidget {
             reelUploadController.descriptionController.clear();
           },
           child: Image.asset(
-            languageController.selectedLanguageIndex.value == AppSize.size2 ? AppIcon.backRight : AppIcon.back,
+            languageController.selectedLanguageIndex.value == AppSize.size2
+                ? AppIcon.backRight
+                : AppIcon.back,
           ),
         ),
       ),
@@ -56,7 +62,10 @@ class ReelUploadView extends StatelessWidget {
   _body() {
     return SingleChildScrollView(
       padding: const EdgeInsets.only(
-        top: AppSize.appSize24, left: AppSize.appSize20, right: AppSize.appSize20, bottom: AppSize.appSize12,
+        top: AppSize.appSize24,
+        left: AppSize.appSize20,
+        right: AppSize.appSize20,
+        bottom: AppSize.appSize12,
       ),
       child: Column(
         children: [
@@ -71,8 +80,14 @@ class ReelUploadView extends StatelessWidget {
               children: [
                 Padding(
                   padding: EdgeInsets.only(
-                    left: languageController.selectedLanguageIndex.value == AppSize.size2 ? AppSize.appSize14 : AppSize.appSize0,
-                    right: languageController.selectedLanguageIndex.value == AppSize.size2 ? AppSize.appSize0 : AppSize.appSize14,
+                    left: languageController.selectedLanguageIndex.value ==
+                            AppSize.size2
+                        ? AppSize.appSize14
+                        : AppSize.appSize0,
+                    right: languageController.selectedLanguageIndex.value ==
+                            AppSize.size2
+                        ? AppSize.appSize0
+                        : AppSize.appSize14,
                   ),
                   child: GestureDetector(
                     onTap: () {
@@ -114,7 +129,10 @@ class ReelUploadView extends StatelessWidget {
                         borderSide: BorderSide.none,
                       ),
                     ),
-                    buildCounter: (BuildContext context, {required int currentLength, required bool isFocused, int? maxLength}) {
+                    buildCounter: (BuildContext context,
+                        {required int currentLength,
+                        required bool isFocused,
+                        int? maxLength}) {
                       return Text(
                         '$currentLength/$maxLength',
                         style: const TextStyle(
@@ -209,10 +227,12 @@ class ReelUploadView extends StatelessWidget {
                         reelUploadController.toggleLike();
                       },
                       child: Obx(() => Image.asset(
-                        reelUploadController.isSwitchLike.value ? AppIcon.switchOn : AppIcon.switchOff,
-                        width: AppSize.appSize28,
-                        height: AppSize.appSize16,
-                      )),
+                            reelUploadController.isSwitchLike.value
+                                ? AppIcon.switchOn
+                                : AppIcon.switchOff,
+                            width: AppSize.appSize28,
+                            height: AppSize.appSize16,
+                          )),
                     ),
                   ],
                 ),
@@ -237,10 +257,12 @@ class ReelUploadView extends StatelessWidget {
                         reelUploadController.toggleComment();
                       },
                       child: Obx(() => Image.asset(
-                        reelUploadController.isSwitchComment.value ? AppIcon.switchOn : AppIcon.switchOff,
-                        width: AppSize.appSize28,
-                        height: AppSize.appSize16,
-                      )),
+                            reelUploadController.isSwitchComment.value
+                                ? AppIcon.switchOn
+                                : AppIcon.switchOff,
+                            width: AppSize.appSize28,
+                            height: AppSize.appSize16,
+                          )),
                     ),
                   ],
                 ),
@@ -255,7 +277,8 @@ class ReelUploadView extends StatelessWidget {
   _bottomBar(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(
-        left: AppSize.appSize20, right: AppSize.appSize20,
+        left: AppSize.appSize20,
+        right: AppSize.appSize20,
         bottom: MediaQuery.of(context).viewInsets.bottom,
       ),
       child: GestureDetector(

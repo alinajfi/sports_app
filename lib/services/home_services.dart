@@ -65,12 +65,20 @@ class HomeServices extends CommonApiFunctions {
   }
 
   //oka
-  addReactionToPost({required String postId}) async {
+  Future<bool> addReactionToPost({required String postId}) async {
     final url = getUrlFromEndPoints(endPoint: "/reaction");
-    final response = await http.post(url,
-        headers: getHeadersWithToken(),
-        body: {"react": "love", "post_id": postId});
-    log(response.body.toString());
+    try {
+      final response = await http.post(url,
+          headers: getHeadersWithToken(),
+          body: {"react": "love", "post_id": postId});
+      if (response.statusCode == 200) {
+        return true;
+      }
+      return false;
+    } catch (e) {
+      log("error in adding reaction $e");
+      return false;
+    }
   }
 
   getPostReactions({required String postId}) async {

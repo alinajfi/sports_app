@@ -164,6 +164,12 @@
       "languageVersion": "3.0"
     },
     {
+      "name": "file_picker",
+      "rootUri": "file:///Users/mac/.pub-cache/hosted/pub.dev/file_picker-10.2.1",
+      "packageUri": "lib/",
+      "languageVersion": "3.4"
+    },
+    {
       "name": "file_selector_linux",
       "rootUri": "file:///Users/mac/.pub-cache/hosted/pub.dev/file_selector_linux-0.9.3+2",
       "packageUri": "lib/",
@@ -890,7 +896,7 @@
       "languageVersion": "3.1"
     }
   ],
-  "generated": "2025-08-01T11:23:58.702921Z",
+  "generated": "2025-08-04T06:26:11.767951Z",
   "generator": "pub",
   "generatorVersion": "3.5.1",
   "flutterRoot": "file:///Users/mac/development/flutter",

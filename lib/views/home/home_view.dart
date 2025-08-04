@@ -4,6 +4,8 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_color.dart';
+import 'package:prime_social_media_flutter_ui_kit/constants/db_constants.dart';
+import 'package:prime_social_media_flutter_ui_kit/controller/db_controller.dart';
 import 'package:prime_social_media_flutter_ui_kit/controller/home/home_controller.dart';
 import 'package:prime_social_media_flutter_ui_kit/controller/profile/settings_options/language_controller.dart';
 import 'package:prime_social_media_flutter_ui_kit/model/social_media_post_model.dart';
@@ -69,20 +71,36 @@ class HomeView extends StatelessWidget {
       () {
         return Column(
           children: [
-            ...Get.find<HomeController>()
-                .timeLinePosts
-                .value
-                .map((post) => PostItem(
-                      controller: Get.find<HomeController>(),
-                      onReactionAdd: (val) {},
-                      socialPost: post,
-                      onLike: () {
-                        log("called");
-                        Get.find<HomeController>()
-                            .addReactionToPost(post.postId.toString());
-                      },
-                      isLiked: homeController.isLiked,
-                    )),
+            ...Get.find<HomeController>().timeLinePosts.value.map((post) =>
+                PostItem(
+                  controller: Get.find<HomeController>(),
+                  socialPost: post,
+                  onLike: () {
+                    final homeController = Get.find<HomeController>();
+                    final postId = post.postId.toString();
+
+                    if (homeController.favIds.contains(postId)) {
+                      log("this");
+                      homeController.favIds.remove(postId);
+                      DbController.instance.writeData(
+                        DbConstants.itemAddedToFav,
+                        homeController.favIds.toList(),
+                      );
+                    } else {
+                      log("that");
+                      homeController.addReactionToPost(postId).then((value) {
+                        if (value) {
+                          homeController.favIds.add(postId);
+                          DbController.instance.writeData(
+                            DbConstants.itemAddedToFav,
+                            homeController.favIds.toList(),
+                          );
+                        }
+                      });
+                    }
+                  },
+                  isLiked: homeController.isFavourite(post.postId.toString()),
+                )),
 
             // Text post
             // TextPostItem(
