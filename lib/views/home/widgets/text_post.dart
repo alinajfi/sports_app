@@ -13,7 +13,7 @@ import 'package:prime_social_media_flutter_ui_kit/views/home/widgets/post_action
 
 class TextPostItem extends StatelessWidget {
   final VoidCallback onLike;
-  final RxBool isLiked;
+  final bool isLiked;
 
   const TextPostItem({
     Key? key,

@@ -17,7 +17,7 @@ if (localPropertiesFile.exists()) {
 
 android {
     namespace "com.example.prime_social_media_flutter_ui_kit"
-    compileSdkVersion flutter.compileSdkVersion
+    compileSdkVersion 35
     ndkVersion flutter.ndkVersion
 
     compileOptions {
@@ -33,7 +33,7 @@ android {
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.example.prime_social_media_flutter_ui_kit"
-        minSdkVersion flutter.minSdkVersion
+        minSdkVersion 21
         targetSdkVersion flutter.targetSdkVersion
         versionCode 1
         versionName "1.0.1"

@@ -17,7 +17,7 @@ class PostActions extends StatefulWidget {
   final VoidCallback? onShare;
   final Function(String)? onReactionAdd;
   final Function(String)? onReactionRemove;
-  final RxBool isLiked;
+  final bool isLiked;
   final Map<String, int>? reactions; // Map of emoji -> count
   final String? userReaction; // Current user's reaction
   final String comomentsCount;
@@ -83,7 +83,7 @@ class _PostActionsState extends State<PostActions> {
           Expanded(
             flex: 2,
             child: Obx(() => _buildActionButton(
-                  widget.isLiked.value ? AppIcon.like : AppIcon.emptyLike,
+                  widget.isLiked ? AppIcon.like : AppIcon.emptyLike,
                   26.0,
                   AppString.likes55k,
                   widget.onLike,

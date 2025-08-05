@@ -164,6 +164,12 @@
       "languageVersion": "3.0"
     },
     {
+      "name": "file_picker",
+      "rootUri": "file:///C:/Users/7490/AppData/Local/Pub/Cache/hosted/pub.dev/file_picker-10.2.1",
+      "packageUri": "lib/",
+      "languageVersion": "3.4"
+    },
+    {
       "name": "file_selector_linux",
       "rootUri": "file:///C:/Users/7490/AppData/Local/Pub/Cache/hosted/pub.dev/file_selector_linux-0.9.3+2",
       "packageUri": "lib/",
@@ -890,7 +896,7 @@
       "languageVersion": "3.1"
     }
   ],
-  "generated": "2025-08-04T10:36:53.516196Z",
+  "generated": "2025-08-05T11:36:35.399919Z",
   "generator": "pub",
   "generatorVersion": "3.5.4",
   "flutterRoot": "file:///C:/flutter_windows_3.24.5-stable/flutter",
