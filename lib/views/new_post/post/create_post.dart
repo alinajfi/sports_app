@@ -156,15 +156,40 @@ class CreatePost extends StatelessWidget {
           // Media Picker
           GestureDetector(
             onTap: () => reelUploadController.pickMediaFiles(),
-            child: Container(
-              height: AppSize.appSize100,
-              decoration: BoxDecoration(
-                color: AppColor.cardBackgroundColor,
-                borderRadius: BorderRadius.circular(AppSize.appSize12),
-              ),
-              child: const Center(
-                child: Text('Select Media Files'),
-              ),
+            child: GetX<CreatePostController>(
+              init: CreatePostController(),
+              builder: (cont) {
+                return Container(
+                  height: AppSize.appSize100,
+                  decoration: BoxDecoration(
+                    color: AppColor.cardBackgroundColor,
+                    borderRadius: BorderRadius.circular(AppSize.appSize12),
+                  ),
+                  child: Center(
+                    child: cont.pickedFiles.isEmpty
+                        ? Text(
+                            'Select Media Files',
+                            style: TextStyle(color: Colors.white),
+                          )
+                        : Wrap(
+                            children: cont.pickedFiles
+                                .where((file) =>
+                                    file.path != null) // Filter out null paths
+                                .map((file) => Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: Image.file(
+                                        File(
+                                            file.path!), // Convert path to File
+                                        width: 100,
+                                        height: 100,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ))
+                                .toList(),
+                          ),
+                  ),
+                );
+              },
             ),
           ),
         ],
@@ -182,27 +207,36 @@ class CreatePost extends StatelessWidget {
       child: GestureDetector(
         onTap: () async {
           await reelUploadController.uploadPost(CreatePostModel(
+              multipleFiles: reelUploadController.pickedFiles
+                  .map((pf) => File(pf.path!))
+                  .toList(),
               privacy: "public",
               description: reelUploadController.descriptionController.text));
           Fluttertoast.showToast(msg: "Reel uploaded");
         },
-        child: Container(
-          height: AppSize.appSize48,
-          decoration: BoxDecoration(
-            color: AppColor.primaryColor,
-            borderRadius: BorderRadius.circular(AppSize.appSize66),
-          ),
-          child: const Center(
-            child: Text(
-              AppString.buttonTextUploadNow,
-              style: TextStyle(
-                fontSize: AppSize.appSize16,
-                fontWeight: FontWeight.w600,
-                fontFamily: AppFont.appFontSemiBold,
-                color: AppColor.secondaryColor,
+        child: GetX<CreatePostController>(
+          builder: (cont) {
+            return Container(
+              height: AppSize.appSize48,
+              decoration: BoxDecoration(
+                color: AppColor.primaryColor,
+                borderRadius: BorderRadius.circular(AppSize.appSize66),
               ),
-            ),
-          ),
+              child: Center(
+                child: cont.isLoading.value
+                    ? CircularProgressIndicator.adaptive()
+                    : Text(
+                        AppString.buttonTextUploadNow,
+                        style: TextStyle(
+                          fontSize: AppSize.appSize16,
+                          fontWeight: FontWeight.w600,
+                          fontFamily: AppFont.appFontSemiBold,
+                          color: AppColor.secondaryColor,
+                        ),
+                      ),
+              ),
+            );
+          },
         ),
       ),
     );

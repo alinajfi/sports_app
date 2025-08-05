@@ -163,9 +163,13 @@ class PostItem extends StatelessWidget {
       child: Stack(
         alignment: Alignment.bottomLeft,
         children: [
-          Container(
-              width: 500,
-              child: Image.network(socialPost.photo!, fit: BoxFit.fitWidth)),
+          if (socialPost.postImages != null &&
+              socialPost.postImages!.isNotEmpty)
+            Container(
+                width: 500,
+                height: 250,
+                child: Image.network(socialPost.postImages!.first,
+                    fit: BoxFit.fitWidth)),
           // if (socialPost.showTagUserIcon)
           //   Padding(
           //     padding: const EdgeInsets.only(

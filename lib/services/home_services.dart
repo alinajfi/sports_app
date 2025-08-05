@@ -1,11 +1,14 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:prime_social_media_flutter_ui_kit/model/all_user_list_model.dart';
 import 'package:prime_social_media_flutter_ui_kit/model/comment_model.dart';
 
 import 'package:prime_social_media_flutter_ui_kit/model/post_model.dart';
 import 'package:prime_social_media_flutter_ui_kit/model/social_media_post_model.dart';
+import 'package:prime_social_media_flutter_ui_kit/model/user_model.dart';
 import 'package:prime_social_media_flutter_ui_kit/utils/common_api_functions.dart';
 
 class HomeServices extends CommonApiFunctions {
@@ -88,5 +91,28 @@ class HomeServices extends CommonApiFunctions {
       headers: getHeadersWithToken(),
     );
     log(response.body.toString());
+  }
+
+  Future<List<AllUserListModel>> getAllUsers() async {
+    final url = getUrlFromEndPoints(endPoint: "/all_user");
+
+    final response = await http.get(
+      url,
+      headers: getHeadersWithToken(),
+    );
+
+    if (response.statusCode == 200) {
+      List<AllUserListModel> users = (jsonDecode(response.body) as List)
+          .map((e) => AllUserListModel.fromJson(e))
+          .toList();
+      return users;
+    }
+    return [];
+  }
+
+  Future<UserModel> getUserProfileWithId({required String userId}) async {
+    final url = getUrlFromEndPoints(endPoint: "/profile?user_id=$userId");
+    final response = await http.get(url, headers: getHeadersWithToken());
+    return UserModel.fromJson(jsonDecode(response.body));
   }
 }

@@ -20,10 +20,16 @@ import 'package:prime_social_media_flutter_ui_kit/views/home/widgets/text_post.d
 
 final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-class HomeView extends StatelessWidget {
+class HomeView extends StatefulWidget {
   HomeView({Key? key}) : super(key: key);
 
+  @override
+  State<HomeView> createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> {
   final HomeController homeController = Get.put(HomeController());
+
   final LanguageController languageController = Get.put(LanguageController());
 
   @override
@@ -43,6 +49,7 @@ class HomeView extends StatelessWidget {
   Widget _buildFloatingActionButton() {
     return FloatingActionButton(
       onPressed: () {
+        homeController.getUserProifleWithId();
         //   HomeServices().getCommentOnPosts();
         //   HomeServices().addReactionToPost();
 
