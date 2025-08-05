@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_color.dart';
+import 'package:prime_social_media_flutter_ui_kit/config/app_size.dart';
 import 'package:prime_social_media_flutter_ui_kit/constants/db_constants.dart';
 import 'package:prime_social_media_flutter_ui_kit/controller/db_controller.dart';
 import 'package:prime_social_media_flutter_ui_kit/controller/home/home_controller.dart';
@@ -67,6 +68,9 @@ class _HomeViewState extends State<HomeView> {
       child: Column(
         children: [
           StoriesSection(),
+          SizedBox(
+            height: AppSize.appSize30,
+          ),
           _buildPostsList(),
         ],
       ),

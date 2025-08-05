@@ -158,32 +158,28 @@ class PostItem extends StatelessWidget {
   }
 
   Widget _buildPostImage() {
+    if (socialPost.photo == null || socialPost.photo!.isEmpty) {
+      return SizedBox.shrink(); // no image shown
+    }
+
     return Padding(
       padding: const EdgeInsets.only(top: AppSize.appSize12),
       child: Stack(
         alignment: Alignment.bottomLeft,
         children: [
-          if (socialPost.postImages != null &&
-              socialPost.postImages!.isNotEmpty)
-            Container(
-                width: 500,
-                height: 250,
-                child: Image.network(socialPost.postImages!.first,
-                    fit: BoxFit.fitWidth)),
+          Container(
+            width: 500,
+            child: Image.network(socialPost.photo!, fit: BoxFit.fitWidth),
+          ),
+          // You can uncomment these if needed:
           // if (socialPost.showTagUserIcon)
           //   Padding(
-          //     padding: const EdgeInsets.only(
-          //       left: AppSize.appSize10,
-          //       bottom: AppSize.appSize10,
-          //     ),
+          //     padding: const EdgeInsets.only(left: AppSize.appSize10, bottom: AppSize.appSize10),
           //     child: Image.asset(AppIcon.tagUser, width: AppSize.appSize24),
           //   ),
           // if (socialPost.showVolumeIcon)
           //   Padding(
-          //     padding: const EdgeInsets.only(
-          //       right: AppSize.appSize10,
-          //       bottom: AppSize.appSize10,
-          //     ),
+          //     padding: const EdgeInsets.only(right: AppSize.appSize10, bottom: AppSize.appSize10),
           //     child: Align(
           //       alignment: Alignment.bottomRight,
           //       child: Image.asset(AppIcon.volume, width: AppSize.appSize24),

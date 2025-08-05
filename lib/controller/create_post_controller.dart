@@ -1,6 +1,8 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 
 import 'package:http_parser/http_parser.dart';
@@ -19,6 +21,33 @@ class CreatePostController extends GetxController {
 
   RxBool isSwitchLike = false.obs;
   RxBool isSwitchComment = false.obs;
+  Rx<File?> selectedImage = Rx<File?>(null);
+  RxList<String> taggedPeople = RxList<String>();
+  RxString selectedFeeling = ''.obs;
+  RxString location = ''.obs;
+  RxString event = ''.obs;
+
+  Future<void> pickImage() async {
+    final picked = await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (picked != null) {
+      selectedImage.value = File(picked.path);
+    }
+  }
+
+  Future<void> pickLocation() async {
+    // You can integrate Google Maps or simple dialog
+    location.value = "Lahore, Pakistan"; // example
+  }
+
+  Future<void> tagPeople() async {
+    // You can navigate to another screen or use a dialog
+    taggedPeople.value = ["Ali", "Zainab"];
+  }
+
+  // Future<void> uploadPost(CreatePostModel model) async {
+  //   // Add your API logic here
+  //   debugPrint("Uploading: ${model.description}, Image: ${model.multipleFiles}");
+  // }
 
   @override
   void dispose() {

@@ -46,7 +46,7 @@ class ProfileView extends StatelessWidget {
         child: Align(
           alignment: Alignment.centerLeft,
           child: Text(
-            user?.nickname ?? "Guest",
+            user?.nickname ?? "",
             style: TextStyle(
               fontSize: AppSize.appSize20,
               fontWeight: FontWeight.w600,
@@ -88,7 +88,7 @@ class ProfileView extends StatelessWidget {
 
   _body() {
     return DefaultTabController(
-      length: 4,
+      length: 1,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
