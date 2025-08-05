@@ -48,13 +48,15 @@ class SignUpView extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Padding(
-            //   padding: const EdgeInsets.only(bottom: AppSize.appSize24),
-            //   child: Image.asset(
-            //     AppImage.appLogo,
-            //     width: AppSize.appSize66,
-            //   ),
-            // ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: AppSize.appSize24),
+              child: Image.asset(
+                AppImage.appLogo,
+                width: 200,
+                height: 100,
+                fit: BoxFit.fill,
+              ),
+            ),
             // const Text(
             //   AppString.appDisplayName,
             //   style: TextStyle(

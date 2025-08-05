@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:math';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:prime_social_media_flutter_ui_kit/constants/db_constants.dart';
@@ -23,6 +25,11 @@ class LoginController extends GetxController {
 
   Future<void> onLoginSuccessFull(LoginResponse loginRes) async {
     isLoading.value = false;
+    // NotificationService().showLocalNotification(
+    //     id: DateTime.now().microsecondsSinceEpoch,
+    //     body: "dsfasdfaf",
+    //     title: "sdfasjflkad");
+
     DbController.instance.writeData<String>(
       DbConstants.apiToken,
       loginRes.token,

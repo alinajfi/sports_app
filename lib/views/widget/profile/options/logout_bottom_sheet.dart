@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_font.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_string.dart';
+import 'package:prime_social_media_flutter_ui_kit/constants/db_constants.dart';
+import 'package:prime_social_media_flutter_ui_kit/controller/db_controller.dart';
 import 'package:prime_social_media_flutter_ui_kit/routes/app_routes.dart';
 import '../../../../config/app_color.dart';
 import '../../../../config/app_size.dart';
@@ -54,7 +56,8 @@ logoutBottomSheet(BuildContext context) {
                 child: SingleChildScrollView(
                   physics: const ClampingScrollPhysics(),
                   padding: const EdgeInsets.only(
-                    left: AppSize.appSize20, right: AppSize.appSize20,
+                    left: AppSize.appSize20,
+                    right: AppSize.appSize20,
                   ),
                   child: Column(
                     children: [
@@ -91,7 +94,8 @@ logoutBottomSheet(BuildContext context) {
                                 child: Container(
                                   height: AppSize.appSize48,
                                   decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(AppSize.appSize66),
+                                    borderRadius: BorderRadius.circular(
+                                        AppSize.appSize66),
                                     border: Border.all(
                                       color: AppColor.primaryColor,
                                     ),
@@ -114,12 +118,15 @@ logoutBottomSheet(BuildContext context) {
                             Expanded(
                               child: GestureDetector(
                                 onTap: () {
+                                  DbController.instance.writeData(
+                                      DbConstants.isUserLoggedIn, false);
                                   Get.offAllNamed(AppRoutes.loginView);
                                 },
                                 child: Container(
                                   height: AppSize.appSize48,
                                   decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(AppSize.appSize66),
+                                    borderRadius: BorderRadius.circular(
+                                        AppSize.appSize66),
                                     color: AppColor.primaryColor,
                                   ),
                                   child: Center(

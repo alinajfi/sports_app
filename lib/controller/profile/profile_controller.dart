@@ -38,7 +38,7 @@ class ProfileController extends GetxController
     super.onInit();
     tabController = TabController(
       initialIndex: AppSize.size0,
-      length: AppSize.size4,
+      length: AppSize.size1,
       vsync: this,
     );
 
