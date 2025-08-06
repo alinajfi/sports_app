@@ -48,6 +48,7 @@ class PostItem extends StatelessWidget {
         bottom: AppSize.appSize40,
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildPostHeader(languageController),
           _buildPostImage(),
