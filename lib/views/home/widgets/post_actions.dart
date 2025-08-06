@@ -64,32 +64,26 @@ class _PostActionsState extends State<PostActions> {
         vertical: 14.0,
       ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           // Comment section - Flexible to prevent overflow
           if (widget.onComment != null)
-            Expanded(
-              flex: 2,
-              child: _buildActionButton(
-                AppIcon.comment,
-                22.0,
-                AppString.comment10k,
-                widget.onComment!,
-                widget.onComment,
-              ),
+            _buildActionButton(
+              AppIcon.comment,
+              22.0,
+              AppString.comment10k,
+              widget.onComment!,
+              widget.onComment,
             ),
 
           // Like section - Flexible to prevent overflow
-          Expanded(
-            flex: 2,
-            child: Obx(() => _buildActionButton(
-                  widget.isLiked ? AppIcon.like : AppIcon.emptyLike,
-                  26.0,
-                  AppString.likes55k,
-                  widget.onLike,
-                  widget.onLikesText,
-                )),
-          ),
+          Obx(() => _buildActionButton(
+                widget.isLiked ? AppIcon.like : AppIcon.emptyLike,
+                26.0,
+                AppString.likes55k,
+                widget.onLike,
+                widget.onLikesText,
+              )),
 
           // Share section - Flexible to prevent overflow
           if (widget.onShare != null)

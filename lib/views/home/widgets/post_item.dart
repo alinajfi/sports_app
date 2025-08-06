@@ -1,5 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 // components/post_item.dart
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -48,6 +50,7 @@ class PostItem extends StatelessWidget {
         bottom: AppSize.appSize40,
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildPostHeader(languageController),
           _buildPostImage(),
@@ -158,7 +161,8 @@ class PostItem extends StatelessWidget {
   }
 
   Widget _buildPostImage() {
-    if (socialPost.photo == null || socialPost.photo!.isEmpty) {
+    log("called");
+    if (socialPost.postImages == null || socialPost.postImages!.isEmpty) {
       return SizedBox.shrink(); // no image shown
     }
 
@@ -167,9 +171,12 @@ class PostItem extends StatelessWidget {
       child: Stack(
         alignment: Alignment.bottomLeft,
         children: [
+          // if (socialPost.postImages != null ||
+          //     socialPost.postImages!.isNotEmpty)
           Container(
             width: 500,
-            child: Image.network(socialPost.photo!, fit: BoxFit.fitWidth),
+            child: Image.network(socialPost.postImages!.first,
+                fit: BoxFit.fitWidth),
           ),
           // You can uncomment these if needed:
           // if (socialPost.showTagUserIcon)
