@@ -5,6 +5,10 @@ import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 
+import 'package:http_parser/http_parser.dart';
+
+import 'package:mime/mime.dart';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -63,16 +67,18 @@ class CreatePostController extends GetxController {
   //   log("jfaksldjfklasdjfajsfkjaskflkas");
   // }
 
+  RxList<PlatformFile> pickedFiles = <PlatformFile>[].obs;
+
   Future<void> pickMediaFiles() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       allowMultiple: true,
     );
 
     if (result != null) {
-      // Access list of selected files
-      List<PlatformFile> files = result.files;
+      // Use assignAll to update the RxList
+      pickedFiles.assignAll(result.files);
 
-      for (var file in files) {
+      for (var file in pickedFiles) {
         print('File name: ${file.name}');
         print('File path: ${file.path}');
       }
@@ -81,30 +87,32 @@ class CreatePostController extends GetxController {
     }
   }
 
+  RxBool isLoading = false.obs;
   Future<void> uploadPost(CreatePostModel postData) async {
-    final response = await toMultipartRequest(
+    isLoading.value = true;
+    await addPostWithMultipart(
         Uri.parse("${ApiConstants.baseUrl}/create_post"), postData);
-    final st = await response.send();
-    final res = await http.Response.fromStream(st);
-    log(res.body.toString());
-    if (res.statusCode == 200) {}
+    isLoading.value = false;
   }
 
-  Future<http.MultipartRequest> toMultipartRequest(
-      Uri uri, CreatePostModel postData) async {
+  Future<bool> addPostWithMultipart(
+    Uri uri,
+    CreatePostModel postData,
+  ) async {
     final request = http.MultipartRequest('POST', uri);
-
     request.headers.addAll(CommonApiFunctions().getHeadersWithTokenJson()!);
 
-    // Required
+    // Required Fields
     request.fields['privacy'] = postData.privacy;
+    request.fields['publisher'] = postData.publisher;
+    request.fields['post_type'] = postData.postType;
 
-    // Optional fields
+    // Optional Fields
     if (postData.description != null) {
       request.fields['description'] = postData.description!;
     }
 
-    if (postData.taggedUsersId != null) {
+    if (postData.taggedUsersId != null && postData.taggedUsersId!.isNotEmpty) {
       for (var id in postData.taggedUsersId!) {
         request.fields['tagged_users_id[]'] = id.toString();
       }
@@ -119,8 +127,6 @@ class CreatePostController extends GetxController {
       request.fields['address'] = postData.address!;
     }
 
-    request.fields['publisher'] = postData.publisher;
-
     if (postData.eventId != null) {
       request.fields['event_id'] = postData.eventId.toString();
     }
@@ -133,29 +139,64 @@ class CreatePostController extends GetxController {
       request.fields['group_id'] = postData.groupId.toString();
     }
 
-    request.fields['post_type'] = postData.postType;
-
-    // Files
-    if (postData.multipleFiles != null) {
-      for (var file in postData.multipleFiles!) {
-        final multipartFile = await http.MultipartFile.fromPath(
-          'multiple_files[]',
-          file.path,
-          filename: basename(file.path),
-        );
-        request.files.add(multipartFile);
+    // 🔄 Upload multiple files as 'pictures[]'
+    if (postData.multipleFiles != null && postData.multipleFiles!.isNotEmpty) {
+      for (final file in postData.multipleFiles!) {
+        if (file.existsSync()) {
+          final mimeType = lookupMimeType(file.path) ?? 'image/jpeg';
+          final mimeTypeSplit = mimeType.split('/');
+          final multipartFile = await http.MultipartFile.fromPath(
+            'multiple_files[]', // <-- Make sure this matches backend key!
+            file.path,
+            contentType: MediaType(mimeTypeSplit[0], mimeTypeSplit[1]),
+            filename: basename(file.path),
+          );
+          request.files.add(multipartFile);
+          log('📷 Attached file to pictures[]: ${file.path}');
+        } else {
+          log('❌ Skipped file (does not exist): ${file.path}');
+        }
       }
     }
 
-    if (postData.mobileAppImage != null) {
-      final imageFile = await http.MultipartFile.fromPath(
-        'mobile_app_image',
-        postData.mobileAppImage!.path,
-        filename: basename(postData.mobileAppImage!.path),
-      );
-      request.files.add(imageFile);
+    // 🔄 Also add first image as 'mobile_app_image'
+    if (postData.multipleFiles != null && postData.multipleFiles!.isNotEmpty) {
+      final firstFile = postData.multipleFiles!.first;
+      if (firstFile.existsSync()) {
+        final mimeType = lookupMimeType(firstFile.path) ?? 'image/jpeg';
+        final mimeTypeSplit = mimeType.split('/');
+        final imageFile = await http.MultipartFile.fromPath(
+          'mobile_app_image',
+          firstFile.path,
+          contentType: MediaType(mimeTypeSplit[0], mimeTypeSplit[1]),
+          filename: basename(firstFile.path),
+        );
+        request.files.add(imageFile);
+        log("📷 Attached file to mobile_app_image: ${firstFile.path}");
+      }
     }
 
-    return request;
+    // 🧾 Log all fields
+    log('📝 Request Fields: ${request.fields}');
+    log('➡️ Sending multipart request to: ${uri.toString()}');
+
+    try {
+      final streamedResponse = await request.send();
+      final response = await http.Response.fromStream(streamedResponse);
+
+      log('✅ Response Code: ${response.statusCode}');
+      log('🧾 Response Body: ${response.body}');
+
+      if (response.statusCode == 200) {
+        return true;
+      } else if (response.statusCode == 401) {
+        return false;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      log("❌ Error sending multipart post: $e");
+      return false;
+    }
   }
 }
