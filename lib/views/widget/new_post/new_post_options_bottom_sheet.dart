@@ -7,6 +7,7 @@ import 'package:prime_social_media_flutter_ui_kit/config/app_font.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_size.dart';
 import 'package:prime_social_media_flutter_ui_kit/controller/new_post/new_post_controller.dart';
 import 'package:prime_social_media_flutter_ui_kit/routes/app_routes.dart';
+import 'package:prime_social_media_flutter_ui_kit/views/new_post/post/create_post.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/new_post/post/edit_post_screen.dart';
 
 newPostOptionsBottomSheet(BuildContext context) {
@@ -56,40 +57,41 @@ newPostOptionsBottomSheet(BuildContext context) {
             ListView.builder(
               shrinkWrap: true,
               physics: const ClampingScrollPhysics(),
-              itemCount: newPostController.newPostOptionsList.length,
+              itemCount: 1,
               itemBuilder: (context, index) {
                 return GestureDetector(
                   onTap: () async {
                     newPostController.selectItem(index);
-                    if (index == 0) {
-                      Get.back();
-                      Get.toNamed(AppRoutes.createReelView);
-                    } else if (index == 3) {
-                      Get.back();
-                      final ImagePicker picker = ImagePicker();
-                      final XFile? image =
-                          await picker.pickImage(source: ImageSource.gallery);
-                      if (image != null) {
-                        Get.to(EditPostScreen(
-                          image: image,
-                        ));
-                      } else {
-                        Get.back();
-                      }
-                    } else if (index == 3) {
-                      Get.back();
-                      final ImagePicker picker = ImagePicker();
-                      final XFile? image =
-                          await picker.pickImage(source: ImageSource.gallery);
+                    Get.to(CreatePost());
+                    // if (index == 0) {
+                    //   Get.back();
+                    //   Get.toNamed(AppRoutes.createReelView);
+                    // } else if (index == 3) {
+                    //   Get.back();
+                    //   final ImagePicker picker = ImagePicker();
+                    //   final XFile? image =
+                    //       await picker.pickImage(source: ImageSource.gallery);
+                    //   if (image != null) {
+                    //     Get.to(EditPostScreen(
+                    //       image: image,
+                    //     ));
+                    //   } else {
+                    //     Get.back();
+                    //   }
+                    // } else if (index == 3) {
+                    //   Get.back();
+                    //   final ImagePicker picker = ImagePicker();
+                    //   final XFile? image =
+                    //       await picker.pickImage(source: ImageSource.gallery);
 
-                      if (image != null) {
-                        Get.to(EditPostScreen(
-                          image: XFile(image.path),
-                        ));
-                      } else {
-                        Get.back();
-                      }
-                    }
+                    //   if (image != null) {
+                    //     Get.to(EditPostScreen(
+                    //       image: XFile(image.path),
+                    //     ));
+                    //   } else {
+                    //     Get.back();
+                    //   }
+                    // }
                   },
                   child: Obx(() => Container(
                         padding:

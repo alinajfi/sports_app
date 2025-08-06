@@ -16,20 +16,36 @@ import 'routes/app_routes.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initTranslation();
 
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  // Check if Firebase is already initialized
+  try {
+    if (Firebase.apps.isEmpty) {
+      await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
+      );
+    }
+  } catch (e) {
+    // Ignore duplicate initialization error
+    if (e
+        .toString()
+        .contains("A Firebase App named \"[DEFAULT]\" already exists")) {
+      // Already initialized, do nothing
+    } else {
+      rethrow; // Re-throw unexpected errors
+    }
+  }
 
   Get.put(
     DbService.init(GetStorage()),
     permanent: true,
   );
   Get.put(DbController(), permanent: true);
+
   runApp(const MyApp());
 }
 

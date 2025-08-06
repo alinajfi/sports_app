@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "577561851476",
-    "project_id": "sportme-e47cd",
-    "storage_bucket": "sportme-e47cd.firebasestorage.app"
+    "project_number": "303374003142",
+    "project_id": "my-sports-journey",
+    "storage_bucket": "my-sports-journey.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:577561851476:android:379eb54a2ff6a606fa9fc1",
+        "mobilesdk_app_id": "1:303374003142:android:99535291eb988b6c1760c7",
         "android_client_info": {
-          "package_name": "com.example.prime_social_media_flutter_ui_kit"
+          "package_name": "app.mysportsjourney.com.uk"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAAFR9HF4FdEhujDpQ0Ak9b5D0yGStBHyk"
+          "current_key": "AIzaSyDcrW1wT8-bhyy05DNq5Ij_0kY8RodnY30"
         }
       ],
       "services": {

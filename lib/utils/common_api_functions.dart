@@ -36,9 +36,24 @@ class CommonApiFunctions {
       final token = apiToken; // Adjust field name based on your model
 
       return {
+        'Accept': 'application/json',
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token'
       };
+    } catch (e) {
+      log(e.toString());
+      return null;
+    }
+  }
+
+  Map<String, String>? getHeaderWithToken() {
+    try {
+      final apiToken =
+          DbController.instance.readData<String>(DbConstants.apiToken);
+
+      final token = apiToken; // Adjust field name based on your model
+
+      return {'Authorization': 'Bearer $token'};
     } catch (e) {
       log(e.toString());
       return null;
