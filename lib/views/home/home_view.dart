@@ -1,6 +1,7 @@
 // home_view.dart
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_color.dart';
@@ -82,36 +83,45 @@ class _HomeViewState extends State<HomeView> {
       () {
         return Column(
           children: [
-            ...Get.find<HomeController>().timeLinePosts.value.map((post) =>
-                PostItem(
-                  controller: Get.find<HomeController>(),
-                  socialPost: post,
-                  onLike: () {
-                    final homeController = Get.find<HomeController>();
-                    final postId = post.postId.toString();
+            ...Get.find<HomeController>()
+                .timeLinePosts
+                .value
+                .map((post) => GetBuilder<HomeController>(
+                    id: 'on_like',
+                    builder: (cont) {
+                      return PostItem(
+                        controller: Get.find<HomeController>(),
+                        socialPost: post,
+                        onLike: () {
+                          final homeController = Get.find<HomeController>();
+                          final postId = post.postId.toString();
 
-                    if (homeController.favIds.contains(postId)) {
-                      log("this");
-                      homeController.favIds.remove(postId);
-                      DbController.instance.writeData(
-                        DbConstants.itemAddedToFav,
-                        homeController.favIds.toList(),
+                          if (homeController.favIds.contains(postId)) {
+                            homeController.favIds.remove(postId);
+                            DbController.instance.writeData(
+                              DbConstants.itemAddedToFav,
+                              homeController.favIds.toList(),
+                            );
+                            cont.update(['on_like']);
+                          } else {
+                            homeController
+                                .addReactionToPost(postId)
+                                .then((value) {
+                              if (value) {
+                                homeController.favIds.add(postId);
+                                DbController.instance.writeData(
+                                  DbConstants.itemAddedToFav,
+                                  homeController.favIds.toList(),
+                                );
+                                cont.update(['on_like']);
+                              }
+                            });
+                          }
+                        },
+                        isLiked:
+                            homeController.isFavourite(post.postId.toString()),
                       );
-                    } else {
-                      log("that");
-                      homeController.addReactionToPost(postId).then((value) {
-                        if (value) {
-                          homeController.favIds.add(postId);
-                          DbController.instance.writeData(
-                            DbConstants.itemAddedToFav,
-                            homeController.favIds.toList(),
-                          );
-                        }
-                      });
-                    }
-                  },
-                  isLiked: homeController.isFavourite(post.postId.toString()),
-                )),
+                    })),
 
             // Text post
             // TextPostItem(

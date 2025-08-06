@@ -1,4 +1,4 @@
-package com.example.prime_social_media_flutter_ui_kit
+package app.mysportsjourney.com.uk
 
 import io.flutter.embedding.android.FlutterActivity
 

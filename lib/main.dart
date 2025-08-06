@@ -22,18 +22,30 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initTranslation();
 
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-
-  // await NotificationService().initialize();
-  // await NotificationService().initializeLocalNotifications();
+  // Check if Firebase is already initialized
+  try {
+    if (Firebase.apps.isEmpty) {
+      await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
+      );
+    }
+  } catch (e) {
+    // Ignore duplicate initialization error
+    if (e
+        .toString()
+        .contains("A Firebase App named \"[DEFAULT]\" already exists")) {
+      // Already initialized, do nothing
+    } else {
+      rethrow; // Re-throw unexpected errors
+    }
+  }
 
   Get.put(
     DbService.init(GetStorage()),
     permanent: true,
   );
   Get.put(DbController(), permanent: true);
+
   runApp(const MyApp());
 }
 
