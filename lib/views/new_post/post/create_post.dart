@@ -209,6 +209,8 @@
 //   }
 // }
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
@@ -277,6 +279,33 @@ class CreatePost extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             _iconRow(),
+            Obx(() {
+              if (controller.pickedImages.isEmpty) return SizedBox.shrink();
+
+              return SizedBox(
+                height: 230, // ✅ Set your desired height here
+                child: GridView.builder(
+                  itemCount: controller.pickedImages.length,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    crossAxisSpacing: 8,
+                    mainAxisSpacing: 8,
+                    childAspectRatio: 1,
+                  ),
+                  scrollDirection: Axis.vertical,
+                  itemBuilder: (context, index) {
+                    final imageFile = controller.pickedImages[index];
+                    return ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Image.file(
+                        imageFile,
+                        fit: BoxFit.cover,
+                      ),
+                    );
+                  },
+                ),
+              );
+            }),
           ],
         ),
       ),
@@ -289,7 +318,7 @@ class CreatePost extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        _iconButton(Icons.image_outlined, 'Image', controller.pickImage),
+        _iconButton(Icons.image_outlined, 'Image', controller.pickImages),
         _iconButton(
             Icons.person_add_alt_1_outlined, 'Tag', controller.tagPeople),
         _iconButton(
@@ -399,6 +428,9 @@ class CreatePost extends StatelessWidget {
         ),
         onPressed: () {
           controller.uploadPost(CreatePostModel(
+              multipleFiles: controller.pickedFiles
+                  .map((file) => File(file.path!))
+                  .toList(),
               privacy: "public",
               description: controller.descriptionController.text));
           Fluttertoast.showToast(msg: "Post uploaded");
