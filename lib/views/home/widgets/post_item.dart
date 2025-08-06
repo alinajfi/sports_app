@@ -86,8 +86,8 @@ class PostItem extends StatelessWidget {
       children: [
         _buildPostHeader(languageController),
         _buildPostImage(context),
-        if (socialPost.postImages == null || socialPost.postImages!.isEmpty)
-          _buildPostDescription(),
+        // if (socialPost.postImages == null || socialPost.postImages!.isEmpty)
+        _buildPostDescription(),
         PostActions(
           comomentsCount: socialPost.commentsCount?.toString() ?? "",
           onComment: () async {
