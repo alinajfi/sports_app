@@ -584,6 +584,12 @@
       "languageVersion": "3.2"
     },
     {
+      "name": "photo_view",
+      "rootUri": "file:///Users/mac/.pub-cache/hosted/pub.dev/photo_view-0.14.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "photofilters",
       "rootUri": "file:///Users/mac/.pub-cache/hosted/pub.dev/photofilters-3.0.1",
       "packageUri": "lib/",
@@ -902,7 +908,7 @@
       "languageVersion": "3.1"
     }
   ],
-  "generated": "2025-08-06T10:25:53.662401Z",
+  "generated": "2025-08-06T11:58:41.290226Z",
   "generator": "pub",
   "generatorVersion": "3.5.1",
   "flutterRoot": "file:///Users/mac/development/flutter",

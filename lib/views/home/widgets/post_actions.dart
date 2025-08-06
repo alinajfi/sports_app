@@ -60,7 +60,7 @@ class _PostActionsState extends State<PostActions> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(
-        horizontal: 16.0,
+        // horizontal: 16.0,
         vertical: 14.0,
       ),
       child: Row(
@@ -75,7 +75,9 @@ class _PostActionsState extends State<PostActions> {
               widget.onComment!,
               widget.onComment,
             ),
-
+          SizedBox(
+            width: AppSize.appSize12,
+          ),
           // Like section - Flexible to prevent overflow
           Obx(() => _buildActionButton(
                 widget.isLiked ? AppIcon.like : AppIcon.emptyLike,

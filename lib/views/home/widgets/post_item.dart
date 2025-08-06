@@ -15,6 +15,7 @@ import 'package:prime_social_media_flutter_ui_kit/controller/profile/settings_op
 import 'package:prime_social_media_flutter_ui_kit/model/post_model.dart';
 import 'package:prime_social_media_flutter_ui_kit/model/social_media_post_model.dart';
 import 'package:prime_social_media_flutter_ui_kit/routes/app_routes.dart';
+import 'package:prime_social_media_flutter_ui_kit/views/home/widgets/image_gallery_screen.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/home/widgets/post_actions.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/widget/home/comments_bottom_sheet.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/widget/home/likes_bottom_sheet.dart';
@@ -44,16 +45,14 @@ class PostItem extends StatelessWidget {
     final languageController = Get.find<LanguageController>();
 
     return Padding(
-      padding: const EdgeInsets.only(
-        left: AppSize.appSize20,
-        right: AppSize.appSize20,
-        bottom: AppSize.appSize40,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [_withPic(context)],
-      ),
-    );
+        padding: const EdgeInsets.only(
+          left: AppSize.appSize20,
+          right: AppSize.appSize20,
+          bottom: AppSize.appSize40,
+        ),
+        child: socialPost.postImages == null || socialPost.postImages!.isEmpty
+            ? _withPic(context)
+            : _withoutpic(context));
   }
 
   _withPic(BuildContext context) {
@@ -61,7 +60,7 @@ class PostItem extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _buildPostHeader(languageController),
-        _buildPostImage(),
+        _buildPostImage(context),
         if (socialPost.postImages == null || socialPost.postImages!.isEmpty)
           _buildPostDescription(),
         PostActions(
@@ -86,7 +85,7 @@ class PostItem extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _buildPostHeader(languageController),
-        _buildPostImage(),
+        _buildPostImage(context),
         if (socialPost.postImages == null || socialPost.postImages!.isEmpty)
           _buildPostDescription(),
         PostActions(
@@ -193,39 +192,86 @@ class PostItem extends StatelessWidget {
     );
   }
 
-  Widget _buildPostImage() {
-    log("called");
-    if (socialPost.postImages == null || socialPost.postImages!.isEmpty) {
-      return SizedBox.shrink(); // no image shown
+  Widget _buildPostImage(BuildContext context) {
+    final images = socialPost.postImages;
+
+    if (images == null || images.isEmpty) return const SizedBox.shrink();
+
+    final totalImages = images.length;
+
+    // ✅ Single image - take full width
+    if (totalImages == 1) {
+      return Padding(
+        padding: const EdgeInsets.only(top: AppSize.appSize12),
+        child: GestureDetector(
+          onTap: () => _openImageGallery(context, 0),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: Image.network(
+              images[0],
+              fit: BoxFit.cover,
+              width: double.infinity,
+              height: 250,
+            ),
+          ),
+        ),
+      );
     }
+
+    // ✅ More than one image - use grid layout
+    final displayImages = totalImages > 4 ? images.take(4).toList() : images;
 
     return Padding(
       padding: const EdgeInsets.only(top: AppSize.appSize12),
-      child: Stack(
-        alignment: Alignment.bottomLeft,
-        children: [
-          // if (socialPost.postImages != null ||
-          //     socialPost.postImages!.isNotEmpty)
-          Container(
-            width: 500,
-            child: Image.network(socialPost.postImages!.first,
-                fit: BoxFit.fitWidth),
-          ),
-          // You can uncomment these if needed:
-          // if (socialPost.showTagUserIcon)
-          //   Padding(
-          //     padding: const EdgeInsets.only(left: AppSize.appSize10, bottom: AppSize.appSize10),
-          //     child: Image.asset(AppIcon.tagUser, width: AppSize.appSize24),
-          //   ),
-          // if (socialPost.showVolumeIcon)
-          //   Padding(
-          //     padding: const EdgeInsets.only(right: AppSize.appSize10, bottom: AppSize.appSize10),
-          //     child: Align(
-          //       alignment: Alignment.bottomRight,
-          //       child: Image.asset(AppIcon.volume, width: AppSize.appSize24),
-          //     ),
-          //   ),
-        ],
+      child: GridView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: displayImages.length,
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          mainAxisSpacing: 4,
+          crossAxisSpacing: 4,
+        ),
+        itemBuilder: (gridContext, index) {
+          final imageUrl = displayImages[index];
+          final isLastVisible = index == 3 && totalImages > 4;
+          final extraCount = totalImages - 4;
+
+          return GestureDetector(
+            onTap: () => _openImageGallery(context, index),
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                Image.network(imageUrl, fit: BoxFit.cover),
+                if (isLastVisible)
+                  Container(
+                    color: Colors.black.withOpacity(0.5),
+                    child: Center(
+                      child: Text(
+                        '+$extraCount',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  void _openImageGallery(BuildContext context, int initialIndex) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => ImageGalleryScreen(
+          images: socialPost.postImages!,
+          initialIndex: initialIndex,
+        ),
       ),
     );
   }

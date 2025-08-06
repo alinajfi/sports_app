@@ -67,7 +67,18 @@ class CreatePostController extends GetxController {
   //   log("jfaksldjfklasdjfajsfkjaskflkas");
   // }
 
-  RxList<PlatformFile> pickedFiles = <PlatformFile>[].obs;
+  var pickedFiles = <PlatformFile>[].obs;
+  var pickedImages = <File>[].obs;
+
+  Future<void> pickImages() async {
+    final ImagePicker picker = ImagePicker();
+    final List<XFile>? images = await picker.pickMultiImage();
+
+    if (images != null && images.isNotEmpty) {
+      pickedImages.clear(); // Clear previous selection if needed
+      pickedImages.addAll(images.map((xfile) => File(xfile.path)));
+    }
+  }
 
   Future<void> pickMediaFiles() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -75,15 +86,7 @@ class CreatePostController extends GetxController {
     );
 
     if (result != null) {
-      // Use assignAll to update the RxList
       pickedFiles.assignAll(result.files);
-
-      for (var file in pickedFiles) {
-        print('File name: ${file.name}');
-        print('File path: ${file.path}');
-      }
-    } else {
-      print('No files selected.');
     }
   }
 
