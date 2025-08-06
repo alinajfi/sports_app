@@ -51,25 +51,58 @@ class PostItem extends StatelessWidget {
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildPostHeader(languageController),
-          _buildPostImage(),
-          PostActions(
-            comomentsCount: socialPost.commentsCount?.toString() ?? "",
-            onComment: () async {
-              commentsBottomSheet(context, socialPost.postId.toString());
-            },
-            onReactionRemove: onReactionRemove,
-            onReactionAdd: onReactionAdd,
-            onLike: onLike,
-            onLikesText: () => likesBottomSheet(context),
-            // onShare: () => homeController.shareAssetImage(socialPost.i),
-            isLiked: isLiked,
-          ),
-          const CustomDivider(),
-          _buildPostDescription(),
-        ],
+        children: [_withPic(context)],
       ),
+    );
+  }
+
+  _withPic(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildPostHeader(languageController),
+        _buildPostImage(),
+        if (socialPost.postImages == null || socialPost.postImages!.isEmpty)
+          _buildPostDescription(),
+        PostActions(
+          comomentsCount: socialPost.commentsCount?.toString() ?? "",
+          onComment: () async {
+            commentsBottomSheet(context, socialPost.postId.toString());
+          },
+          onReactionRemove: onReactionRemove,
+          onReactionAdd: onReactionAdd,
+          onLike: onLike,
+          onLikesText: () => likesBottomSheet(context),
+          // onShare: () => homeController.shareAssetImage(socialPost.i),
+          isLiked: isLiked,
+        ),
+        const CustomDivider(),
+      ],
+    );
+  }
+
+  _withoutpic(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildPostHeader(languageController),
+        _buildPostImage(),
+        if (socialPost.postImages == null || socialPost.postImages!.isEmpty)
+          _buildPostDescription(),
+        PostActions(
+          comomentsCount: socialPost.commentsCount?.toString() ?? "",
+          onComment: () async {
+            commentsBottomSheet(context, socialPost.postId.toString());
+          },
+          onReactionRemove: onReactionRemove,
+          onReactionAdd: onReactionAdd,
+          onLike: onLike,
+          onLikesText: () => likesBottomSheet(context),
+          // onShare: () => homeController.shareAssetImage(socialPost.i),
+          isLiked: isLiked,
+        ),
+        const CustomDivider(),
+      ],
     );
   }
 
