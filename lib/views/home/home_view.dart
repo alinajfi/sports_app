@@ -19,6 +19,7 @@ import 'package:prime_social_media_flutter_ui_kit/views/home/widgets/post_item.d
 import 'package:prime_social_media_flutter_ui_kit/views/home/widgets/repost_item.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/home/widgets/stories_section.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/home/widgets/text_post.dart';
+import 'package:prime_social_media_flutter_ui_kit/views/new_post/reel/create_reel_view.dart';
 
 final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -51,13 +52,18 @@ class _HomeViewState extends State<HomeView> {
   Widget _buildFloatingActionButton() {
     return FloatingActionButton(
       onPressed: () {
-        homeController.getUserProifleWithId();
+        // homeController.getUserProifleWithId();
         //   HomeServices().getCommentOnPosts();
         //   HomeServices().addReactionToPost();
 
         // UserService().getUserPosts();
         // PostService().getPostOnTimeLine();
-        _scaffoldKey.currentState?.openDrawer();
+        // _scaffoldKey.currentState?.openDrawer();
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => CreateReelView(),
+            ));
       },
     );
   }
