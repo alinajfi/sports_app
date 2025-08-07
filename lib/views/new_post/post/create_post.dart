@@ -433,13 +433,18 @@ class CreatePost extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 14),
         ),
         onPressed: () async {
-          await controller.uploadPost(CreatePostModel(
-              multipleFiles: controller.pickedImages
-                  .map((file) => File(file.path))
-                  .toList(),
-              privacy: "public",
-              description: controller.descriptionController.text));
-          Fluttertoast.showToast(msg: "Post uploaded");
+          try {
+            await controller.uploadPost(CreatePostModel(
+                multipleFiles: controller.pickedImages
+                    .map((file) => File(file.path))
+                    .toList(),
+                privacy: "public",
+                description: controller.descriptionController.text));
+            Fluttertoast.showToast(msg: "Post uploaded");
+            Get.back(result: true);
+          } catch (e) {
+            Fluttertoast.showToast(msg: "Post $e");
+          }
         },
         child: const Text(
           'Publish Now',

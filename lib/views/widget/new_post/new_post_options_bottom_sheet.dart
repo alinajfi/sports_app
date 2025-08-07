@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_color.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_font.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_size.dart';
+import 'package:prime_social_media_flutter_ui_kit/controller/home/home_controller.dart';
 import 'package:prime_social_media_flutter_ui_kit/controller/new_post/new_post_controller.dart';
 import 'package:prime_social_media_flutter_ui_kit/routes/app_routes.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/new_post/post/create_post.dart';
@@ -62,7 +63,10 @@ newPostOptionsBottomSheet(BuildContext context) {
                 return GestureDetector(
                   onTap: () async {
                     newPostController.selectItem(index);
-                    Get.to(CreatePost());
+                    bool result = await Get.to(CreatePost());
+                    if (result) {
+                      Get.find<HomeController>().getTimeLinePosts();
+                    }
                     // if (index == 0) {
                     //   Get.back();
                     //   Get.toNamed(AppRoutes.createReelView);

@@ -8,9 +8,11 @@ import 'package:prime_social_media_flutter_ui_kit/constants/db_constants.dart';
 import 'package:prime_social_media_flutter_ui_kit/controller/bottom_bar/bottom_bar_controller.dart';
 import 'package:prime_social_media_flutter_ui_kit/controller/db_controller.dart';
 import 'package:prime_social_media_flutter_ui_kit/model/login_response_model.dart';
+import 'package:prime_social_media_flutter_ui_kit/model/post_model.dart';
 import 'package:prime_social_media_flutter_ui_kit/model/user_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:prime_social_media_flutter_ui_kit/services/auth_service.dart';
+import 'package:prime_social_media_flutter_ui_kit/services/home_services.dart';
 import '../../model/highlight_model.dart';
 
 BottomBarController bottomBarController = Get.put(BottomBarController());
@@ -25,6 +27,7 @@ class ProfileController extends GetxController
   RxList<HighlightItem> highlights = <HighlightItem>[].obs;
   Rx<UserModel?> user = Rx<UserModel?>(null);
   RxBool isLoading = false.obs;
+
   int get followersCount => user.value?.followers ?? 0;
   int get followingCount => user.value?.following ?? 0;
   var editUser = Rxn<UserModel>();
@@ -32,6 +35,8 @@ class ProfileController extends GetxController
   final nameController = TextEditingController();
   final nicknameController = TextEditingController();
   final phoneController = TextEditingController();
+
+  List<PostModel> userPosts = [];
 
   @override
   void onInit() {
@@ -42,7 +47,11 @@ class ProfileController extends GetxController
       vsync: this,
     );
 
-    loadUserProfile();
+    loadUserProfile().then(
+      (value) {
+        loadUserPosts();
+      },
+    );
   }
 
   @override
@@ -179,26 +188,11 @@ class ProfileController extends GetxController
     isSelected.value = index;
   }
 
-  RxList<String> postsList = [
-    AppString.post1,
-    AppString.post2,
-    AppString.post3,
-    AppString.post4,
-    AppString.post5,
-    AppString.post6,
-    AppString.post7,
-    AppString.post8,
-    AppString.post9,
-    AppString.post1,
-    AppString.post2,
-    AppString.post3,
-    AppString.post4,
-    AppString.post5,
-    AppString.post6,
-    AppString.post7,
-    AppString.post8,
-    AppString.post9,
-  ].obs;
+  void loadUserPosts() async {
+    postsList.value = await HomeServices().getLoggedInUserPost();
+  }
+
+  RxList<PostModel> postsList = <PostModel>[].obs;
 
   RxList<String> reelsList = [
     AppString.reel1,

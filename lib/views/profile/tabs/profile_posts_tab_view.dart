@@ -36,23 +36,33 @@ class ProfilePostsTabView extends StatelessWidget {
         itemBuilder: (BuildContext context, index) {
           return GestureDetector(
             onTap: () {
-              showDialog(
-                context: context,
-                barrierColor: AppColor.backgroundColor
-                    .withAlpha(AppSize.appSizePoint7.toInt()),
-                builder: (context) {
-                  return PostViewDialog(
-                      imageUrl: profileController.postsList[index]);
-                },
-              );
+              // showDialog(
+              //   context: context,
+              //   barrierColor: AppColor.backgroundColor
+              //       .withAlpha(AppSize.appSizePoint7.toInt()),
+              //   builder: (context) {
+              //     return PostViewDialog(
+              //         imageUrl: profileController.postsList[index]);
+              //   },
+              // );
             },
             child: Container(
+              child: profileController
+                      .postsList.value[index].postImages!.isNotEmpty
+                  ? Image.network(profileController
+                      .postsList.value[index].postImages!.first)
+                  : SizedBox(),
               decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: NetworkImage(profileController.postsList[index]),
-                  fit: BoxFit.cover,
-                ),
-              ),
+
+                  // image: DecorationImage(
+                  //   image: profileController
+                  //           .postsList[index].postImages!.isNotEmpty
+                  //       ? NetworkImage(
+                  //           profileController.postsList[index].postImages!.first)
+                  //       : Image.asset(),
+                  //   fit: BoxFit.cover,
+                  // ),
+                  ),
             ),
           );
         },

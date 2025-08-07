@@ -51,8 +51,9 @@ class _HomeViewState extends State<HomeView> {
   Widget _buildFloatingActionButton() {
     return FloatingActionButton(
       onPressed: () async {
-        homeController.getUserProifleWithId();
-        //   HomeServices().getCommentOnPosts();
+        // homeController.getLoggedInUserPost();
+        // var resul = await HomeServices().getLoggedInUserPost();
+        //  log(resul.toString());
 
         // UserService().getUserPosts();
         // PostService().getPostOnTimeLine();
