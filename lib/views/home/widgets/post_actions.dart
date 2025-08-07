@@ -1,5 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 // shared/post_actions.dart
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -8,9 +10,12 @@ import 'package:prime_social_media_flutter_ui_kit/config/app_font.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_icon.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_size.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_string.dart';
+import 'package:prime_social_media_flutter_ui_kit/controller/home/home_controller.dart';
 import 'package:prime_social_media_flutter_ui_kit/controller/profile/settings_options/language_controller.dart';
+import 'package:prime_social_media_flutter_ui_kit/views/home/widgets/home_app_bar.dart';
 
 class PostActions extends StatefulWidget {
+  final String? reactionCount;
   final VoidCallback? onComment;
   final VoidCallback onLike;
   final VoidCallback? onLikesText;
@@ -24,6 +29,7 @@ class PostActions extends StatefulWidget {
 
   const PostActions({
     Key? key,
+    this.reactionCount,
     this.onComment,
     required this.onLike,
     this.onLikesText,
@@ -58,54 +64,60 @@ class _PostActionsState extends State<PostActions> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        // horizontal: 16.0,
-        vertical: 14.0,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          // Comment section - Flexible to prevent overflow
-          if (widget.onComment != null)
-            _buildActionButton(
-              AppIcon.comment,
-              22.0,
-              AppString.comment10k,
-              widget.onComment!,
-              widget.onComment,
-            ),
-          SizedBox(
-            width: AppSize.appSize12,
+    log("builder called");
+    return GetBuilder<HomeController>(
+      id: "update_all_actions",
+      builder: (cont) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(
+            // horizontal: 16.0,
+            vertical: 14.0,
           ),
-          // Like section - Flexible to prevent overflow
-          Obx(() => _buildActionButton(
-                widget.isLiked ? AppIcon.like : AppIcon.emptyLike,
-                26.0,
-                AppString.likes55k,
-                widget.onLike,
-                widget.onLikesText,
-              )),
-
-          // Share section - Flexible to prevent overflow
-          if (widget.onShare != null)
-            Expanded(
-              flex: 2,
-              child: _buildActionButton(
-                AppIcon.share,
-                22.0,
-                AppString.share5k,
-                widget.onShare!,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              // Comment section - Flexible to prevent overflow
+              if (widget.onComment != null)
+                _buildActionButton(
+                  AppIcon.comment,
+                  22.0,
+                  widget.comomentsCount,
+                  widget.onComment!,
+                  widget.onComment,
+                ),
+              SizedBox(
+                width: AppSize.appSize12,
               ),
-            ),
+              // Like section - Flexible to prevent overflow
+              Obx(() => _buildActionButton(
+                    widget.isLiked ? AppIcon.like : AppIcon.emptyLike,
+                    26.0,
+                    widget.reactionCount ?? "",
+                    widget.onLike,
+                    widget.onLikesText,
+                  )),
 
-          // Reaction section - Fixed width to prevent layout issues
-          // SizedBox(
-          //   width: 100,
-          //   child: _buildReactionButton(),
-          // ),
-        ],
-      ),
+              // Share section - Flexible to prevent overflow
+              if (widget.onShare != null)
+                Expanded(
+                  flex: 2,
+                  child: _buildActionButton(
+                    AppIcon.share,
+                    22.0,
+                    AppString.share5k,
+                    widget.onShare!,
+                  ),
+                ),
+
+              // Reaction section - Fixed width to prevent layout issues
+              // SizedBox(
+              //   width: 100,
+              //   child: _buildReactionButton(),
+              // ),
+            ],
+          ),
+        );
+      },
     );
   }
 

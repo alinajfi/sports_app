@@ -52,27 +52,27 @@ class ProfileTagsTabView extends StatelessWidget {
                   index == 16) {
                 goToTab(context, 3);
               } else {
-                showDialog(
-                  context: context,
-                  barrierColor: AppColor.backgroundColor
-                      .withAlpha(AppSize.appSizePoint7.toInt()),
-                  builder: (context) {
-                    return PostViewDialog(
-                        imageUrl: profileController.postsList[index]);
-                  },
-                );
+                // showDialog(
+                //   context: context,
+                //   barrierColor: AppColor.backgroundColor
+                //       .withAlpha(AppSize.appSizePoint7.toInt()),
+                //   builder: (context) {
+                //     return PostViewDialog(
+                //         imageUrl: profileController.postsList[index]);
+                //   },
+                // );
               }
             },
             child: Stack(
               children: [
-                Container(
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: NetworkImage(profileController.postsList[index]),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
+                // Container(
+                //   decoration: BoxDecoration(
+                //     image: DecorationImage(
+                //       image: NetworkImage(profileController.postsList[index]),
+                //       fit: BoxFit.cover,
+                //     ),
+                //   ),
+                // ),
                 if (index == 0 ||
                     index == 3 ||
                     index == 7 ||

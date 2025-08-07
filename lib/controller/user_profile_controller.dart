@@ -17,8 +17,11 @@ import '../../model/highlight_model.dart';
 
 BottomBarController bottomBarController = Get.put(BottomBarController());
 
-class ProfileController extends GetxController
+class UserProfileController extends GetxController
     with GetSingleTickerProviderStateMixin {
+  UserProfileController({this.userId});
+
+  int? userId;
   TabController? tabController;
   RxBool isFollow = false.obs;
   RxBool isLiked = false.obs;
@@ -42,8 +45,8 @@ class ProfileController extends GetxController
   void onInit() {
     super.onInit();
     tabController = TabController(
-      initialIndex: AppSize.size0,
-      length: AppSize.size1,
+      initialIndex: 0,
+      length: 1,
       vsync: this,
     );
 
@@ -196,7 +199,7 @@ class ProfileController extends GetxController
   RxList<PostModel> postListWithId = <PostModel>[].obs;
 
   void loadUserPosts() async {
-    postsList.value = await HomeServices().getLoggedInUserPost();
+    postsList.value = await HomeServices().getUserPostsWithUserId(userId: "12");
   }
 
   RxList<PostModel> postsList = <PostModel>[].obs;

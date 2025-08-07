@@ -1,8 +1,11 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 // ignore_for_file: must_be_immutable
 // ignore_for_file: deprecated_member_use
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:share_plus/share_plus.dart';
+
 import 'package:prime_social_media_flutter_ui_kit/config/app_color.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_font.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_icon.dart';
@@ -13,6 +16,7 @@ import 'package:prime_social_media_flutter_ui_kit/controller/login_controller.da
 import 'package:prime_social_media_flutter_ui_kit/controller/profile/profile_controller.dart';
 import 'package:prime_social_media_flutter_ui_kit/controller/profile/settings_options/language_controller.dart';
 import 'package:prime_social_media_flutter_ui_kit/model/highlight_model.dart';
+import 'package:prime_social_media_flutter_ui_kit/model/user_model.dart';
 import 'package:prime_social_media_flutter_ui_kit/routes/app_routes.dart';
 import 'package:prime_social_media_flutter_ui_kit/utils/extensions.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/profile/tabs/profile_comments_tab_view.dart';
@@ -20,12 +24,14 @@ import 'package:prime_social_media_flutter_ui_kit/views/profile/tabs/profile_pos
 import 'package:prime_social_media_flutter_ui_kit/views/profile/tabs/profile_reels_tab_view.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/profile/tabs/profile_tags_tab_view.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/widget/profile/profile_action_bottom_sheet.dart';
-import 'package:share_plus/share_plus.dart';
+
+import '../../controller/user_profile_controller.dart';
 
 class UserProfile extends StatelessWidget {
-  UserProfile({Key? key}) : super(key: key);
+  UserProfile({Key? key, this.userID}) : super(key: key);
 
-  ProfileController profileController = Get.put(ProfileController());
+  final int? userID;
+
   late final LanguageController languageController;
   // final loginController = Get.put(LoginController());
   // final loginController = Get.find<LoginController>();
@@ -40,11 +46,15 @@ class UserProfile extends StatelessWidget {
       languageController = Get.put(LanguageController());
     }
 
-    return Scaffold(
-      backgroundColor: AppColor.backgroundColor,
-      appBar: _appBar(context),
-      body: _body(context),
-    );
+    return GetBuilder<UserProfileController>(
+        init: UserProfileController(userId: userID),
+        builder: (coontroller) {
+          return Scaffold(
+            backgroundColor: AppColor.backgroundColor,
+            appBar: _appBar(context),
+            body: _body(context),
+          );
+        });
   }
 
   PreferredSizeWidget _appBar(BuildContext context) {
@@ -100,94 +110,96 @@ class UserProfile extends StatelessWidget {
   }
 
   Widget _body(BuildContext context) {
-    return DefaultTabController(
-      length: 4,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            flex: 0,
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+    return GetBuilder<UserProfileController>(builder: (profileController) {
+      return DefaultTabController(
+        length: 1,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              flex: 0,
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildProfileHeader(context),
+                    //  _buildHighlights(),
+                  ],
+                ),
+              ),
+            ),
+            Container(
+              color: AppColor.backgroundColor,
+              child: Obx(() => TabBar(
+                    onTap: (val) {
+                      profileController.selectedTabIndex.value = val;
+                    },
+                    controller: profileController.tabController,
+                    dividerColor: AppColor.backgroundColor,
+                    labelColor: AppColor.secondaryColor,
+                    labelStyle: const TextStyle(
+                      color: AppColor.secondaryColor,
+                    ),
+                    unselectedLabelColor: AppColor.text1Color,
+                    indicatorColor: AppColor.secondaryColor,
+                    indicatorSize: TabBarIndicatorSize.tab,
+                    indicatorWeight: AppSize.appSizePoint7,
+                    isScrollable: false,
+                    tabs: [
+                      Tab(
+                        icon: Image.asset(
+                          AppIcon.photos,
+                          width: AppSize.appSize22,
+                          color: profileController.selectedTabIndex.value == 0
+                              ? AppColor.secondaryColor
+                              : AppColor.text1Color,
+                        ),
+                      ),
+                      Tab(
+                        icon: Image.asset(
+                          AppIcon.editComment,
+                          width: AppSize.appSize22,
+                          color: profileController.selectedTabIndex.value == 1
+                              ? AppColor.secondaryColor
+                              : AppColor.text1Color,
+                        ),
+                      ),
+                      Tab(
+                        icon: Image.asset(
+                          AppIcon.reel,
+                          width: AppSize.appSize22,
+                          color: profileController.selectedTabIndex.value == 2
+                              ? AppColor.secondaryColor
+                              : AppColor.text1Color,
+                        ),
+                      ),
+                      Tab(
+                        icon: Image.asset(
+                          AppIcon.tag,
+                          width: AppSize.appSize22,
+                          color: profileController.selectedTabIndex.value == 3
+                              ? AppColor.secondaryColor
+                              : AppColor.text1Color,
+                        ),
+                      ),
+                    ],
+                  )),
+            ),
+            Expanded(
+              child: TabBarView(
+                controller: profileController.tabController,
                 children: [
-                  _buildProfileHeader(context),
-                  //  _buildHighlights(),
+                  ProfilePostsTabView(),
+                  // const ProfileCommentsTabView(),
+                  // ProfileReelsTabView(),
+                  // ProfileTagsTabView(),
                 ],
               ),
             ),
-          ),
-          Container(
-            color: AppColor.backgroundColor,
-            child: Obx(() => TabBar(
-                  onTap: (val) {
-                    profileController.selectedTabIndex.value = val;
-                  },
-                  controller: profileController.tabController,
-                  dividerColor: AppColor.backgroundColor,
-                  labelColor: AppColor.secondaryColor,
-                  labelStyle: const TextStyle(
-                    color: AppColor.secondaryColor,
-                  ),
-                  unselectedLabelColor: AppColor.text1Color,
-                  indicatorColor: AppColor.secondaryColor,
-                  indicatorSize: TabBarIndicatorSize.tab,
-                  indicatorWeight: AppSize.appSizePoint7,
-                  isScrollable: false,
-                  tabs: [
-                    Tab(
-                      icon: Image.asset(
-                        AppIcon.photos,
-                        width: AppSize.appSize22,
-                        color: profileController.selectedTabIndex.value == 0
-                            ? AppColor.secondaryColor
-                            : AppColor.text1Color,
-                      ),
-                    ),
-                    Tab(
-                      icon: Image.asset(
-                        AppIcon.editComment,
-                        width: AppSize.appSize22,
-                        color: profileController.selectedTabIndex.value == 1
-                            ? AppColor.secondaryColor
-                            : AppColor.text1Color,
-                      ),
-                    ),
-                    Tab(
-                      icon: Image.asset(
-                        AppIcon.reel,
-                        width: AppSize.appSize22,
-                        color: profileController.selectedTabIndex.value == 2
-                            ? AppColor.secondaryColor
-                            : AppColor.text1Color,
-                      ),
-                    ),
-                    Tab(
-                      icon: Image.asset(
-                        AppIcon.tag,
-                        width: AppSize.appSize22,
-                        color: profileController.selectedTabIndex.value == 3
-                            ? AppColor.secondaryColor
-                            : AppColor.text1Color,
-                      ),
-                    ),
-                  ],
-                )),
-          ),
-          Expanded(
-            child: TabBarView(
-              controller: profileController.tabController,
-              children: [
-                ProfilePostsTabView(),
-                const ProfileCommentsTabView(),
-                ProfileReelsTabView(),
-                ProfileTagsTabView(),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
+          ],
+        ),
+      );
+    });
   }
 
   Widget _buildProfileHeader(BuildContext context) {
@@ -415,43 +427,43 @@ class UserProfile extends StatelessWidget {
     );
   }
 
-  Widget _buildHighlights() {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      padding: const EdgeInsets.only(
-        top: AppSize.appSize36,
-        bottom: AppSize.appSize32,
-        left: AppSize.appSize20,
-        right: AppSize.appSize20,
-      ),
-      child: Obx(() => Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              _customHighlights(AppIcon.add3, AppString.add, () {
-                try {
-                  final index = profileController.highlights.length + 1;
-                  profileController.highlights.add(
-                      HighlightItem(AppImage.highlight1, "Highlight $index"));
-                } catch (e) {
-                  debugPrint('Error adding highlight: $e');
-                }
-              }),
-              _customHighlights(AppImage.highlight1, AppString.like, () {}),
-              _customHighlights(AppImage.highlight2, AppString.travel, () {}),
-              ...profileController.highlights
-                  .map((highlight) =>
-                      _customHighlights(highlight.image, highlight.label, () {
-                        try {
-                          profileController.highlights.remove(highlight);
-                        } catch (e) {
-                          debugPrint('Error removing highlight: $e');
-                        }
-                      }))
-                  .toList(),
-            ],
-          )),
-    );
-  }
+  // Widget _buildHighlights() {
+  //   return SingleChildScrollView(
+  //     scrollDirection: Axis.horizontal,
+  //     padding: const EdgeInsets.only(
+  //       top: AppSize.appSize36,
+  //       bottom: AppSize.appSize32,
+  //       left: AppSize.appSize20,
+  //       right: AppSize.appSize20,
+  //     ),
+  //     child: Obx(() => Row(
+  //           mainAxisAlignment: MainAxisAlignment.start,
+  //           children: [
+  //             _customHighlights(AppIcon.add3, AppString.add, () {
+  //               try {
+  //                 final index = profileController.highlights.length + 1;
+  //                 profileController.highlights.add(
+  //                     HighlightItem(AppImage.highlight1, "Highlight $index"));
+  //               } catch (e) {
+  //                 debugPrint('Error adding highlight: $e');
+  //               }
+  //             }),
+  //             _customHighlights(AppImage.highlight1, AppString.like, () {}),
+  //             _customHighlights(AppImage.highlight2, AppString.travel, () {}),
+  //             ...profileController.highlights
+  //                 .map((highlight) =>
+  //                     _customHighlights(highlight.image, highlight.label, () {
+  //                       try {
+  //                         profileController.highlights.remove(highlight);
+  //                       } catch (e) {
+  //                         debugPrint('Error removing highlight: $e');
+  //                       }
+  //                     }))
+  //                 .toList(),
+  //           ],
+  //         )),
+  //   );
+  // }
 
   Widget _customPostFollowersFollowingCount(String text1, String text2) {
     return Column(

@@ -308,6 +308,12 @@
       "languageVersion": "3.5"
     },
     {
+      "name": "flutter_spinkit",
+      "rootUri": "file:///C:/Users/LAPTOP%20INSIDE/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_spinkit-5.2.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "flutter_test",
       "rootUri": "file:///D:/flutter/packages/flutter_test",
       "packageUri": "lib/",
@@ -908,7 +914,7 @@
       "languageVersion": "3.1"
     }
   ],
-  "generated": "2025-08-06T17:55:13.701971Z",
+  "generated": "2025-08-07T18:30:19.861409Z",
   "generator": "pub",
   "generatorVersion": "3.6.1",
   "flutterRoot": "file:///D:/flutter",
