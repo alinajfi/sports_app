@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:math';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -13,6 +14,8 @@ import 'package:prime_social_media_flutter_ui_kit/model/login_response_model.dar
 import 'package:prime_social_media_flutter_ui_kit/model/user_model.dart';
 import 'package:prime_social_media_flutter_ui_kit/routes/app_routes.dart';
 import 'package:prime_social_media_flutter_ui_kit/services/auth_service.dart';
+
+import '../utils/widget_helper.dart';
 
 class LoginController extends GetxController {
   TextEditingController loginField1Controller = TextEditingController();
@@ -47,7 +50,7 @@ class LoginController extends GetxController {
 
   Future<void> onLoginFailed(String errorMessage) async {
     isLoading.value = false;
-    Fluttertoast.showToast(msg: errorMessage);
+    WidgetHelper.showSnackBar(title: errorMessage, description: errorMessage);
   }
 
   // @override

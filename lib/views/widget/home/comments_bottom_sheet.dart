@@ -9,6 +9,7 @@ import 'package:prime_social_media_flutter_ui_kit/config/app_image.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_size.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_string.dart';
 import 'package:prime_social_media_flutter_ui_kit/controller/home/comments_controller.dart';
+import 'package:prime_social_media_flutter_ui_kit/controller/home/home_controller.dart';
 import 'package:prime_social_media_flutter_ui_kit/controller/profile/settings_options/language_controller.dart';
 import 'package:prime_social_media_flutter_ui_kit/model/comment_model.dart';
 import 'package:prime_social_media_flutter_ui_kit/services/home_services.dart';
@@ -196,6 +197,9 @@ commentsBottomSheet(BuildContext context, String postId) {
   ).then((result) {
     Get.delete<CommentsController>();
     if (result == null || result == 'dismissed') {
+      var controller = Get.find<HomeController>();
+      controller.getPostAfterComment(postId: postId.toString());
+      controller.update(['actions', "update_all_actions"]);
       commentsController.commentsFieldController.clear();
     }
   });

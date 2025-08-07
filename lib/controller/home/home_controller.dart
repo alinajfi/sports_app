@@ -16,6 +16,7 @@ import 'package:prime_social_media_flutter_ui_kit/services/home_services.dart';
 import 'package:share_plus/share_plus.dart';
 
 class HomeController extends GetxController {
+  final homeService = HomeServices();
   RxList<PostModel> timeLinePosts = <PostModel>[].obs;
 
   Rx<int> selectedLabelIndex = Rx<int>(0);
@@ -30,14 +31,66 @@ class HomeController extends GetxController {
     }
   }
 
-  Future<bool> addReactionToPost(String postId) async {
-    final result = await HomeServices().addReactionToPost(postId: postId);
-    getReactions(postId);
-    return result;
+  Future<bool> addReactionToPost(String postId, int index) async {
+    try {
+      final result = await HomeServices().addReactionToPost(postId: postId);
+
+      final posts = await homeService.fetchTimelinePosts();
+
+      final updatedPost = posts.firstWhereOrNull(
+        (element) => element.postId.toString() == postId,
+      );
+
+      if (updatedPost == null) {
+        log('❌ Post with ID $postId not found in fetched posts.');
+        return result;
+      }
+
+      final timelineIndex = timeLinePosts.indexWhere(
+        (post) => post.postId.toString() == postId,
+      );
+
+      if (timelineIndex == -1) {
+        log('⚠️ Post with ID $postId not found in current timeline list.');
+      } else {
+        timeLinePosts[timelineIndex] = updatedPost;
+        log('✅ Post at index $timelineIndex updated after reaction.');
+      }
+
+      return result;
+    } catch (e, stackTrace) {
+      log('💥 Exception in addReactionToPost: $e');
+      log('🔍 StackTrace: $stackTrace');
+      return false;
+    }
   }
 
   getReactions(String postId) {
     HomeServices().getPostReactions(postId: postId);
+  }
+
+  Future<void> getPostAfterComment({required String postId}) async {
+    final posts = await homeService.fetchTimelinePosts();
+
+    final updatedPost = posts.firstWhereOrNull(
+      (element) => element.postId.toString() == postId,
+    );
+
+    if (updatedPost != null) {
+      // Look for index in timeLinePosts using a matching condition
+      final index = timeLinePosts.indexWhere(
+        (post) => post.postId == updatedPost.postId,
+      );
+
+      if (index != -1) {
+        timeLinePosts[index] = updatedPost;
+        log('✅ Post updated at index $index: ${updatedPost.toString()}');
+      } else {
+        log('⚠️ Post with ID $postId not found in current timeline list');
+      }
+    } else {
+      log('❌ Post with ID $postId not found in fetched posts');
+    }
   }
 
   bool isFavourite(String postId) {
@@ -79,9 +132,9 @@ class HomeController extends GetxController {
     }
   }
 
-  HomeController() {
-    selectLabel(0);
-  }
+  // HomeController() {
+  //   selectLabel(0);
+  // }
 
   bool isLabelSelected(int index) {
     return selectedLabelIndex.value == index;
