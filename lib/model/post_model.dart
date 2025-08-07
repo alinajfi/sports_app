@@ -95,6 +95,17 @@ class PostModel {
       'taggedUserList': taggedUserList,
     };
   }
+
+  @override
+  String toString() {
+    return 'PostModel(postId: $postId, userId: $userId, name: $name, photo: $photo, '
+        'publisher: $publisher, publisherId: $publisherId, postType: $postType, '
+        'fileType: $fileType, privacy: $privacy, location: $location, '
+        'postImages: $postImages, thumbnail: $thumbnail, userReaction: $userReaction, '
+        'description: $description, commentsCount: $commentsCount, '
+        'reactionCounts: $reactionCounts, total: $total, createdAt: $createdAt, '
+        'follow: $follow, taggedUserList: $taggedUserList)';
+  }
 }
 
 class ReactionCounts {
@@ -130,5 +141,10 @@ class ReactionCounts {
       'haha': haha,
       'angry': angry,
     };
+  }
+
+  @override
+  String toString() {
+    return 'ReactionCounts(like: $like, love: $love, sad: $sad, haha: $haha, angry: $angry)';
   }
 }

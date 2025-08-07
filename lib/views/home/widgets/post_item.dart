@@ -28,6 +28,8 @@ class PostItem extends StatelessWidget {
   final dynamic Function(String)? onReactionAdd;
   final dynamic Function(String)? onReactionRemove;
   final HomeController controller;
+  final String reactionCount;
+  final String commentsCount;
 
   const PostItem({
     Key? key,
@@ -37,12 +39,14 @@ class PostItem extends StatelessWidget {
     this.onReactionAdd,
     this.onReactionRemove,
     required this.controller,
+    required this.reactionCount,
+    required this.commentsCount,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     // final homeController = Get.find<HomeController>();
-    final languageController = Get.find<LanguageController>();
+    //  final languageController = Get.find<LanguageController>();
 
     return Padding(
         padding: const EdgeInsets.only(
@@ -63,18 +67,24 @@ class PostItem extends StatelessWidget {
         _buildPostImage(context),
         if (socialPost.postImages == null || socialPost.postImages!.isEmpty)
           _buildPostDescription(),
-        PostActions(
-          comomentsCount: socialPost.commentsCount?.toString() ?? "",
-          onComment: () async {
-            commentsBottomSheet(context, socialPost.postId.toString());
-          },
-          onReactionRemove: onReactionRemove,
-          onReactionAdd: onReactionAdd,
-          onLike: onLike,
-          onLikesText: () => likesBottomSheet(context),
-          // onShare: () => homeController.shareAssetImage(socialPost.i),
-          isLiked: isLiked,
-        ),
+        GetBuilder<HomeController>(
+            id: "actions",
+            builder: (cont) {
+              return PostActions(
+                reactionCount: reactionCount,
+                comomentsCount: socialPost.commentsCount?.toString() ?? "",
+                onComment: () async {
+                  await commentsBottomSheet(
+                      context, socialPost.postId.toString());
+                },
+                onReactionRemove: onReactionRemove,
+                onReactionAdd: onReactionAdd,
+                onLike: onLike,
+                onLikesText: () => likesBottomSheet(context),
+                // onShare: () => homeController.shareAssetImage(socialPost.i),
+                isLiked: isLiked,
+              );
+            }),
         const CustomDivider(),
       ],
     );

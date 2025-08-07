@@ -50,10 +50,9 @@ class _HomeViewState extends State<HomeView> {
 
   Widget _buildFloatingActionButton() {
     return FloatingActionButton(
-      onPressed: () {
+      onPressed: () async {
         homeController.getUserProifleWithId();
         //   HomeServices().getCommentOnPosts();
-        //   HomeServices().addReactionToPost();
 
         // UserService().getUserPosts();
         // PostService().getPostOnTimeLine();
@@ -90,32 +89,45 @@ class _HomeViewState extends State<HomeView> {
                     id: 'on_like',
                     builder: (cont) {
                       return PostItem(
+                        commentsCount: post.commentsCount.toString(),
+                        reactionCount:
+                            post.reactionCounts?.love.toString() ?? "0",
                         controller: Get.find<HomeController>(),
                         socialPost: post,
                         onLike: () {
-                          final homeController = Get.find<HomeController>();
                           final postId = post.postId.toString();
+                          final homeController = Get.find<HomeController>();
 
                           if (homeController.favIds.contains(postId)) {
                             homeController.favIds.remove(postId);
                             DbController.instance.writeData(
-                              DbConstants.itemAddedToFav,
-                              homeController.favIds.toList(),
-                            );
-                            cont.update(['on_like']);
+                                DbConstants.itemAddedToFav,
+                                homeController.favIds.toList());
+                            cont.update(
+                                ['on_like', 'actions', 'update_all_actions']);
                           } else {
-                            homeController
-                                .addReactionToPost(postId)
-                                .then((value) {
-                              if (value) {
-                                homeController.favIds.add(postId);
-                                DbController.instance.writeData(
-                                  DbConstants.itemAddedToFav,
-                                  homeController.favIds.toList(),
-                                );
-                                cont.update(['on_like']);
-                              }
-                            });
+                            final index = homeController.timeLinePosts
+                                .indexWhere((p) => p.postId == post.postId);
+
+                            if (index != -1) {
+                              homeController
+                                  .addReactionToPost(postId, index)
+                                  .then((success) {
+                                if (success) {
+                                  homeController.favIds.add(postId);
+                                  DbController.instance.writeData(
+                                      DbConstants.itemAddedToFav,
+                                      homeController.favIds.toList());
+                                  cont.update([
+                                    'on_like',
+                                    'actions',
+                                    'update_all_actions'
+                                  ]);
+                                }
+                              });
+                            } else {
+                              log('⚠️ Post not found in timeline for liking.');
+                            }
                           }
                         },
                         isLiked:

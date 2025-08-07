@@ -115,4 +115,27 @@ class HomeServices extends CommonApiFunctions {
     final response = await http.get(url, headers: getHeadersWithToken());
     return UserModel.fromJson(jsonDecode(response.body));
   }
+
+  Future<List<PostModel>> getUserPostsWithUserId(
+      {required String userId}) async {
+    final url = getUrlFromEndPoints(endPoint: "/profile?user_id=$userId");
+    final response = await http.get(url, headers: getHeadersWithToken());
+    final postsFromServer = jsonDecode(response.body)["posts"] as List;
+    return postsFromServer
+        .map(
+          (e) => PostModel.fromJson(e),
+        )
+        .toList();
+  }
+
+  Future<List<PostModel>> getLoggedInUserPost() async {
+    final url = getUrlFromEndPoints(endPoint: "/profile");
+    final response = await http.get(url, headers: getHeadersWithToken());
+    final postsFromServer = jsonDecode(response.body)["posts"] as List;
+    return postsFromServer
+        .map(
+          (e) => PostModel.fromJson(e),
+        )
+        .toList();
+  }
 }
