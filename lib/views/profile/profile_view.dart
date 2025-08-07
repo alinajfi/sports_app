@@ -1,5 +1,7 @@
 // ignore_for_file: must_be_immutable
 // ignore_for_file: deprecated_member_use
+import 'dart:developer';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -21,10 +23,27 @@ import 'package:prime_social_media_flutter_ui_kit/views/profile/tabs/profile_tag
 import 'package:prime_social_media_flutter_ui_kit/views/widget/profile/profile_action_bottom_sheet.dart';
 import 'package:share_plus/share_plus.dart';
 
-class ProfileView extends StatelessWidget {
+class ProfileView extends StatefulWidget {
   ProfileView({Key? key}) : super(key: key);
 
-  ProfileController profileController = Get.put(ProfileController());
+  @override
+  State<ProfileView> createState() => _ProfileViewState();
+}
+
+class _ProfileViewState extends State<ProfileView> {
+  late ProfileController profileController;
+  @override
+  void initState() {
+    super.initState();
+    profileController = Get.put(ProfileController());
+  }
+
+  @override
+  dispose() {
+    super.dispose();
+    Get.delete<ProfileController>();
+  }
+
   LanguageController languageController = Get.put(LanguageController());
 
   @override
@@ -389,35 +408,6 @@ class ProfileView extends StatelessWidget {
   }
 
   // Widget _buildHighlights() {
-  //   return SingleChildScrollView(
-  //     scrollDirection: Axis.horizontal,
-  //     padding: const EdgeInsets.only(
-  //       top: AppSize.appSize36,
-  //       bottom: AppSize.appSize32,
-  //       left: AppSize.appSize20,
-  //       right: AppSize.appSize20,
-  //     ),
-  //     child: Obx(() => Row(
-  //           mainAxisAlignment: MainAxisAlignment.start,
-  //           children: [
-  //             _customHighlights(AppIcon.add3, AppString.add, () {
-  //               final index = profileController.highlights.length + 1;
-  //               profileController.highlights.add(
-  //                   HighlightItem(AppImage.highlight1, "Highlight $index"));
-  //             }),
-  //             _customHighlights(AppImage.highlight1, AppString.like, () {}),
-  //             _customHighlights(AppImage.highlight2, AppString.travel, () {}),
-  //             ...profileController.highlights
-  //                 .map((highlight) =>
-  //                     _customHighlights(highlight.image, highlight.label, () {
-  //                       profileController.highlights.remove(highlight);
-  //                     }))
-  //                 .toList(),
-  //           ],
-  //         )),
-  //   );
-  // }
-
   _customPostFollowersFollowingCount(String text1, String text2) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
