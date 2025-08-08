@@ -13,9 +13,8 @@ import 'package:prime_social_media_flutter_ui_kit/model/user_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:prime_social_media_flutter_ui_kit/services/auth_service.dart';
 import 'package:prime_social_media_flutter_ui_kit/services/home_services.dart';
+import 'package:prime_social_media_flutter_ui_kit/utils/widget_helper.dart';
 import '../../model/highlight_model.dart';
-
-BottomBarController bottomBarController = Get.put(BottomBarController());
 
 class UserProfileController extends GetxController
     with GetSingleTickerProviderStateMixin {
@@ -50,7 +49,7 @@ class UserProfileController extends GetxController
       vsync: this,
     );
 
-    loadUserProfile().then(
+    getUserProfile().then(
       (value) {
         loadUserPosts();
       },
@@ -66,13 +65,18 @@ class UserProfileController extends GetxController
 
   Rx<User?> currentUser = Rx<User?>(null);
 
-  Future<void> onLoginSuccessFull() async {
-    // Save token if needed
-    // currentUser.value = response.user;
-    user.value = await AuthService().fetchUserProfile();
+  UserModel? userData;
 
-    // Navigate to ProfileScreen or HomePage
-    // Get.offAll(() => HomeScreen());
+  Future<void> getUserProfile() async {
+    isLoading.value = true;
+    if (userId != null) {
+      userData =
+          await HomeServices().getUserProfileWithId(userId: userId.toString());
+      isLoading.value = false;
+    } else {
+      isLoading.value = false;
+      WidgetHelper.showSnackBar(title: "usernot found");
+    }
   }
 
   void loadEditFieldsFromUserModel() {
@@ -147,7 +151,7 @@ class UserProfileController extends GetxController
   //   }
   // }
 
-  Future<void> loadUserProfile() async {
+  Future<void> editUserProfile() async {
     try {
       isLoading.value = true;
       final token =
@@ -199,40 +203,12 @@ class UserProfileController extends GetxController
   RxList<PostModel> postListWithId = <PostModel>[].obs;
 
   void loadUserPosts() async {
-    postsList.value = await HomeServices().getUserPostsWithUserId(userId: "12");
+    isLoading.value = true;
+    postsList.value =
+        await HomeServices().getUserPostsWithUserId(userId: userId.toString());
+
+    isLoading.value = false;
   }
 
   RxList<PostModel> postsList = <PostModel>[].obs;
-
-  RxList<String> reelsList = [
-    AppString.reel1,
-    AppString.reel2,
-    AppString.reel3,
-    AppString.reel4,
-    AppString.reel5,
-    AppString.reel6,
-    AppString.reel7,
-    AppString.reel8,
-    AppString.reel9,
-  ].obs;
-
-  RxList<String> reelsViewList = [
-    AppString.reelView500,
-    AppString.reelView500k,
-    AppString.reelView100k,
-    AppString.reelView5and5k,
-    AppString.reelView20k,
-    AppString.reelView389,
-    AppString.reelView1m,
-    AppString.reelView2and5m,
-    AppString.reelView78,
-  ].obs;
-
-  RxList<String> profileActionsList = [
-    AppString.yourActivity,
-    AppString.qrCode,
-    AppString.saved,
-    AppString.closeFriends,
-    AppString.settings,
-  ].obs;
 }

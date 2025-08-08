@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_color.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_size.dart';
 import 'package:prime_social_media_flutter_ui_kit/controller/home/all_post_controller.dart';
+import 'package:prime_social_media_flutter_ui_kit/model/post_model.dart';
 
 import '../../../config/app_font.dart';
 import '../../../config/app_icon.dart';
@@ -21,7 +22,8 @@ class PostViewDialog extends StatelessWidget {
     return Material(
       type: MaterialType.transparency,
       child: Padding(
-        padding: const EdgeInsets.only(left: AppSize.appSize20, right: AppSize.appSize20),
+        padding: const EdgeInsets.only(
+            left: AppSize.appSize20, right: AppSize.appSize20),
         child: Center(
           child: Container(
             width: AppSize.appSize355,
@@ -48,12 +50,15 @@ class PostViewDialog extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(
-                    top: AppSize.appSize15, left: AppSize.appSize20, right: AppSize.appSize20,
+                    top: AppSize.appSize15,
+                    left: AppSize.appSize20,
+                    right: AppSize.appSize20,
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      _photoOptionWidget(AppIcon.comment, AppSize.appSize22, AppString.comment10k),
+                      _photoOptionWidget(AppIcon.comment, AppSize.appSize22,
+                          AppString.comment10k),
                       Obx(() {
                         bool isLiked = allPostController.isLiked.value;
                         return _photoOptionWidget(
@@ -65,8 +70,10 @@ class PostViewDialog extends StatelessWidget {
                           },
                         );
                       }),
-                      _photoOptionWidget(AppIcon.share, AppSize.appSize22, AppString.share5k),
-                      _photoOptionWidget(AppIcon.save, AppSize.appSize22, AppString.save2k),
+                      _photoOptionWidget(
+                          AppIcon.share, AppSize.appSize22, AppString.share5k),
+                      _photoOptionWidget(
+                          AppIcon.save, AppSize.appSize22, AppString.save2k),
                     ],
                   ),
                 ),
@@ -79,7 +86,8 @@ class PostViewDialog extends StatelessWidget {
   }
 }
 
-_photoOptionWidget(String icon, double width, String text, {void Function() ? onTap}) {
+_photoOptionWidget(String icon, double width, String text,
+    {void Function()? onTap}) {
   return GestureDetector(
     onTap: onTap,
     child: Row(

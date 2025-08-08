@@ -9,49 +9,32 @@ import 'package:share_plus/share_plus.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_color.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_font.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_icon.dart';
-import 'package:prime_social_media_flutter_ui_kit/config/app_image.dart';
+
 import 'package:prime_social_media_flutter_ui_kit/config/app_size.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_string.dart';
-import 'package:prime_social_media_flutter_ui_kit/controller/login_controller.dart';
-import 'package:prime_social_media_flutter_ui_kit/controller/profile/profile_controller.dart';
-import 'package:prime_social_media_flutter_ui_kit/controller/profile/settings_options/language_controller.dart';
-import 'package:prime_social_media_flutter_ui_kit/model/highlight_model.dart';
-import 'package:prime_social_media_flutter_ui_kit/model/user_model.dart';
+
 import 'package:prime_social_media_flutter_ui_kit/routes/app_routes.dart';
 import 'package:prime_social_media_flutter_ui_kit/utils/extensions.dart';
-import 'package:prime_social_media_flutter_ui_kit/views/profile/tabs/profile_comments_tab_view.dart';
-import 'package:prime_social_media_flutter_ui_kit/views/profile/tabs/profile_posts_tab_view.dart';
-import 'package:prime_social_media_flutter_ui_kit/views/profile/tabs/profile_reels_tab_view.dart';
-import 'package:prime_social_media_flutter_ui_kit/views/profile/tabs/profile_tags_tab_view.dart';
-import 'package:prime_social_media_flutter_ui_kit/views/widget/profile/profile_action_bottom_sheet.dart';
 
 import '../../controller/user_profile_controller.dart';
+import 'user_profile_post_tab_view.dart';
 
 class UserProfile extends StatelessWidget {
   UserProfile({Key? key, this.userID}) : super(key: key);
 
   final int? userID;
 
-  late final LanguageController languageController;
-  // final loginController = Get.put(LoginController());
-  // final loginController = Get.find<LoginController>();
-
   @override
   Widget build(BuildContext context) {
-    // Initialize language controller with null check
-    try {
-      languageController = Get.find<LanguageController>();
-    } catch (e) {
-      // If controller not found, put a new instance
-      languageController = Get.put(LanguageController());
-    }
-
     return GetBuilder<UserProfileController>(
         init: UserProfileController(userId: userID),
         builder: (coontroller) {
           return Scaffold(
             backgroundColor: AppColor.backgroundColor,
-            appBar: _appBar(context),
+            appBar: AppBar(
+              automaticallyImplyLeading: true,
+            ),
+            // appBar: _appBar(context),
             body: _body(context),
           );
         });
@@ -79,15 +62,15 @@ class UserProfile extends StatelessWidget {
         Obx(() => Padding(
               padding: EdgeInsets.only(
                 right: AppSize.appSize10,
-                left: languageController.selectedLanguageIndex.value ==
-                        AppSize.size2
-                    ? AppSize.appSize16
-                    : AppSize.appSize0,
+                // left: languageController.selectedLanguageIndex.value ==
+                //         AppSize.size2
+                //     ? AppSize.appSize16
+                //     : AppSize.appSize0,
               ),
               child: GestureDetector(
                 onTap: () {
                   try {
-                    profileActionBottomSheet(context);
+                    // profileActionBottomSheet(context);
                   } catch (e) {
                     debugPrint('Error showing bottom sheet: $e');
                   }
@@ -110,321 +93,297 @@ class UserProfile extends StatelessWidget {
   }
 
   Widget _body(BuildContext context) {
-    return GetBuilder<UserProfileController>(builder: (profileController) {
-      return DefaultTabController(
-        length: 1,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              flex: 0,
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _buildProfileHeader(context),
-                    //  _buildHighlights(),
-                  ],
-                ),
-              ),
-            ),
-            Container(
-              color: AppColor.backgroundColor,
-              child: Obx(() => TabBar(
-                    onTap: (val) {
-                      profileController.selectedTabIndex.value = val;
-                    },
-                    controller: profileController.tabController,
-                    dividerColor: AppColor.backgroundColor,
-                    labelColor: AppColor.secondaryColor,
-                    labelStyle: const TextStyle(
-                      color: AppColor.secondaryColor,
-                    ),
-                    unselectedLabelColor: AppColor.text1Color,
-                    indicatorColor: AppColor.secondaryColor,
-                    indicatorSize: TabBarIndicatorSize.tab,
-                    indicatorWeight: AppSize.appSizePoint7,
-                    isScrollable: false,
-                    tabs: [
-                      Tab(
-                        icon: Image.asset(
-                          AppIcon.photos,
-                          width: AppSize.appSize22,
-                          color: profileController.selectedTabIndex.value == 0
-                              ? AppColor.secondaryColor
-                              : AppColor.text1Color,
-                        ),
-                      ),
-                      Tab(
-                        icon: Image.asset(
-                          AppIcon.editComment,
-                          width: AppSize.appSize22,
-                          color: profileController.selectedTabIndex.value == 1
-                              ? AppColor.secondaryColor
-                              : AppColor.text1Color,
-                        ),
-                      ),
-                      Tab(
-                        icon: Image.asset(
-                          AppIcon.reel,
-                          width: AppSize.appSize22,
-                          color: profileController.selectedTabIndex.value == 2
-                              ? AppColor.secondaryColor
-                              : AppColor.text1Color,
-                        ),
-                      ),
-                      Tab(
-                        icon: Image.asset(
-                          AppIcon.tag,
-                          width: AppSize.appSize22,
-                          color: profileController.selectedTabIndex.value == 3
-                              ? AppColor.secondaryColor
-                              : AppColor.text1Color,
-                        ),
-                      ),
-                    ],
-                  )),
-            ),
-            Expanded(
-              child: TabBarView(
-                controller: profileController.tabController,
+    return GetX<UserProfileController>(builder: (profileController) {
+      return profileController.isLoading.value
+          ? Center(
+              child: CircularProgressIndicator.adaptive(),
+            )
+          : DefaultTabController(
+              length: 1, // Adjust if you enable more tabs
+              child: Column(
                 children: [
-                  ProfilePostsTabView(),
-                  // const ProfileCommentsTabView(),
-                  // ProfileReelsTabView(),
-                  // ProfileTagsTabView(),
-                ],
-              ),
-            ),
-          ],
-        ),
-      );
-    });
-  }
+                  // Profile Header (non-scrollable)
+                  _buildProfileHeader(context, profileController),
 
-  Widget _buildProfileHeader(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(
-        top: AppSize.appSize35,
-        left: AppSize.appSize20,
-        right: AppSize.appSize20,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(bottom: AppSize.appSize14),
-            child: Row(
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    try {
-                      Get.toNamed(AppRoutes.storyWithMessageView);
-                    } catch (e) {
-                      debugPrint('Navigation error: $e');
+                  // Loading Indicator or TabBar
+                  Obx(() {
+                    if (profileController.isLoading.value) {
+                      return const Padding(
+                        padding: EdgeInsets.all(16.0),
+                        child: Center(child: CircularProgressIndicator()),
+                      );
                     }
-                  },
-                  child: Image.asset(
-                    AppImage.story2,
-                    width: AppSize.appSize82,
-                  ),
-                ),
-                Expanded(
-                  child: Container(
-                    height: AppSize.appSize50,
-                    margin: EdgeInsets.only(
-                      left: languageController.selectedLanguageIndex.value ==
-                              AppSize.size2
-                          ? AppSize.appSize8
-                          : AppSize.appSize30,
-                      right: languageController.selectedLanguageIndex.value ==
-                              AppSize.size2
-                          ? AppSize.appSize30
-                          : AppSize.appSize0,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+                    return Container(
+                      color: AppColor.backgroundColor,
+                      child: TabBar(
+                        controller: profileController.tabController,
+                        onTap: (val) {
+                          profileController.selectedTabIndex.value = val;
+                        },
+                        dividerColor: AppColor.backgroundColor,
+                        labelColor: AppColor.secondaryColor,
+                        labelStyle: const TextStyle(
+                          color: AppColor.secondaryColor,
+                        ),
+                        unselectedLabelColor: AppColor.text1Color,
+                        indicatorColor: AppColor.secondaryColor,
+                        indicatorSize: TabBarIndicatorSize.tab,
+                        indicatorWeight: AppSize.appSizePoint7,
+                        isScrollable: false,
+                        tabs: [
+                          Tab(
+                              icon: Image.asset(
+                            AppIcon.photos,
+                            width: AppSize.appSize22,
+                            color: profileController.selectedTabIndex.value == 0
+                                ? AppColor.secondaryColor
+                                : AppColor.text1Color,
+                          )),
+                          // You can enable more tabs here
+                        ],
+                      ),
+                    );
+                  }),
+
+                  // TabBar View
+                  Expanded(
+                    child: TabBarView(
+                      controller: profileController.tabController,
                       children: [
-                        _customPostFollowersFollowingCount(
-                            AppString.followers200k, AppString.supporters),
-                        _customPostFollowersFollowingCount(
-                            AppString.following1123, AppString.following),
+                        UserProfilePostTabView(),
+                        // Add more tabs here
                       ],
                     ),
                   ),
-                ),
-              ],
-            ),
-          ),
+                ],
+              ),
+            );
+    });
+  }
 
-          const Padding(
-            padding: EdgeInsets.only(bottom: AppSize.appSize4),
-            child: Text(
-              AppString.eleanorPena,
-              style: TextStyle(
-                fontSize: AppSize.appSize16,
-                fontWeight: FontWeight.w600,
-                fontFamily: AppFont.appFontSemiBold,
-                color: AppColor.secondaryColor,
-              ),
-            ),
-          ),
-          // Obx(() {
-          //   final user = profileController.user.value;
-          //   return Padding(
-          //     padding: const EdgeInsets.only(bottom: AppSize.appSize4),
-          //     child: Text(
-          //       user?.name ?? "Guest",
-          //       style: const TextStyle(
-          //         fontSize: AppSize.appSize16,
-          //         fontWeight: FontWeight.w600,
-          //         fontFamily: AppFont.appFontSemiBold,
-          //         color: AppColor.secondaryColor,
-          //       ),
-          //     ),
-          //   );
-          // }),
-          const Text(
-            AppString.loremString5,
-            style: TextStyle(
-              fontSize: AppSize.appSize14,
-              fontWeight: FontWeight.w400,
-              fontFamily: AppFont.appFontRegular,
-              color: AppColor.secondaryColor,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: AppSize.appSize14),
-            child: SizedBox(
-              height: AppSize.appSize32,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  Widget _buildProfileHeader(
+      BuildContext context, UserProfileController controller) {
+    return Padding(
+        padding: const EdgeInsets.only(
+          top: AppSize.appSize35,
+          left: AppSize.appSize20,
+          right: AppSize.appSize20,
+        ),
+        child: controller.userData != null
+            ? Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  GestureDetector(
-                    onTap: () {
-                      try {
-                        Get.toNamed(AppRoutes.supportersScreenRoute);
-                      } catch (e) {
-                        debugPrint('Navigation error: $e');
-                      }
-                    },
-                    child: Container(
-                      width: kIsWeb ? AppSize.appSize355 : AppSize.appSize147,
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: AppSize.appSize14),
+                    child: Row(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            try {
+                              Get.toNamed(AppRoutes.storyWithMessageView);
+                            } catch (e) {
+                              debugPrint('Navigation error: $e');
+                            }
+                          },
+                          child: Container(
+                              height: 60,
+                              width: 60,
+                              child: Image.network(controller.userData!.photo)),
+                        ),
+                        SizedBox(
+                          width: 20,
+                        ),
+                        Expanded(
+                          child: Container(
+                            height: AppSize.appSize50,
+                            margin: EdgeInsets.only(
+                                // left: languageController.selectedLanguageIndex.value ==
+                                //         AppSize.size2
+                                //     ? AppSize.appSize8
+                                //     : AppSize.appSize30,
+                                // right: languageController.selectedLanguageIndex.value ==
+                                //         AppSize.size2
+                                //     ? AppSize.appSize30
+                                //     : AppSize.appSize0,
+                                ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                _customPostFollowersFollowingCount(
+                                    controller.userData?.followers.toString() ??
+                                        "0",
+                                    AppString.supporters),
+                                _customPostFollowersFollowingCount(
+                                    controller.userData?.following.toString() ??
+                                        "0",
+                                    AppString.following),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(bottom: AppSize.appSize4),
+                    child: Text(
+                      controller.userData?.name ?? "Eg",
+                      style: TextStyle(
+                        fontSize: AppSize.appSize16,
+                        fontWeight: FontWeight.w600,
+                        fontFamily: AppFont.appFontSemiBold,
+                        color: AppColor.secondaryColor,
+                      ),
+                    ),
+                  ),
+                  Text(
+                    controller.userData?.about ?? "",
+                    style: TextStyle(
+                      fontSize: AppSize.appSize14,
+                      fontWeight: FontWeight.w400,
+                      fontFamily: AppFont.appFontRegular,
+                      color: AppColor.secondaryColor,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: AppSize.appSize14),
+                    child: SizedBox(
                       height: AppSize.appSize32,
-                      margin: EdgeInsets.only(
-                        right: AppSize.appSize8,
-                        left: languageController.selectedLanguageIndex.value ==
-                                AppSize.size2
-                            ? AppSize.appSize8
-                            : AppSize.appSize0,
-                      ),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(AppSize.appSize6),
-                        color: AppColor.cardBackgroundColor,
-                      ),
-                      child: const Center(
-                        child: Text(
-                          AppString.follow,
-                          style: TextStyle(
-                            fontSize: AppSize.appSize14,
-                            fontWeight: FontWeight.w400,
-                            fontFamily: AppFont.appFontRegular,
-                            color: AppColor.secondaryColor,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: GestureDetector(
-                      onTap: () {
-                        try {
-                          Share.share(AppString.eleanorPena);
-                        } catch (e) {
-                          debugPrint('Share error: $e');
-                        }
-                      },
-                      child: Container(
-                        width: AppSize.appSize147,
-                        height: AppSize.appSize32,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(AppSize.appSize6),
-                          color: AppColor.cardBackgroundColor,
-                        ),
-                        child: const Center(
-                          child: Text(
-                            AppString.message,
-                            style: TextStyle(
-                              fontSize: AppSize.appSize14,
-                              fontWeight: FontWeight.w400,
-                              fontFamily: AppFont.appFontRegular,
-                              color: AppColor.secondaryColor,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              try {
+                                Get.toNamed(AppRoutes.supportersScreenRoute);
+                              } catch (e) {
+                                debugPrint('Navigation error: $e');
+                              }
+                            },
+                            child: Container(
+                              width: kIsWeb
+                                  ? AppSize.appSize355
+                                  : AppSize.appSize147,
+                              height: AppSize.appSize32,
+                              margin: EdgeInsets.only(
+                                right: AppSize.appSize8,
+                                // left: languageController.selectedLanguageIndex.value ==
+                                //         AppSize.size2
+                                //     ? AppSize.appSize8
+                                //     : AppSize.appSize0,
+                              ),
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.circular(AppSize.appSize6),
+                                color: AppColor.cardBackgroundColor,
+                              ),
+                              child: const Center(
+                                child: Text(
+                                  AppString.follow,
+                                  style: TextStyle(
+                                    fontSize: AppSize.appSize14,
+                                    fontWeight: FontWeight.w400,
+                                    fontFamily: AppFont.appFontRegular,
+                                    color: AppColor.secondaryColor,
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: AppSize.appSize14),
-            child: SizedBox(
-              height: AppSize.appSize32,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Flexible(
-                    child: GestureDetector(
-                      onTap: () {
-                        try {
-                          Get.toNamed(AppRoutes.eventScreenRoute);
-                        } catch (e) {
-                          debugPrint('Navigation error: $e');
-                        }
-                      },
-                      child: Container(
-                        width:
-                            kIsWeb ? AppSize.appSize355 : context.screenWidth,
-                        height: AppSize.appSize32,
-                        margin: EdgeInsets.only(
-                          left:
-                              languageController.selectedLanguageIndex.value ==
-                                      AppSize.size2
-                                  ? AppSize.appSize8
-                                  : AppSize.appSize0,
-                        ),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(AppSize.appSize6),
-                          color: AppColor.cardBackgroundColor,
-                        ),
-                        child: Center(
-                          child: Text(
-                            AppString.upcommingEvent,
-                            style: TextStyle(
-                              fontSize: AppSize.appSize14,
-                              fontWeight: FontWeight.w400,
-                              fontFamily: AppFont.appFontRegular,
-                              color: AppColor.secondaryColor,
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: () {
+                                try {
+                                  Share.share(AppString.eleanorPena);
+                                } catch (e) {
+                                  debugPrint('Share error: $e');
+                                }
+                              },
+                              child: Container(
+                                width: AppSize.appSize147,
+                                height: AppSize.appSize32,
+                                decoration: BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.circular(AppSize.appSize6),
+                                  color: AppColor.cardBackgroundColor,
+                                ),
+                                child: const Center(
+                                  child: Text(
+                                    AppString.message,
+                                    style: TextStyle(
+                                      fontSize: AppSize.appSize14,
+                                      fontWeight: FontWeight.w400,
+                                      fontFamily: AppFont.appFontRegular,
+                                      color: AppColor.secondaryColor,
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
-                        ),
+                        ],
                       ),
                     ),
                   ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: AppSize.appSize14),
+                    child: SizedBox(
+                      height: AppSize.appSize32,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Flexible(
+                            child: GestureDetector(
+                              onTap: () {
+                                try {
+                                  Get.toNamed(AppRoutes.eventScreenRoute);
+                                } catch (e) {
+                                  debugPrint('Navigation error: $e');
+                                }
+                              },
+                              child: Container(
+                                width: kIsWeb
+                                    ? AppSize.appSize355
+                                    : context.screenWidth,
+                                height: AppSize.appSize32,
+                                margin: EdgeInsets.only(
+                                    // left:
+                                    //     languageController.selectedLanguageIndex.value ==
+                                    //             AppSize.size2
+                                    //         ? AppSize.appSize8
+                                    //         : AppSize.appSize0,
+                                    ),
+                                decoration: BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.circular(AppSize.appSize6),
+                                  color: AppColor.cardBackgroundColor,
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    AppString.upcommingEvent,
+                                    style: TextStyle(
+                                      fontSize: AppSize.appSize14,
+                                      fontWeight: FontWeight.w400,
+                                      fontFamily: AppFont.appFontRegular,
+                                      color: AppColor.secondaryColor,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.only(top: AppSize.appSize14),
+                    child: PremiumSubscriptionCard(),
+                  )
                 ],
-              ),
-            ),
-          ),
-          const Padding(
-            padding: EdgeInsets.only(top: AppSize.appSize14),
-            child: PremiumSubscriptionCard(),
-          )
-        ],
-      ),
-    );
+              )
+            : Text("No user found"));
   }
 
   // Widget _buildHighlights() {
