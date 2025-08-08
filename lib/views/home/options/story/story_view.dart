@@ -1,67 +1,46 @@
-// ignore_for_file: unrelated_type_equality_checks, must_be_immutable
+// ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_color.dart';
-import 'package:prime_social_media_flutter_ui_kit/config/app_string.dart';
 import 'package:story_view/story_view.dart';
 
-class StoryFullView extends StatelessWidget {
-  StoryFullView({super.key});
+import '../../../../model/story_model.dart';
 
-  StoryController controller = StoryController();
+class StoryFullView extends StatelessWidget {
+  final StoryModel story;
+  final StoryController controller = StoryController();
+
+  StoryFullView({super.key, required this.story});
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         backgroundColor: AppColor.backgroundColor,
-        body: _buildHighlights(),
+        body: _buildStoryView(),
       ),
     );
   }
 
-  //Story full view content
-  Widget _buildHighlights() {
-    final List<StoryItem> stories = [
+  Widget _buildStoryView() {
+    final List<StoryItem> storyItems = [
       StoryItem.inlineImage(
-        url: AppString.story1,
-        controller: controller,
-        roundedTop: false,
-      ),
-      StoryItem.inlineImage(
-        url: AppString.story2,
-        controller: controller,
-        roundedTop: false,
-      ),
-      StoryItem.inlineImage(
-        url: AppString.story3,
-        controller: controller,
-        roundedTop: false,
-      ),
-      StoryItem.inlineImage(
-        url: AppString.story4,
-        controller: controller,
-        roundedTop: false,
-      ),
-      StoryItem.inlineImage(
-        url: AppString.story3,
+        url: story.postImages,
         controller: controller,
         roundedTop: false,
       ),
     ];
 
     return StoryView(
-      storyItems: stories,
-      repeat: true,
-      inline: true,
-      progressPosition: ProgressPosition.top,
+      storyItems: storyItems,
       controller: controller,
-      onComplete: () {
-        Get.back();
-      },
-      onVerticalSwipeComplete: (v) {
-        if (v == Direction.down) {
+      inline: true,
+      repeat: false,
+      progressPosition: ProgressPosition.top,
+      onComplete: () => Get.back(),
+      onVerticalSwipeComplete: (direction) {
+        if (direction == Direction.down) {
           Get.back();
         }
       },

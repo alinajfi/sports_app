@@ -53,7 +53,7 @@ class SignUpView extends StatelessWidget {
               child: Image.asset(
                 AppImage.appLogo,
                 width: 200,
-                height: 100,
+                height: 60,
                 fit: BoxFit.fill,
               ),
             ),

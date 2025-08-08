@@ -52,7 +52,9 @@ class _ProfileViewState extends State<ProfileView> {
     return Scaffold(
       backgroundColor: AppColor.backgroundColor,
       appBar: _appBar(context),
-      body: _body(),
+      body: Obx(() => profileController.isLoading.value
+          ? Center(child: CircularProgressIndicator())
+          : _body()),
     );
   }
 
@@ -86,7 +88,8 @@ class _ProfileViewState extends State<ProfileView> {
           ),
           child: GestureDetector(
             onTap: () {
-              profileActionBottomSheet(context);
+              Fluttertoast.showToast(msg: "disabled");
+              //  profileActionBottomSheet(context);
             },
             child: Container(
               width: AppSize.appSize40,

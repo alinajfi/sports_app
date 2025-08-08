@@ -125,7 +125,7 @@ class AppRoutes {
     GetPage(name: resetPasswordView, page: () => ResetPasswordView()),
     GetPage(name: welcomeView, page: () => const WelcomeView()),
     GetPage(name: homeView, page: () => HomeView()),
-    GetPage(name: storyFullView, page: () => StoryFullView()),
+//    GetPage(name: storyFullView, page: () => StoryFullView()),
     GetPage(name: reelFullView, page: () => ReelFullView()),
     GetPage(name: repostView, page: () => RepostView()),
     GetPage(name: searchView, page: () => SearchView()),

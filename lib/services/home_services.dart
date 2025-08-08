@@ -11,6 +11,8 @@ import 'package:prime_social_media_flutter_ui_kit/model/social_media_post_model.
 import 'package:prime_social_media_flutter_ui_kit/model/user_model.dart';
 import 'package:prime_social_media_flutter_ui_kit/utils/common_api_functions.dart';
 
+import '../model/story_model.dart';
+
 class HomeServices extends CommonApiFunctions {
   Future<List<PostModel>> fetchTimelinePosts() async {
     final url = Uri.parse('https://mysportsjourney.co.uk/api/timeline');
@@ -137,5 +139,24 @@ class HomeServices extends CommonApiFunctions {
           (e) => PostModel.fromJson(e),
         )
         .toList();
+  }
+
+  Future<List<StoryModel>> getStories() async {
+    final url = getUrlFromEndPoints(endPoint: "/stories");
+
+    try {
+      final response = await http.get(url, headers: getHeadersWithToken());
+      final decodedData = jsonDecode(response.body)['stories'] as List;
+
+      return decodedData
+          .map(
+            (e) => StoryModel.fromJson(e),
+          )
+          .toList();
+    } catch (e) {
+      log(e.toString());
+    }
+
+    return [];
   }
 }

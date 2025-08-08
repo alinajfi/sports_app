@@ -217,8 +217,19 @@ import 'package:get/get.dart';
 import 'package:prime_social_media_flutter_ui_kit/controller/create_post_controller.dart';
 import 'package:prime_social_media_flutter_ui_kit/model/create_post_model.dart';
 
-class CreatePost extends StatelessWidget {
+class CreatePost extends StatefulWidget {
   CreatePost({Key? key}) : super(key: key);
+
+  @override
+  State<CreatePost> createState() => _CreatePostState();
+}
+
+class _CreatePostState extends State<CreatePost> {
+  @override
+  dispose() {
+    Get.delete<CreatePostController>();
+    super.dispose();
+  }
 
   final CreatePostController controller = Get.put(CreatePostController());
 
@@ -233,9 +244,13 @@ class CreatePost extends StatelessWidget {
   final List<String> privacyOptions = ['Public', 'Friends', 'Only me'];
 
   final Color darkBackground = const Color(0xFF121212);
+
   final Color darkCard = const Color(0xFF1E1E1E);
+
   final Color primaryText = Colors.white;
+
   final Color secondaryText = Colors.grey;
+
   final Color iconColor = Colors.purpleAccent;
 
   @override
@@ -262,51 +277,58 @@ class CreatePost extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _userRow(),
-            const SizedBox(height: 12),
-            _descriptionField(),
-            const SizedBox(height: 12),
-            Text(
-              "Add to your post",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-                color: primaryText,
-              ),
-            ),
-            const SizedBox(height: 8),
-            _iconRow(),
-            Obx(() {
-              if (controller.pickedImages.isEmpty) return SizedBox.shrink();
-
-              return SizedBox(
-                height: 230, // ✅ Set your desired height here
-                child: GridView.builder(
-                  itemCount: controller.pickedImages.length,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    crossAxisSpacing: 8,
-                    mainAxisSpacing: 8,
-                    childAspectRatio: 1,
-                  ),
-                  scrollDirection: Axis.vertical,
-                  itemBuilder: (context, index) {
-                    final imageFile = controller.pickedImages[index];
-                    return ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: Image.file(
-                        imageFile,
-                        fit: BoxFit.cover,
-                      ),
-                    );
-                  },
+        child: SingleChildScrollView(
+          physics: MediaQuery.of(context).viewInsets.bottom > 0
+              ? BouncingScrollPhysics()
+              : NeverScrollableScrollPhysics(),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _userRow(),
+              const SizedBox(height: 12),
+              _descriptionField(),
+              const SizedBox(height: 12),
+              Text(
+                "Add to your post",
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                  color: primaryText,
                 ),
-              );
-            }),
-          ],
+              ),
+              const SizedBox(height: 8),
+              _iconRow(),
+              Obx(() {
+                if (controller.pickedImages.isEmpty) return SizedBox.shrink();
+
+                return SizedBox(
+                  height: 230, // ✅ Set your desired height here
+                  child: GridView.builder(
+                    itemCount: controller.pickedImages.length,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                      crossAxisSpacing: 8,
+                      mainAxisSpacing: 8,
+                      childAspectRatio: 1,
+                    ),
+                    scrollDirection: Axis.vertical,
+                    itemBuilder: (context, index) {
+                      final imageFile = controller.pickedImages[index];
+                      return ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: Image.file(
+                          imageFile,
+                          fit: BoxFit.cover,
+                        ),
+                      );
+                    },
+                  ),
+                );
+              }),
+            ],
+          ),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -446,11 +468,15 @@ class CreatePost extends StatelessWidget {
             Fluttertoast.showToast(msg: "Post $e");
           }
         },
-        child: const Text(
-          'Publish Now',
-          style: TextStyle(
-              fontSize: 16, fontWeight: FontWeight.w600, color: Colors.white),
-        ),
+        child: Obx(() => controller.isLoading.value
+            ? CircularProgressIndicator.adaptive()
+            : Text(
+                'Publish Now',
+                style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white),
+              )),
       ),
     );
   }

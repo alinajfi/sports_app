@@ -12,6 +12,7 @@ import 'package:prime_social_media_flutter_ui_kit/constants/db_constants.dart';
 import 'package:prime_social_media_flutter_ui_kit/controller/db_controller.dart';
 import 'package:prime_social_media_flutter_ui_kit/model/comment_model.dart';
 import 'package:prime_social_media_flutter_ui_kit/model/post_model.dart';
+import 'package:prime_social_media_flutter_ui_kit/model/story_model.dart';
 import 'package:prime_social_media_flutter_ui_kit/services/home_services.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -106,10 +107,7 @@ class HomeController extends GetxController {
         DbController.instance.readData(DbConstants.itemAddedToFav);
     favIds = storedList != null ? Set<String>.from(storedList) : {};
     HomeServices().getAllUsers();
-  }
-
-  getUserProifleWithId() async {
-    final result = await HomeServices().getUserProfileWithId(userId: "12");
+    getStories();
   }
 
   void startAnimation() async {
@@ -145,18 +143,18 @@ class HomeController extends GetxController {
     update();
   }
 
-  RxList<String> storyList = [
-    AppImage.myStory,
-    AppImage.story1,
-    AppImage.story2,
-    AppImage.story3,
-    AppImage.story1,
-    AppImage.story2,
-    AppImage.story3,
-    AppImage.story1,
-    AppImage.story2,
-    AppImage.story3,
-  ].obs;
+  RxBool isLoading = false.obs;
+  Future<void> getStories() async {
+    isLoading.value = true;
+    try {
+      storyList.value = await homeService.getStories();
+    } catch (e) {
+      isLoading.value = false;
+    }
+    isLoading.value = false;
+  }
+
+  RxList<StoryModel> storyList = <StoryModel>[].obs;
 
   RxList<String> storyIDList = [
     AppString.yourStory,
