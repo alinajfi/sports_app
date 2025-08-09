@@ -255,11 +255,7 @@ class UserProfile extends StatelessWidget {
                         children: [
                           GestureDetector(
                             onTap: () {
-                              try {
-                                Get.toNamed(AppRoutes.supportersScreenRoute);
-                              } catch (e) {
-                                debugPrint('Navigation error: $e');
-                              }
+                              controller.followFriend();
                             },
                             child: Container(
                               width: kIsWeb
@@ -322,6 +318,11 @@ class UserProfile extends StatelessWidget {
                               ),
                             ),
                           ),
+                          IconButton(
+                              onPressed: () {
+                                controller.addFriend();
+                              },
+                              icon: Icon(Icons.add))
                         ],
                       ),
                     ),

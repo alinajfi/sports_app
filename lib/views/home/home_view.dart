@@ -12,6 +12,7 @@ import 'package:prime_social_media_flutter_ui_kit/controller/home/home_controlle
 import 'package:prime_social_media_flutter_ui_kit/controller/profile/settings_options/language_controller.dart';
 import 'package:prime_social_media_flutter_ui_kit/model/social_media_post_model.dart';
 import 'package:prime_social_media_flutter_ui_kit/services/home_services.dart';
+import 'package:prime_social_media_flutter_ui_kit/services/social_service.dart';
 import 'package:prime_social_media_flutter_ui_kit/services/user_service.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/home/widgets/home_app_bar.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/home/widgets/my_drawer.dart';
@@ -40,7 +41,7 @@ class _HomeViewState extends State<HomeView> {
     return SafeArea(
       child: Scaffold(
         key: _scaffoldKey,
-        //   floatingActionButton: _buildFloatingActionButton(),
+        floatingActionButton: _buildFloatingActionButton(),
         endDrawer: MyDrawer(),
         backgroundColor: AppColor.backgroundColor,
         appBar: HomeAppBar(scaffoldKey: _scaffoldKey),
@@ -52,6 +53,9 @@ class _HomeViewState extends State<HomeView> {
   Widget _buildFloatingActionButton() {
     return FloatingActionButton(
       onPressed: () async {
+        SocialService().getFriendRequest();
+        // SocialService().getFrinds();
+
         // homeController.getLoggedInUserPost();
         // var resul = await HomeServices().getLoggedInUserPost();
         //  log(resul.toString());
@@ -59,11 +63,6 @@ class _HomeViewState extends State<HomeView> {
         // UserService().getUserPosts();
         // PostService().getPostOnTimeLine();
         // _scaffoldKey.currentState?.openDrawer();
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => CreateReelView(),
-            ));
       },
     );
   }

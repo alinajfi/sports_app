@@ -3,4 +3,5 @@ class DbConstants {
   static const String apiToken = "apiToken";
   static const String isUserLoggedIn = "isLoggedIn";
   static const String itemAddedToFav = "fav_items";
+  static const String userId = "fav_items";
 }

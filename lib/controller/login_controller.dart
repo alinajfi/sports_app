@@ -41,6 +41,10 @@ class LoginController extends GetxController {
       DbConstants.isUserLoggedIn,
       true,
     );
+    DbController.instance.writeData<String>(
+      DbConstants.userId,
+      loginRes.userId.toString(),
+    );
 
     final profileController = Get.find<ProfileController>();
     await profileController.loadUserProfile();

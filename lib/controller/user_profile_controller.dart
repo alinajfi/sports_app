@@ -13,6 +13,7 @@ import 'package:prime_social_media_flutter_ui_kit/model/user_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:prime_social_media_flutter_ui_kit/services/auth_service.dart';
 import 'package:prime_social_media_flutter_ui_kit/services/home_services.dart';
+import 'package:prime_social_media_flutter_ui_kit/services/social_service.dart';
 import 'package:prime_social_media_flutter_ui_kit/utils/widget_helper.dart';
 import '../../model/highlight_model.dart';
 
@@ -211,4 +212,20 @@ class UserProfileController extends GetxController
   }
 
   RxList<PostModel> postsList = <PostModel>[].obs;
+
+  addFriend() async {
+    if (userId != null) {
+      SocialService().addFreind(userId: userId.toString());
+    } else {
+      WidgetHelper.showSnackBar(title: "User id null");
+    }
+  }
+
+  followFriend() {
+    if (userId != null) {
+      SocialService().followUser(userId: userId.toString());
+    } else {
+      WidgetHelper.showSnackBar(title: 'User id null');
+    }
+  }
 }
