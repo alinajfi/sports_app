@@ -40,7 +40,7 @@ class _HomeViewState extends State<HomeView> {
     return SafeArea(
       child: Scaffold(
         key: _scaffoldKey,
-        floatingActionButton: _buildFloatingActionButton(),
+        //   floatingActionButton: _buildFloatingActionButton(),
         endDrawer: MyDrawer(),
         backgroundColor: AppColor.backgroundColor,
         appBar: HomeAppBar(scaffoldKey: _scaffoldKey),

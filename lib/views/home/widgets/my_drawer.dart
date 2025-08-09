@@ -1,4 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:prime_social_media_flutter_ui_kit/constants/db_constants.dart';
+import 'package:prime_social_media_flutter_ui_kit/controller/db_controller.dart';
+import 'package:prime_social_media_flutter_ui_kit/views/login/login_view.dart';
 
 class MyDrawer extends StatelessWidget {
   const MyDrawer({Key? key}) : super(key: key);
@@ -169,7 +175,14 @@ class MyDrawer extends StatelessWidget {
                         icon: Icons.logout,
                         title: 'Logout',
                         textColor: Colors.red,
-                        onTap: () {},
+                        onTap: () {
+                          log("-----logout tapped");
+                          DbController.instance
+                              .writeData(DbConstants.isUserLoggedIn, null);
+                          DbController.instance
+                              .writeData(DbConstants.apiToken, null);
+                          Get.off(LoginView());
+                        },
                       ),
                     ],
                   ),

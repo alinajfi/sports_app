@@ -59,39 +59,46 @@
 //                 return GestureDetector(
 //                   onTap: () {
 //                     profileController.selectItem(index);
-//                     if(index == AppSize.size1) {
+//                     if (index == AppSize.size1) {
 //                       Get.back();
 //                       Get.toNamed(AppRoutes.qrCodeView);
-//                     } else if(index == AppSize.size4) {
+//                     } else if (index == AppSize.size4) {
 //                       Get.back();
 //                       Get.toNamed(AppRoutes.settingsView);
 //                     }
 //                   },
 //                   child: Obx(() => Container(
-//                     padding: EdgeInsets.symmetric(vertical:AppSize.appSize15),
-//                     margin: const EdgeInsets.only(
-//                       bottom: AppSize.appSize8, left: AppSize.appSize14, right: AppSize.appSize14,
-//                     ),
-//                     decoration: BoxDecoration(
-//                       color: profileController.isSelected.value == index ? AppColor.cardBackgroundColor : AppColor.transparentColor,
-//                       borderRadius: BorderRadius.circular(AppSize.appSize12),
-//                     ),
-//                     child: Padding(
-//                       padding: const EdgeInsets.only(left: AppSize.appSize12),
-//                       child: Align(
-//                         alignment: Alignment.centerLeft,
-//                         child: Text(
-//                           profileController.profileActionsList[index],
-//                           style: const TextStyle(
-//                             fontSize: AppSize.appSize14,
-//                             fontWeight: FontWeight.w600,
-//                             fontFamily: AppFont.appFontSemiBold,
-//                             color: AppColor.secondaryColor,
+//                         padding:
+//                             EdgeInsets.symmetric(vertical: AppSize.appSize15),
+//                         margin: const EdgeInsets.only(
+//                           bottom: AppSize.appSize8,
+//                           left: AppSize.appSize14,
+//                           right: AppSize.appSize14,
+//                         ),
+//                         decoration: BoxDecoration(
+//                           color: profileController.isSelected.value == index
+//                               ? AppColor.cardBackgroundColor
+//                               : AppColor.transparentColor,
+//                           borderRadius:
+//                               BorderRadius.circular(AppSize.appSize12),
+//                         ),
+//                         child: Padding(
+//                           padding:
+//                               const EdgeInsets.only(left: AppSize.appSize12),
+//                           child: Align(
+//                             alignment: Alignment.centerLeft,
+//                             child: Text(
+//                               profileController.profileActionsList[index],
+//                               style: const TextStyle(
+//                                 fontSize: AppSize.appSize14,
+//                                 fontWeight: FontWeight.w600,
+//                                 fontFamily: AppFont.appFontSemiBold,
+//                                 color: AppColor.secondaryColor,
+//                               ),
+//                             ),
 //                           ),
 //                         ),
-//                       ),
-//                     ),
-//                   )),
+//                       )),
 //                 );
 //               },
 //             ),

@@ -1,10 +1,15 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:prime_social_media_flutter_ui_kit/constants/db_constants.dart';
+import 'package:prime_social_media_flutter_ui_kit/controller/db_controller.dart';
 import 'package:prime_social_media_flutter_ui_kit/model/all_user_list_model.dart';
 import 'package:prime_social_media_flutter_ui_kit/model/comment_model.dart';
+import 'package:path/path.dart';
+import 'package:prime_social_media_flutter_ui_kit/model/create_story_model.dart';
 
 import 'package:prime_social_media_flutter_ui_kit/model/post_model.dart';
 import 'package:prime_social_media_flutter_ui_kit/model/social_media_post_model.dart';
@@ -158,5 +163,43 @@ class HomeServices extends CommonApiFunctions {
     }
 
     return [];
+  }
+
+  Future<bool> createStory(CreateStoryModel request) async {
+    var uri = getUrlFromEndPoints(endPoint: "/create_story");
+
+    var requestMultipart = http.MultipartRequest('POST', uri);
+
+    // Add fields
+    requestMultipart.fields.addAll(request.toMap());
+
+    // Add file if not text
+    if (request.contentType != 'text' && request.storyFilePath != null) {
+      File file = File(request.storyFilePath!);
+      requestMultipart.files.add(
+        await http.MultipartFile.fromPath(
+          'story_files',
+          file.path,
+          filename: basename(file.path),
+        ),
+      );
+    }
+
+    // Add Bearer token
+    requestMultipart.headers['Authorization'] =
+        'Bearer ${DbController.instance.readData(DbConstants.apiToken)}';
+
+    // Send request
+    var response = await requestMultipart.send();
+
+    // Handle response
+    if (response.statusCode == 200) {
+      var body = await response.stream.bytesToString();
+      log('Story created: $body');
+      return true;
+    } else {
+      print('Failed to create story: ${response.statusCode}');
+      return false;
+    }
   }
 }

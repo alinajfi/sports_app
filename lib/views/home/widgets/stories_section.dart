@@ -9,6 +9,8 @@ import 'package:prime_social_media_flutter_ui_kit/controller/profile/settings_op
 import 'package:prime_social_media_flutter_ui_kit/model/story_model.dart';
 import 'package:prime_social_media_flutter_ui_kit/routes/app_routes.dart';
 
+import '../../create_story/create_story.dart';
+import '../../new_post/reel/create_reel_view.dart';
 import '../options/story/story_view.dart';
 
 class StoriesSection extends StatelessWidget {
@@ -47,7 +49,7 @@ class StoriesSection extends StatelessWidget {
                             : AppSize.appSize0,
                       ),
                       child: index == 0
-                          ? _buildAddStoryItem()
+                          ? _buildAddStoryItem(context)
                           : _buildStoryItem(
                               homeController.storyList[index - 1],
                               false,
@@ -60,11 +62,16 @@ class StoriesSection extends StatelessWidget {
     );
   }
 
-  Widget _buildAddStoryItem() {
+  Widget _buildAddStoryItem(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        // Navigate to create story screen
-        // Get.toNamed(AppRoutes.createStory); // You'll need to add this route
+      onTap: () async {
+        await Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => CreateStory(),
+            ));
+
+        HomeController().getStories();
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
