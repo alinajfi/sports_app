@@ -1,4 +1,5 @@
 // ignore_for_file: deprecated_member_use
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
@@ -98,16 +99,20 @@ class HomeController extends GetxController {
     return favIds.contains(postId);
   }
 
-  Set<String> favIds = {};
+  Set favIds = {};
   @override
   void onInit() {
     super.onInit();
-    getTimeLinePosts();
-    final storedList =
-        DbController.instance.readData(DbConstants.itemAddedToFav);
-    favIds = storedList != null ? Set<String>.from(storedList) : {};
-    HomeServices().getAllUsers();
-    getStories();
+    try {
+      getTimeLinePosts();
+      final storedList =
+          DbController.instance.readData(DbConstants.itemAddedToFav);
+      favIds = storedList != null ? Set.from(storedList) : {};
+      HomeServices().getAllUsers();
+      getStories();
+    } catch (e) {
+      log(e.toString());
+    }
   }
 
   void startAnimation() async {
@@ -150,6 +155,7 @@ class HomeController extends GetxController {
       storyList.value = await homeService.getStories();
     } catch (e) {
       isLoading.value = false;
+      log("error fetching stories $e ");
     }
     isLoading.value = false;
   }

@@ -1,26 +1,19 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-// components/post_item.dart
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:video_player/video_player.dart';
 
 import 'package:prime_social_media_flutter_ui_kit/config/app_color.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_font.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_icon.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_size.dart';
-import 'package:prime_social_media_flutter_ui_kit/config/app_string.dart';
 import 'package:prime_social_media_flutter_ui_kit/controller/home/home_controller.dart';
 import 'package:prime_social_media_flutter_ui_kit/controller/profile/settings_options/language_controller.dart';
 import 'package:prime_social_media_flutter_ui_kit/model/post_model.dart';
-import 'package:prime_social_media_flutter_ui_kit/model/social_media_post_model.dart';
-import 'package:prime_social_media_flutter_ui_kit/routes/app_routes.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/home/widgets/image_gallery_screen.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/home/widgets/post_actions.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/user_profile/user_profile.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/widget/home/comments_bottom_sheet.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/widget/home/likes_bottom_sheet.dart';
-import 'package:prime_social_media_flutter_ui_kit/views/widget/home/repost_bottom_sheet.dart';
 
 class PostItem extends StatelessWidget {
   final PostModel socialPost;
@@ -46,9 +39,6 @@ class PostItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final homeController = Get.find<HomeController>();
-    //  final languageController = Get.find<LanguageController>();
-
     return Padding(
         padding: const EdgeInsets.only(
           left: AppSize.appSize20,
@@ -58,6 +48,14 @@ class PostItem extends StatelessWidget {
         child: socialPost.postImages == null || socialPost.postImages!.isEmpty
             ? _withPic(context)
             : _withoutpic(context));
+  }
+
+  bool _isVideo(String url) {
+    final uri = Uri.tryParse(url);
+    if (uri == null) return false;
+
+    final extension = uri.path.toLowerCase().split('.').last;
+    return ['mp4', 'mov', 'avi', 'mkv', 'webm', 'm4v'].contains(extension);
   }
 
   _withPic(BuildContext context) {
@@ -214,7 +212,7 @@ class PostItem extends StatelessWidget {
 
     final totalImages = images.length;
 
-    // ✅ Single image - take full width
+    // ✅ Single media - take full width
     if (totalImages == 1) {
       return Padding(
         padding: const EdgeInsets.only(top: AppSize.appSize12),
@@ -222,9 +220,8 @@ class PostItem extends StatelessWidget {
           onTap: () => _openImageGallery(context, 0),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(8),
-            child: Image.network(
+            child: _buildMediaWidget(
               images[0],
-              fit: BoxFit.cover,
               width: double.infinity,
               height: 250,
             ),
@@ -233,7 +230,7 @@ class PostItem extends StatelessWidget {
       );
     }
 
-    // ✅ More than one image - use grid layout
+    // ✅ More than one media - use grid layout
     final displayImages = totalImages > 4 ? images.take(4).toList() : images;
 
     return Padding(
@@ -248,7 +245,7 @@ class PostItem extends StatelessWidget {
           crossAxisSpacing: 4,
         ),
         itemBuilder: (gridContext, index) {
-          final imageUrl = displayImages[index];
+          final mediaUrl = displayImages[index];
           final isLastVisible = index == 3 && totalImages > 4;
           final extraCount = totalImages - 4;
 
@@ -257,7 +254,7 @@ class PostItem extends StatelessWidget {
             child: Stack(
               fit: StackFit.expand,
               children: [
-                Image.network(imageUrl, fit: BoxFit.cover),
+                _buildMediaWidget(mediaUrl),
                 if (isLastVisible)
                   Container(
                     color: Colors.black.withOpacity(0.5),
@@ -278,6 +275,37 @@ class PostItem extends StatelessWidget {
         },
       ),
     );
+  }
+
+  Widget _buildMediaWidget(String url, {double? width, double? height}) {
+    if (_isVideo(url)) {
+      return VideoPlayerWidget(
+        videoUrl: url,
+        width: width,
+        height: height,
+      );
+    } else {
+      return Image.network(
+        url,
+        fit: BoxFit.cover,
+        width: width,
+        height: height,
+        errorBuilder: (context, error, stackTrace) {
+          return Container(
+            width: width,
+            height: height,
+            color: Colors.grey[300],
+            child: const Center(
+              child: Icon(
+                Icons.broken_image,
+                color: Colors.grey,
+                size: 50,
+              ),
+            ),
+          );
+        },
+      );
+    }
   }
 
   void _openImageGallery(BuildContext context, int initialIndex) {
@@ -315,6 +343,117 @@ class PostItem extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+// Video Player Widget
+class VideoPlayerWidget extends StatefulWidget {
+  final String videoUrl;
+  final double? width;
+  final double? height;
+
+  const VideoPlayerWidget({
+    Key? key,
+    required this.videoUrl,
+    this.width,
+    this.height,
+  }) : super(key: key);
+
+  @override
+  State<VideoPlayerWidget> createState() => _VideoPlayerWidgetState();
+}
+
+class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
+  late VideoPlayerController _controller;
+  bool _isInitialized = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeVideo();
+  }
+
+  void _initializeVideo() {
+    _controller = VideoPlayerController.networkUrl(Uri.parse(widget.videoUrl))
+      ..initialize().then((_) {
+        setState(() {
+          _isInitialized = true;
+        });
+      }).catchError((error) {
+        print('Video initialization error: $error');
+      });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (!_isInitialized) {
+      return Container(
+        width: widget.width,
+        height: widget.height,
+        color: Colors.grey[300],
+        child: const Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+
+    return Container(
+      width: widget.width,
+      height: widget.height,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          AspectRatio(
+            aspectRatio: _controller.value.aspectRatio,
+            child: VideoPlayer(_controller),
+          ),
+          // Play/Pause overlay
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.black.withOpacity(0.3),
+              shape: BoxShape.circle,
+            ),
+            child: IconButton(
+              onPressed: () {
+                setState(() {
+                  _controller.value.isPlaying
+                      ? _controller.pause()
+                      : _controller.play();
+                });
+              },
+              icon: Icon(
+                _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
+                color: Colors.white,
+                size: 32,
+              ),
+            ),
+          ),
+          // Video indicator
+          Positioned(
+            top: 8,
+            right: 8,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+              decoration: BoxDecoration(
+                color: Colors.black.withOpacity(0.7),
+                borderRadius: BorderRadius.circular(4),
+              ),
+              child: const Icon(
+                Icons.videocam,
+                color: Colors.white,
+                size: 16,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

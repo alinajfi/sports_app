@@ -106,7 +106,7 @@ class _HomeViewState extends State<HomeView> {
 
                           if (homeController.favIds.contains(postId)) {
                             homeController.favIds.remove(postId);
-                            DbController.instance.writeData(
+                            DbController.instance.writeData<List>(
                                 DbConstants.itemAddedToFav,
                                 homeController.favIds.toList());
                             cont.update(

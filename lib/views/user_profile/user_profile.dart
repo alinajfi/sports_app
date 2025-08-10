@@ -187,6 +187,10 @@ class UserProfile extends StatelessWidget {
                             }
                           },
                           child: Container(
+                              clipBehavior: Clip.hardEdge,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                              ),
                               height: 60,
                               width: 60,
                               child: Image.network(controller.userData!.photo)),
@@ -251,6 +255,8 @@ class UserProfile extends StatelessWidget {
                     child: SizedBox(
                       height: AppSize.appSize32,
                       child: Row(
+                        crossAxisAlignment: CrossAxisAlignment
+                            .center, // Align center vertically
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           GestureDetector(
@@ -262,13 +268,7 @@ class UserProfile extends StatelessWidget {
                                   ? AppSize.appSize355
                                   : AppSize.appSize147,
                               height: AppSize.appSize32,
-                              margin: EdgeInsets.only(
-                                right: AppSize.appSize8,
-                                // left: languageController.selectedLanguageIndex.value ==
-                                //         AppSize.size2
-                                //     ? AppSize.appSize8
-                                //     : AppSize.appSize0,
-                              ),
+                              margin: EdgeInsets.only(right: AppSize.appSize8),
                               decoration: BoxDecoration(
                                 borderRadius:
                                     BorderRadius.circular(AppSize.appSize6),
@@ -297,7 +297,6 @@ class UserProfile extends StatelessWidget {
                                 }
                               },
                               child: Container(
-                                width: AppSize.appSize147,
                                 height: AppSize.appSize32,
                                 decoration: BoxDecoration(
                                   borderRadius:
@@ -318,11 +317,25 @@ class UserProfile extends StatelessWidget {
                               ),
                             ),
                           ),
-                          IconButton(
+                          SizedBox(width: AppSize.appSize8), // small spacing
+                          SizedBox(
+                            height: AppSize.appSize32,
+                            width: AppSize.appSize32,
+                            child: IconButton(
+                              padding:
+                                  EdgeInsets.zero, // remove default padding
+                              constraints:
+                                  const BoxConstraints(), // remove min size constraints
                               onPressed: () {
                                 controller.addFriend();
                               },
-                              icon: Icon(Icons.add))
+                              icon: Icon(
+                                Icons.person_add,
+                                size: AppSize
+                                    .appSize20, // match text height proportion
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                     ),
