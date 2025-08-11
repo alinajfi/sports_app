@@ -266,7 +266,10 @@ class _CreatePostScreenState extends State<EditPostScreen> {
                 multipleFiles:
                     Get.find<EditPostController>().pickedImages.value,
                 privacy: "public",
-                description: "this is desption"));
+                description: Get.find<EditPostController>()
+                    .descriptionController
+                    .text
+                    .trim()));
             Fluttertoast.showToast(msg: "Post uploaded");
             Get.back(result: true);
           } catch (e) {

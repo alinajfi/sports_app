@@ -87,7 +87,7 @@ class EditPostController extends GetxController {
   RxBool isLoading = false.obs;
   Future<void> editPost(CreatePostModel postData) async {
     isLoading.value = true;
-    await HomeServices().addPost(postData);
+    await HomeServices().editPost(postData, postId: post.postId!.toString());
 
     isLoading.value = false;
   }
