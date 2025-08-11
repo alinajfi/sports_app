@@ -2,6 +2,7 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_color.dart';
@@ -21,6 +22,8 @@ import 'package:prime_social_media_flutter_ui_kit/views/home/widgets/repost_item
 import 'package:prime_social_media_flutter_ui_kit/views/home/widgets/stories_section.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/home/widgets/text_post.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/new_post/reel/create_reel_view.dart';
+
+import '../../services/notification_service.dart';
 
 final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -53,7 +56,9 @@ class _HomeViewState extends State<HomeView> {
   Widget _buildFloatingActionButton() {
     return FloatingActionButton(
       onPressed: () async {
-        SocialService().getFriendRequest();
+        final token = await FirebaseMessaging.instance.getToken();
+        NotificationService().sendNotification(token!, "Test ", "Test");
+        //   SocialService().getFriendRequest();
         // SocialService().getFrinds();
 
         // homeController.getLoggedInUserPost();
