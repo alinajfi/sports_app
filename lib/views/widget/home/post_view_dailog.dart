@@ -1,11 +1,11 @@
-// ignore_for_file: must_be_immutable
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_color.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_size.dart';
 import 'package:prime_social_media_flutter_ui_kit/controller/home/all_post_controller.dart';
+import 'package:prime_social_media_flutter_ui_kit/controller/profile/profile_controller.dart';
 import 'package:prime_social_media_flutter_ui_kit/model/post_model.dart';
+import 'package:prime_social_media_flutter_ui_kit/views/new_post/post/edit_post_screen.dart';
 
 import '../../../config/app_font.dart';
 import '../../../config/app_icon.dart';
@@ -13,7 +13,9 @@ import '../../../config/app_string.dart';
 
 class PostViewDialog extends StatelessWidget {
   final String imageUrl;
-  PostViewDialog({required this.imageUrl, super.key});
+  final int? postId;
+  final PostModel? post;
+  PostViewDialog({required this.imageUrl, super.key, this.postId, this.post});
 
   AllPostController allPostController = Get.put(AllPostController());
 
@@ -35,18 +37,84 @@ class PostViewDialog extends StatelessWidget {
             ),
             child: Column(
               children: [
-                Container(
-                  height: AppSize.appSize218,
-                  decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(AppSize.appSize12),
-                      topRight: Radius.circular(AppSize.appSize12),
+                Stack(
+                  children: [
+                    Container(
+                      height: AppSize.appSize218,
+                      decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(AppSize.appSize12),
+                          topRight: Radius.circular(AppSize.appSize12),
+                        ),
+                        image: DecorationImage(
+                          image: NetworkImage(imageUrl),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                     ),
-                    image: DecorationImage(
-                      image: NetworkImage(imageUrl),
-                      // fit: BoxFit.fill,
+                    Positioned(
+                      top: 8,
+                      right: 12,
+                      child: Row(
+                        children: [
+                          GestureDetector(
+                            onTap: () async {
+                              if (post != null) {
+                                final result = await Get.to(
+                                    () => EditPostScreen(post: post!));
+                                if (result == true) {
+                                  Get.find<ProfileController>().loadUserPosts();
+                                }
+                              } else {
+                                debugPrint("Post is null, cannot edit.");
+                              }
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.all(6),
+                              decoration: BoxDecoration(
+                                color: Colors.grey,
+                                shape: BoxShape.circle,
+                              ),
+                              child: const Icon(
+                                Icons.edit,
+                                color: Colors.white,
+                                size: 20,
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: AppSize.appSize10,
+                          ),
+                          GestureDetector(
+                            onTap: () async {
+                              bool isDeleted =
+                                  await allPostController.deletePost(
+                                postId!,
+                              );
+                              Get.find<ProfileController>().loadUserPosts();
+                              if (isDeleted) {
+                                print("✅ Post deleted successfully");
+                              } else {
+                                print("❌ Failed to delete post");
+                              }
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.all(6),
+                              decoration: BoxDecoration(
+                                color: Colors.red,
+                                shape: BoxShape.circle,
+                              ),
+                              child: const Icon(
+                                Icons.delete,
+                                color: Colors.white,
+                                size: 20,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
+                  ],
                 ),
                 Padding(
                   padding: const EdgeInsets.only(

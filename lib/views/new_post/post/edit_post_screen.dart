@@ -1,142 +1,97 @@
-import 'dart:io';
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:photofilters/photofilters.dart';
-import 'package:prime_social_media_flutter_ui_kit/config/app_color.dart';
-import 'package:prime_social_media_flutter_ui_kit/config/app_icon.dart';
-import 'package:prime_social_media_flutter_ui_kit/config/app_size.dart';
-import 'package:prime_social_media_flutter_ui_kit/config/app_string.dart';
-import 'package:prime_social_media_flutter_ui_kit/routes/app_routes.dart';
-import 'package:image/image.dart' as imageLib;
-import 'package:prime_social_media_flutter_ui_kit/views/new_post/post/filter_photo_screen.dart';
+import 'package:prime_social_media_flutter_ui_kit/model/post_model.dart';
 
+class EditPostScreen extends StatefulWidget {
+  final PostModel post; // Pass the full post
 
-class EditPostScreen extends StatelessWidget {
-  final XFile? image;
-  const EditPostScreen({super.key, this.image});
+  const EditPostScreen({Key? key, required this.post}) : super(key: key);
+
+  @override
+  State<EditPostScreen> createState() => _EditPostScreenState();
+}
+
+class _EditPostScreenState extends State<EditPostScreen> {
+  final _formKey = GlobalKey<FormState>();
+
+  late TextEditingController descriptionController;
+  late List<String> imageUrl;
+
+  @override
+  void initState() {
+    super.initState();
+    descriptionController =
+        TextEditingController(text: widget.post.description);
+    imageUrl = widget.post.postImages ?? []; // handle null case
+  }
+
+  @override
+  void dispose() {
+    descriptionController.dispose();
+    super.dispose();
+  }
+
+  void savePost() {
+    if (_formKey.currentState!.validate()) {
+      // Call API or controller function here to update post
+      // Example:
+      // await postController.updatePost(widget.post.id, descriptionController.text, selectedImage);
+
+      // Return true so previous screen can refresh
+      Get.back(result: true);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: AppColor.backgroundColor,
-        body: Stack(
+      appBar: AppBar(title: const Text("Edit Post")),
+      body: Form(
+        key: _formKey,
+        child: ListView(
+          padding: const EdgeInsets.all(16),
           children: [
-            image != null
-                ? SizedBox(
-                    height: MediaQuery.of(context).size.height,
-                    width: MediaQuery.of(context).size.width,
-                    child: Image.file(
-                      File(image!.path),
-                      fit: BoxFit.cover,
-                    ),
-                  )
-                : Center(child: Text(AppString.noImageSelected)),
-            Padding(
-              padding: const EdgeInsets.only(
-                  right: AppSize.appSize20,
-                  left: AppSize.appSize20,
-                  bottom: AppSize.appSize70,
-                  top: AppSize.appSize40),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                      height: AppSize.appSize30,
-                      width: AppSize.appSize30,
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle, color: Colors.black),
-                      child: Padding(
-                        padding: const EdgeInsets.all(AppSize.appSize3),
-                        child: Image.asset(AppIcon.back),
-                      )),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      GestureDetector(
-                        onTap: () async {
-                          if (image != null) {
-                            Uint8List bytes = await image!.readAsBytes();
-
-                            imageLib.Image? imageData = imageLib.decodeImage(bytes);
-
-                            if (imageData != null) {
-                              imageData = imageLib.copyResize(imageData, width: 600);
-                              Map<String, dynamic>? imagefile = await Get.to(() => FilterPhotoScreen(
-                                title: const Text("Photo Filter Example"),
-                                image: imageData!,
-                                filters: presetFiltersList,
-                                filename: image!.path.split('/').last,
-                                loader: const Center(child: CircularProgressIndicator()),
-                                fit: BoxFit.contain,
-                              ));
-
-                              if (imagefile != null && imagefile.containsKey('image_filtered')) {
-                                imageData = imagefile['image_filtered'];
-                              }
-                            } else {
-                              print("Failed to decode image");
-                            }
-                          } else {
-                            print("No image selected");
-                          }
-                        },
-                        child: Container(
-                          height: AppSize.appSize34,
-                          decoration: BoxDecoration(
-                            color: AppColor.text1Color,
-                            borderRadius:
-                                BorderRadius.circular(AppSize.appSize66),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: AppSize.appSize20),
-                            child: Center(
-                              child: Text(
-                                AppString.buttonTextEdit,
-                                style: TextStyle(
-                                    color: AppColor.secondaryColor,
-                                    fontSize: AppSize.appSize14,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Get.toNamed(AppRoutes.reelUploadView);
-                        },
-                        child: Container(
-                          height: AppSize.appSize34,
-                          decoration: BoxDecoration(
-                            color: AppColor.primaryColor,
-                            borderRadius:
-                                BorderRadius.circular(AppSize.appSize66),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: AppSize.appSize20),
-                            child: Center(
-                              child: Text(
-                                AppString.buttonTextNext,
-                                style: TextStyle(
-                                    color: AppColor.secondaryColor,
-                                    fontSize: AppSize.appSize14,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                            ),
-                          ),
-                        ),
-                      )
-                    ],
-                  )
-                ],
+            // Show current image if exists
+            if (imageUrl.isNotEmpty)
+              ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Image.network(
+                  imageUrl.first,
+                  height: 200,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
+              )
+            else
+              Container(
+                height: 200,
+                color: Colors.grey[300],
+                child: const Center(
+                  child: Text("No Image"),
+                ),
               ),
+            const SizedBox(height: 16),
+
+            // Edit description
+            TextFormField(
+              controller: descriptionController,
+              decoration: const InputDecoration(
+                labelText: "Description",
+                border: OutlineInputBorder(),
+              ),
+              maxLines: 4,
+              validator: (value) =>
+                  value == null || value.isEmpty ? "Enter description" : null,
+            ),
+            const SizedBox(height: 16),
+
+            ElevatedButton(
+              onPressed: savePost,
+              child: const Text("Save Changes"),
             )
           ],
-        ));
+        ),
+      ),
+    );
   }
 }

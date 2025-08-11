@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_size.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_string.dart';
+import 'package:http/http.dart' as http;
+import 'package:prime_social_media_flutter_ui_kit/utils/common_api_functions.dart';
 
-class AllPostController extends GetxController with GetSingleTickerProviderStateMixin {
+class AllPostController extends GetxController
+    with GetSingleTickerProviderStateMixin {
   TabController? tabController;
   RxBool isFollow = false.obs;
   RxBool isLiked = false.obs;
@@ -81,4 +84,50 @@ class AllPostController extends GetxController with GetSingleTickerProviderState
     AppString.reelView2and5m,
     AppString.reelView78,
   ].obs;
+
+  Future<bool> deletePost(
+    int id,
+  ) async {
+    final url = Uri.parse('https://mysportsjourney.co.uk/api/delete_post/$id');
+
+    try {
+      final response = await http.post(url,
+          headers: CommonApiFunctions().getHeaderWithToken());
+
+      print("Delete API Status: ${response.statusCode}");
+      print("Delete API Body: ${response.body}");
+
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      print("Error deleting post: $e");
+      return false;
+    }
+  }
+
+  // Future<bool> editPost(
+  //   int id,
+  // ) async {
+  //   final url = Uri.parse('https://mysportsjourney.co.uk/api/edit_post/$id');
+
+  //   try {
+  //     final response = await http.post(url,
+  //         headers: CommonApiFunctions().getHeaderWithToken());
+
+  //     print("Delete API Status: ${response.statusCode}");
+  //     print("Delete API Body: ${response.body}");
+
+  //     if (response.statusCode >= 200 && response.statusCode < 300) {
+  //       return true;
+  //     } else {
+  //       return false;
+  //     }
+  //   } catch (e) {
+  //     print("Error deleting post: $e");
+  //     return false;
+  //   }
+  // }
 }
