@@ -205,27 +205,29 @@ class CreatePostController extends GetxController {
 
   RxList<String> existingImageUrls = <String>[].obs;
 
-  Future<bool> editPost(
-    int id, {
+  Future<bool> editPost({
+    required int postId,
     required String description,
-    required List<File> newFiles,
-    required List<String> keepImageUrls,
+    required List<File> newImages,
+    required List<String> remainingOldImages,
   }) async {
-    final url = Uri.parse('https://mysportsjourney.co.uk/api/edit_post/$id');
+    final url =
+        Uri.parse('https://mysportsjourney.co.uk/api/edit_post/$postId');
 
     final request = http.MultipartRequest('POST', url)
       ..headers.addAll(CommonApiFunctions().getHeaderWithToken()!)
       ..fields['description'] = description;
 
-    // Keep old images (send URLs or IDs as your backend requires)
-    for (var url in keepImageUrls) {
+    // Keep old images
+    for (var url in remainingOldImages) {
       request.fields['keep_images[]'] = url;
     }
 
     // Add new files
-    for (var file in newFiles) {
-      request.files
-          .add(await http.MultipartFile.fromPath('images[]', file.path));
+    for (var file in newImages) {
+      request.files.add(
+        await http.MultipartFile.fromPath('images[]', file.path),
+      );
     }
 
     final response = await request.send();

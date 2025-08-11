@@ -1,94 +1,89 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:prime_social_media_flutter_ui_kit/config/app_color.dart';
+import 'package:prime_social_media_flutter_ui_kit/controller/create_post_controller.dart';
 import 'package:prime_social_media_flutter_ui_kit/model/post_model.dart';
 
-class EditPostScreen extends StatefulWidget {
-  final PostModel post; // Pass the full post
+class EditPostScreen extends StatelessWidget {
+  final PostModel post;
 
-  const EditPostScreen({Key? key, required this.post}) : super(key: key);
+  EditPostScreen({Key? key, required this.post}) : super(key: key);
 
-  @override
-  State<EditPostScreen> createState() => _EditPostScreenState();
-}
-
-class _EditPostScreenState extends State<EditPostScreen> {
-  final _formKey = GlobalKey<FormState>();
-
-  late TextEditingController descriptionController;
-  late List<String> imageUrl;
-
-  @override
-  void initState() {
-    super.initState();
-    descriptionController =
-        TextEditingController(text: widget.post.description);
-    imageUrl = widget.post.postImages ?? []; // handle null case
-  }
-
-  @override
-  void dispose() {
-    descriptionController.dispose();
-    super.dispose();
-  }
-
-  void savePost() {
-    if (_formKey.currentState!.validate()) {
-      // Call API or controller function here to update post
-      // Example:
-      // await postController.updatePost(widget.post.id, descriptionController.text, selectedImage);
-
-      // Return true so previous screen can refresh
-      Get.back(result: true);
-    }
-  }
+  final CreatePostController controller = Get.put(CreatePostController());
 
   @override
   Widget build(BuildContext context) {
+    // Pre-fill controller with existing description
+    controller.descriptionController.text = post.description ?? "";
+    final imageUrl =
+        (post.postImages!.isNotEmpty) ? post.postImages!.first : null;
+
     return Scaffold(
-      appBar: AppBar(title: const Text("Edit Post")),
-      body: Form(
-        key: _formKey,
-        child: ListView(
-          padding: const EdgeInsets.all(16),
+      appBar: AppBar(
+        title: const Text("Edit Post"),
+        backgroundColor: AppColor.primaryColor,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.check),
+            onPressed: () {
+              // controller.createPost(); // Same as create post
+            },
+          )
+        ],
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
+        child: Column(
           children: [
-            // Show current image if exists
-            if (imageUrl.isNotEmpty)
+            // Show existing image if available
+            if (post.postImages != null && post.postImages!.isNotEmpty)
               ClipRRect(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(8),
                 child: Image.network(
-                  imageUrl.first,
+                  post.postImages!.first,
                   height: 200,
                   width: double.infinity,
                   fit: BoxFit.cover,
                 ),
-              )
-            else
-              Container(
-                height: 200,
-                color: Colors.grey[300],
-                child: const Center(
-                  child: Text("No Image"),
-                ),
               ),
+
             const SizedBox(height: 16),
 
-            // Edit description
-            TextFormField(
-              controller: descriptionController,
+            // Allow picking a new image
+            Obx(() {
+              return Column(
+                children: [
+                  if (controller.selectedImage.value != null)
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Image.file(
+                        File(controller.selectedImage.value!.path),
+                        height: 200,
+                        width: double.infinity,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  const SizedBox(height: 8),
+                  ElevatedButton(
+                    onPressed: controller.pickImage,
+                    child: const Text("Change Image"),
+                  ),
+                ],
+              );
+            }),
+
+            const SizedBox(height: 16),
+
+            // Description
+            TextField(
+              controller: controller.descriptionController,
+              maxLines: 5,
               decoration: const InputDecoration(
-                labelText: "Description",
+                hintText: "Write something...",
                 border: OutlineInputBorder(),
               ),
-              maxLines: 4,
-              validator: (value) =>
-                  value == null || value.isEmpty ? "Enter description" : null,
             ),
-            const SizedBox(height: 16),
-
-            ElevatedButton(
-              onPressed: savePost,
-              child: const Text("Save Changes"),
-            )
           ],
         ),
       ),
