@@ -7,7 +7,6 @@ import 'package:prime_social_media_flutter_ui_kit/config/app_size.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_string.dart';
 import 'package:prime_social_media_flutter_ui_kit/controller/profile/profile_controller.dart';
 import 'package:prime_social_media_flutter_ui_kit/services/db_service.dart';
-import 'package:prime_social_media_flutter_ui_kit/services/notification_service.dart';
 import 'package:prime_social_media_flutter_ui_kit/translation/app_translation.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/splash/splash_view.dart';
 
@@ -40,8 +39,8 @@ void main() async {
     }
   }
 
-  NotificationService().initialize();
-  await NotificationService().initializeLocalNotifications();
+  // NotificationService().initialize();
+  // await NotificationService().initializeLocalNotifications();
 
   Get.put(
     DbService.init(GetStorage()),

@@ -46,9 +46,6 @@ class LoginController extends GetxController {
       loginRes.userId.toString(),
     );
 
-    final profileController = Get.find<ProfileController>();
-    await profileController.loadUserProfile();
-
     Get.offAllNamed(AppRoutes.welcomeView);
   }
 
