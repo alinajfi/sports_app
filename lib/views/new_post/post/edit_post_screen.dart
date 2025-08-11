@@ -1,96 +1,287 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:io';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:get/get.dart';
+
+import 'package:prime_social_media_flutter_ui_kit/config/app_color.dart';
+import 'package:prime_social_media_flutter_ui_kit/controller/create_post_controller.dart';
+import 'package:prime_social_media_flutter_ui_kit/controller/create_post_controller.dart';
+import 'package:prime_social_media_flutter_ui_kit/controller/edit_post_controller.dart';
+import 'package:prime_social_media_flutter_ui_kit/model/create_post_model.dart';
 import 'package:prime_social_media_flutter_ui_kit/model/post_model.dart';
 
 class EditPostScreen extends StatefulWidget {
-  final PostModel post; // Pass the full post
-
-  const EditPostScreen({Key? key, required this.post}) : super(key: key);
+  final PostModel postModel;
+  EditPostScreen({
+    Key? key,
+    required this.postModel,
+  }) : super(key: key);
 
   @override
-  State<EditPostScreen> createState() => _EditPostScreenState();
+  State<EditPostScreen> createState() => _CreatePostScreenState();
 }
 
-class _EditPostScreenState extends State<EditPostScreen> {
-  final _formKey = GlobalKey<FormState>();
+class _CreatePostScreenState extends State<EditPostScreen> {
+  final List<IconData> postIcons = [
+    Icons.image_outlined,
+    Icons.person_add_alt_1_outlined,
+    Icons.emoji_emotions_outlined,
+    Icons.location_on_outlined,
+    Icons.event_outlined,
+  ];
 
-  late TextEditingController descriptionController;
-  late List<String> imageUrl;
+  final List<String> privacyOptions = ['Public', 'Friends', 'Only me'];
 
-  @override
-  void initState() {
-    super.initState();
-    descriptionController =
-        TextEditingController(text: widget.post.description);
-    imageUrl = widget.post.postImages ?? []; // handle null case
-  }
+  final Color darkBackground = const Color(0xFF121212);
 
-  @override
-  void dispose() {
-    descriptionController.dispose();
-    super.dispose();
-  }
+  final Color darkCard = const Color(0xFF1E1E1E);
 
-  void savePost() {
-    if (_formKey.currentState!.validate()) {
-      // Call API or controller function here to update post
-      // Example:
-      // await postController.updatePost(widget.post.id, descriptionController.text, selectedImage);
+  final Color primaryText = Colors.white;
 
-      // Return true so previous screen can refresh
-      Get.back(result: true);
-    }
-  }
+  final Color secondaryText = Colors.grey;
+
+  final Color iconColor = Colors.purpleAccent;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text("Edit Post")),
-      body: Form(
-        key: _formKey,
-        child: ListView(
-          padding: const EdgeInsets.all(16),
-          children: [
-            // Show current image if exists
-            if (imageUrl.isNotEmpty)
-              ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: Image.network(
-                  imageUrl.first,
-                  height: 200,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
-                ),
-              )
-            else
-              Container(
-                height: 200,
-                color: Colors.grey[300],
-                child: const Center(
-                  child: Text("No Image"),
+    return GetBuilder<EditPostController>(
+        init: EditPostController(widget.postModel),
+        builder: (controller) {
+          return Scaffold(
+            backgroundColor: darkBackground,
+            appBar: AppBar(
+              backgroundColor: darkBackground,
+              elevation: 1,
+              title: Text(
+                'Edit Post',
+                style: TextStyle(
+                  color: primaryText,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-            const SizedBox(height: 16),
-
-            // Edit description
-            TextFormField(
-              controller: descriptionController,
-              decoration: const InputDecoration(
-                labelText: "Description",
-                border: OutlineInputBorder(),
+              centerTitle: true,
+              leading: IconButton(
+                icon: Icon(Icons.close, color: primaryText),
+                onPressed: () {
+                  Get.back();
+                },
               ),
-              maxLines: 4,
-              validator: (value) =>
-                  value == null || value.isEmpty ? "Enter description" : null,
             ),
-            const SizedBox(height: 16),
+            body: Padding(
+              padding: const EdgeInsets.all(16),
+              child: SingleChildScrollView(
+                physics: MediaQuery.of(context).viewInsets.bottom > 0
+                    ? BouncingScrollPhysics()
+                    : NeverScrollableScrollPhysics(),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _userRow(),
+                    const SizedBox(height: 12),
+                    _descriptionField(),
+                    const SizedBox(height: 12),
+                    Text(
+                      "Add to your post",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        color: primaryText,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    _iconRow(),
+                    Obx(() {
+                      if (controller.pickedImages.isEmpty)
+                        return SizedBox.shrink();
 
-            ElevatedButton(
-              onPressed: savePost,
-              child: const Text("Save Changes"),
+                      return SizedBox(
+                        height: 230, // ✅ Set your desired height here
+                        child: GridView.builder(
+                          itemCount: controller.pickedImages.length,
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3,
+                            crossAxisSpacing: 8,
+                            mainAxisSpacing: 8,
+                            childAspectRatio: 1,
+                          ),
+                          scrollDirection: Axis.vertical,
+                          itemBuilder: (context, index) {
+                            final imageFile = controller.pickedImages[index];
+                            return ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: Image.file(
+                                imageFile,
+                                fit: BoxFit.cover,
+                              ),
+                            );
+                          },
+                        ),
+                      );
+                    }),
+                  ],
+                ),
+              ),
+            ),
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerDocked,
+            floatingActionButton: _publishButton(context),
+          );
+        });
+  }
+
+  Widget _iconRow() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        _iconButton(
+          Icons.image_outlined,
+          'Image',
+          () {
+            Get.find<EditPostController>().pickImages();
+          },
+        ),
+        _iconButton(
+          Icons.person_add_alt_1_outlined,
+          'Tag',
+          () {},
+        ),
+        _iconButton(
+          Icons.location_on_outlined,
+          'Location',
+          () {},
+        ),
+      ],
+    );
+  }
+
+  Widget _iconButton(IconData icon, String tooltip, Function() onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Tooltip(
+        message: tooltip,
+        child: CircleAvatar(
+          backgroundColor: const Color(0xFF1E1E1E),
+          radius: 22,
+          child: Icon(icon, color: Colors.purpleAccent, size: 22),
+        ),
+      ),
+    );
+  }
+
+  Widget _userRow() {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        const CircleAvatar(
+          radius: 24,
+          backgroundImage: AssetImage('assets/images/profile_placeholder.png'),
+        ),
+        const SizedBox(width: 10),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Adeel Abbasi',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+                color: primaryText,
+              ),
+            ),
+            DropdownButtonHideUnderline(
+              child: DropdownButton<String>(
+                dropdownColor: darkCard,
+                value: privacyOptions[0],
+                icon: Icon(Icons.arrow_drop_down, color: secondaryText),
+                items: privacyOptions
+                    .map((option) => DropdownMenuItem(
+                          value: option,
+                          child: Row(
+                            children: [
+                              Icon(
+                                option == 'Public'
+                                    ? Icons.public
+                                    : option == 'Friends'
+                                        ? Icons.group
+                                        : Icons.lock,
+                                size: 18,
+                                color: secondaryText,
+                              ),
+                              const SizedBox(width: 4),
+                              Text(
+                                option,
+                                style: TextStyle(color: secondaryText),
+                              ),
+                            ],
+                          ),
+                        ))
+                    .toList(),
+                onChanged: (value) {},
+              ),
             )
           ],
+        )
+      ],
+    );
+  }
+
+  Widget _descriptionField() {
+    return TextFormField(
+      controller: Get.find<EditPostController>().descriptionController,
+      maxLines: 6,
+      style: TextStyle(color: primaryText),
+      decoration: InputDecoration(
+        hintText: "What's on your mind Adeel Abbasi?",
+        hintStyle: TextStyle(
+          fontSize: 18,
+          color: secondaryText,
         ),
+        border: InputBorder.none,
+      ),
+    );
+  }
+
+  Widget _publishButton(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 20),
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.blueAccent,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30),
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 14),
+        ),
+        onPressed: () async {
+          try {
+            await Get.find<EditPostController>().editPost(CreatePostModel(
+                multipleFiles:
+                    Get.find<EditPostController>().pickedImages.value,
+                privacy: "public",
+                description: "this is desption"));
+            Fluttertoast.showToast(msg: "Post uploaded");
+            Get.back(result: true);
+          } catch (e) {
+            Fluttertoast.showToast(msg: "Post $e");
+          }
+        },
+        child: Obx(() => Get.find<EditPostController>().isLoading.value
+            ? CircularProgressIndicator.adaptive()
+            : Text(
+                'Publish Now',
+                style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white),
+              )),
       ),
     );
   }

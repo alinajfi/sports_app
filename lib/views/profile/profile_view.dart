@@ -14,12 +14,15 @@ import 'package:prime_social_media_flutter_ui_kit/config/app_size.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_string.dart';
 import 'package:prime_social_media_flutter_ui_kit/controller/profile/profile_controller.dart';
 import 'package:prime_social_media_flutter_ui_kit/controller/profile/settings_options/language_controller.dart';
+import 'package:prime_social_media_flutter_ui_kit/controller/sign_up_controller.dart';
 import 'package:prime_social_media_flutter_ui_kit/model/highlight_model.dart';
 import 'package:prime_social_media_flutter_ui_kit/routes/app_routes.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/profile/tabs/profile_comments_tab_view.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/profile/tabs/profile_posts_tab_view.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/profile/tabs/profile_reels_tab_view.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/profile/tabs/profile_tags_tab_view.dart';
+import 'package:prime_social_media_flutter_ui_kit/views/signup/pages/parent_details_page.dart';
+import 'package:prime_social_media_flutter_ui_kit/views/signup/pages/sports_selection_page.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/widget/profile/profile_action_bottom_sheet.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -42,6 +45,7 @@ class _ProfileViewState extends State<ProfileView> {
   dispose() {
     super.dispose();
     Get.delete<ProfileController>();
+    Get.delete<SignUpController>();
   }
 
   LanguageController languageController = Get.put(LanguageController());
@@ -87,9 +91,51 @@ class _ProfileViewState extends State<ProfileView> {
                     : AppSize.appSize0,
           ),
           child: GestureDetector(
-            onTap: () {
-              Fluttertoast.showToast(msg: "disabled");
-              // profileActionBottomSheet(context);
+            onTap: () async {
+              final RenderBox overlay =
+                  Overlay.of(context).context.findRenderObject() as RenderBox;
+
+              await showMenu(
+                context: context,
+                position: RelativeRect.fromLTRB(
+                  100, // X position
+                  100, // Y position
+                  overlay.size.width - 100,
+                  overlay.size.height - 100,
+                ),
+                items: [
+                  PopupMenuItem(
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ParentDetailsPage(),
+                            ));
+                      },
+                      child: const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text("Add Parent Detail"),
+                      ),
+                    ),
+                  ),
+                  PopupMenuItem(
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SportSelectionScreen(),
+                            ));
+                      },
+                      child: const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text("Add Sport Selection"),
+                      ),
+                    ),
+                  ),
+                ],
+              );
             },
             child: Container(
               width: AppSize.appSize40,

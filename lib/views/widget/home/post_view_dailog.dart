@@ -60,13 +60,10 @@ class PostViewDialog extends StatelessWidget {
                           GestureDetector(
                             onTap: () async {
                               if (post != null) {
-                                final result = await Get.to(
-                                    () => EditPostScreen(post: post!));
-                                if (result == true) {
-                                  Get.find<ProfileController>().loadUserPosts();
-                                }
-                              } else {
-                                debugPrint("Post is null, cannot edit.");
+                                await Get.to(() => EditPostScreen(
+                                      postModel: post!,
+                                    ));
+                                Get.find<ProfileController>().loadUserPosts();
                               }
                             },
                             child: Container(

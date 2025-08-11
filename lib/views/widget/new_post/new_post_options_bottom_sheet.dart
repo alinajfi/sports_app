@@ -63,7 +63,7 @@ newPostOptionsBottomSheet(BuildContext context) {
                 return GestureDetector(
                   onTap: () async {
                     newPostController.selectItem(index);
-                    bool result = await Get.to(CreatePost());
+                    bool result = await Get.to(CreatePostScreen());
                     if (result) {
                       Get.find<HomeController>().getTimeLinePosts();
                     }

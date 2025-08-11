@@ -143,9 +143,9 @@ class StoriesSection extends StatelessWidget {
 
   Widget _buildStoryItem(StoryModel story, bool isFirstItem) {
     return GestureDetector(
-      onTap: () => Get.to(StoryFullView(
-        story: story,
-      )),
+      // onTap: () => Get.to(StoryFullView(
+      //   story: story,
+      // )),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [

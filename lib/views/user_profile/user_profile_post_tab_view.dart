@@ -6,6 +6,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_color.dart';
 import 'package:prime_social_media_flutter_ui_kit/controller/profile/profile_controller.dart';
 import 'package:prime_social_media_flutter_ui_kit/controller/user_profile_controller.dart';
+import 'package:prime_social_media_flutter_ui_kit/utils/widget_helper.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/widget/home/post_view_dailog.dart';
 import '../../../../config/app_size.dart';
 
@@ -38,6 +39,7 @@ class UserProfilePostTabView extends StatelessWidget {
 
             return GestureDetector(
               onTap: () {
+                WidgetHelper.showSnackBar();
                 if (imageUrl != null) {
                   showDialog(
                     context: context,

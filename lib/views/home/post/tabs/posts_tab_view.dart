@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_color.dart';
 import 'package:prime_social_media_flutter_ui_kit/controller/home/all_post_controller.dart';
+import 'package:prime_social_media_flutter_ui_kit/utils/widget_helper.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/widget/home/post_view_dailog.dart';
 import '../../../../config/app_size.dart';
 
@@ -35,8 +36,11 @@ class PostsTabView extends StatelessWidget {
                 barrierColor: AppColor.backgroundColor
                     .withAlpha(AppSize.appSizePoint7.toInt()),
                 builder: (context) {
-                  return PostViewDialog(
-                      imageUrl: allPostController.postsList[index]);
+                  WidgetHelper.showSnackBar(
+                      title: "this is naviatyion form proifile");
+                  return SizedBox();
+                  // return PostViewDialog(
+                  //     imageUrl: allPostController.postsList[index]);
                 },
               );
             },

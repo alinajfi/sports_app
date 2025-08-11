@@ -217,14 +217,14 @@ import 'package:get/get.dart';
 import 'package:prime_social_media_flutter_ui_kit/controller/create_post_controller.dart';
 import 'package:prime_social_media_flutter_ui_kit/model/create_post_model.dart';
 
-class CreatePost extends StatefulWidget {
-  CreatePost({Key? key}) : super(key: key);
+class CreatePostScreen extends StatefulWidget {
+  CreatePostScreen({Key? key}) : super(key: key);
 
   @override
-  State<CreatePost> createState() => _CreatePostState();
+  State<CreatePostScreen> createState() => _CreatePostScreenState();
 }
 
-class _CreatePostState extends State<CreatePost> {
+class _CreatePostScreenState extends State<CreatePostScreen> {
   @override
   dispose() {
     Get.delete<CreatePostController>();

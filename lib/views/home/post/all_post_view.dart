@@ -40,8 +40,12 @@ class AllPostView extends StatelessWidget {
       backgroundColor: AppColor.backgroundColor,
       leading: Padding(
         padding: EdgeInsets.only(
-          left: languageController.selectedLanguageIndex.value == AppSize.size2 ? AppSize.appSize0 : AppSize.appSize20,
-          right: languageController.selectedLanguageIndex.value == AppSize.size2 ? AppSize.appSize20 : AppSize.appSize0,
+          left: languageController.selectedLanguageIndex.value == AppSize.size2
+              ? AppSize.appSize0
+              : AppSize.appSize20,
+          right: languageController.selectedLanguageIndex.value == AppSize.size2
+              ? AppSize.appSize20
+              : AppSize.appSize0,
           top: AppSize.appSize6,
         ),
         child: GestureDetector(
@@ -49,7 +53,9 @@ class AllPostView extends StatelessWidget {
             Get.back();
           },
           child: Image.asset(
-            languageController.selectedLanguageIndex.value == AppSize.size2 ? AppIcon.backRight : AppIcon.back,
+            languageController.selectedLanguageIndex.value == AppSize.size2
+                ? AppIcon.backRight
+                : AppIcon.back,
           ),
         ),
       ),
@@ -67,7 +73,10 @@ class AllPostView extends StatelessWidget {
         Padding(
           padding: EdgeInsets.only(
             right: AppSize.appSize20,
-            left: languageController.selectedLanguageIndex.value == AppSize.size2 ? AppSize.appSize16 : AppSize.appSize0,
+            left:
+                languageController.selectedLanguageIndex.value == AppSize.size2
+                    ? AppSize.appSize16
+                    : AppSize.appSize0,
           ),
           child: GestureDetector(
             onTap: () {
@@ -354,7 +363,8 @@ class AllPostView extends StatelessWidget {
                         child: Column(
                           children: [
                             Padding(
-                              padding: const EdgeInsets.only(bottom: AppSize.appSize16),
+                              padding: const EdgeInsets.only(
+                                  bottom: AppSize.appSize16),
                               child: GestureDetector(
                                 onTap: () {
                                   Get.toNamed(AppRoutes.storyWithMessageView);
@@ -366,7 +376,8 @@ class AllPostView extends StatelessWidget {
                               ),
                             ),
                             const Padding(
-                              padding: EdgeInsets.only(bottom: AppSize.appSize18),
+                              padding:
+                                  EdgeInsets.only(bottom: AppSize.appSize18),
                               child: Text(
                                 AppString.eleanorPena,
                                 style: TextStyle(
@@ -381,47 +392,63 @@ class AllPostView extends StatelessWidget {
                               height: AppSize.appSize50,
                               width: AppSize.appSize230,
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  _customPostFollowersFollowingCount(AppString.posts176, AppString.posts),
-                                  _customPostFollowersFollowingCount(AppString.followers200k, AppString.followers),
-                                  _customPostFollowersFollowingCount(AppString.following1123, AppString.following),
+                                  _customPostFollowersFollowingCount(
+                                      AppString.posts176, AppString.posts),
+                                  _customPostFollowersFollowingCount(
+                                      AppString.followers200k,
+                                      AppString.followers),
+                                  _customPostFollowersFollowingCount(
+                                      AppString.following1123,
+                                      AppString.following),
                                 ],
                               ),
                             ),
                             Padding(
-                              padding: const EdgeInsets.only(top: AppSize.appSize18, bottom: AppSize.appSize16),
+                              padding: const EdgeInsets.only(
+                                  top: AppSize.appSize18,
+                                  bottom: AppSize.appSize16),
                               child: SizedBox(
                                 height: AppSize.appSize32,
                                 width: AppSize.appSize290,
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     GestureDetector(
                                       onTap: () {
                                         allPostController.toggleFollow();
                                       },
                                       child: Obx(() => Container(
-                                        width: AppSize.appSize110,
-                                        height: AppSize.appSize32,
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(AppSize.appSize6),
-                                          color: allPostController.isFollow.value
-                                              ? AppColor.cardBackgroundColor
-                                              : AppColor.primaryColor,
-                                        ),
-                                        child: Center(
-                                          child: Text(
-                                            allPostController.isFollow.value ? AppString.following : AppString.follow,
-                                            style: const TextStyle(
-                                              fontSize: AppSize.appSize14,
-                                              fontWeight: FontWeight.w600,
-                                              fontFamily: AppFont.appFontSemiBold,
-                                              color: AppColor.secondaryColor,
+                                            width: AppSize.appSize110,
+                                            height: AppSize.appSize32,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                      AppSize.appSize6),
+                                              color: allPostController
+                                                      .isFollow.value
+                                                  ? AppColor.cardBackgroundColor
+                                                  : AppColor.primaryColor,
                                             ),
-                                          ),
-                                        ),
-                                      )),
+                                            child: Center(
+                                              child: Text(
+                                                allPostController.isFollow.value
+                                                    ? AppString.following
+                                                    : AppString.follow,
+                                                style: const TextStyle(
+                                                  fontSize: AppSize.appSize14,
+                                                  fontWeight: FontWeight.w600,
+                                                  fontFamily:
+                                                      AppFont.appFontSemiBold,
+                                                  color:
+                                                      AppColor.secondaryColor,
+                                                ),
+                                              ),
+                                            ),
+                                          )),
                                     ),
                                     GestureDetector(
                                       onTap: () {
@@ -431,7 +458,8 @@ class AllPostView extends StatelessWidget {
                                         width: AppSize.appSize110,
                                         height: AppSize.appSize32,
                                         decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(AppSize.appSize6),
+                                          borderRadius: BorderRadius.circular(
+                                              AppSize.appSize6),
                                           color: AppColor.cardBackgroundColor,
                                         ),
                                         child: const Center(
@@ -440,7 +468,8 @@ class AllPostView extends StatelessWidget {
                                             style: TextStyle(
                                               fontSize: AppSize.appSize14,
                                               fontWeight: FontWeight.w600,
-                                              fontFamily: AppFont.appFontSemiBold,
+                                              fontFamily:
+                                                  AppFont.appFontSemiBold,
                                               color: AppColor.secondaryColor,
                                             ),
                                           ),
@@ -454,7 +483,8 @@ class AllPostView extends StatelessWidget {
                                           toastLength: Toast.LENGTH_SHORT,
                                           gravity: ToastGravity.BOTTOM,
                                           timeInSecForIosWeb: AppSize.size1,
-                                          backgroundColor: AppColor.cardBackgroundColor,
+                                          backgroundColor:
+                                              AppColor.cardBackgroundColor,
                                           textColor: AppColor.secondaryColor,
                                           fontSize: AppSize.appSize14,
                                         );
@@ -463,7 +493,8 @@ class AllPostView extends StatelessWidget {
                                         width: AppSize.appSize40,
                                         height: AppSize.appSize32,
                                         decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(AppSize.appSize6),
+                                          borderRadius: BorderRadius.circular(
+                                              AppSize.appSize6),
                                           color: AppColor.cardBackgroundColor,
                                         ),
                                         child: Center(
@@ -492,11 +523,14 @@ class AllPostView extends StatelessWidget {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(top: AppSize.appSize36, bottom: AppSize.appSize32),
+                        padding: const EdgeInsets.only(
+                            top: AppSize.appSize36, bottom: AppSize.appSize32),
                         child: Row(
                           children: [
-                            _customHighlights(AppImage.highlight1, AppString.like),
-                            _customHighlights(AppImage.highlight2, AppString.travel),
+                            _customHighlights(
+                                AppImage.highlight1, AppString.like),
+                            _customHighlights(
+                                AppImage.highlight2, AppString.travel),
                           ],
                         ),
                       ),
@@ -510,61 +544,61 @@ class AllPostView extends StatelessWidget {
           Container(
             color: AppColor.backgroundColor,
             child: Obx(() => TabBar(
-              onTap: (val) {
-                allPostController.selectedTabIndex.value = val;
-              },
-              controller: allPostController.tabController,
-              dividerColor: AppColor.backgroundColor,
-              labelColor: AppColor.secondaryColor,
-              labelStyle: const TextStyle(
-                color: AppColor.secondaryColor,
-              ),
-              unselectedLabelColor: AppColor.text1Color,
-              indicatorColor: AppColor.secondaryColor,
-              indicatorSize: TabBarIndicatorSize.tab,
-              indicatorWeight: AppSize.appSizePoint7,
-              isScrollable: false,
-              padding: EdgeInsets.zero,
-              labelPadding: EdgeInsets.zero,
-              tabs: [
-                Tab(
-                  icon: Image.asset(
-                    AppIcon.photos,
-                    width: AppSize.appSize22,
-                    color: allPostController.selectedTabIndex.value == 0
-                        ? AppColor.secondaryColor
-                        : AppColor.text1Color,
+                  onTap: (val) {
+                    allPostController.selectedTabIndex.value = val;
+                  },
+                  controller: allPostController.tabController,
+                  dividerColor: AppColor.backgroundColor,
+                  labelColor: AppColor.secondaryColor,
+                  labelStyle: const TextStyle(
+                    color: AppColor.secondaryColor,
                   ),
-                ),
-                Tab(
-                  icon: Image.asset(
-                    AppIcon.editComment,
-                    width: AppSize.appSize22,
-                    color: allPostController.selectedTabIndex.value == 1
-                        ? AppColor.secondaryColor
-                        : AppColor.text1Color,
-                  ),
-                ),
-                Tab(
-                  icon: Image.asset(
-                    AppIcon.reel,
-                    width: AppSize.appSize22,
-                    color: allPostController.selectedTabIndex.value == 2
-                        ? AppColor.secondaryColor
-                        : AppColor.text1Color,
-                  ),
-                ),
-                Tab(
-                  icon: Image.asset(
-                    AppIcon.tag,
-                    width: AppSize.appSize22,
-                    color: allPostController.selectedTabIndex.value == 3
-                        ? AppColor.secondaryColor
-                        : AppColor.text1Color,
-                  ),
-                ),
-              ],
-            )),
+                  unselectedLabelColor: AppColor.text1Color,
+                  indicatorColor: AppColor.secondaryColor,
+                  indicatorSize: TabBarIndicatorSize.tab,
+                  indicatorWeight: AppSize.appSizePoint7,
+                  isScrollable: false,
+                  padding: EdgeInsets.zero,
+                  labelPadding: EdgeInsets.zero,
+                  tabs: [
+                    Tab(
+                      icon: Image.asset(
+                        AppIcon.photos,
+                        width: AppSize.appSize22,
+                        color: allPostController.selectedTabIndex.value == 0
+                            ? AppColor.secondaryColor
+                            : AppColor.text1Color,
+                      ),
+                    ),
+                    Tab(
+                      icon: Image.asset(
+                        AppIcon.editComment,
+                        width: AppSize.appSize22,
+                        color: allPostController.selectedTabIndex.value == 1
+                            ? AppColor.secondaryColor
+                            : AppColor.text1Color,
+                      ),
+                    ),
+                    Tab(
+                      icon: Image.asset(
+                        AppIcon.reel,
+                        width: AppSize.appSize22,
+                        color: allPostController.selectedTabIndex.value == 2
+                            ? AppColor.secondaryColor
+                            : AppColor.text1Color,
+                      ),
+                    ),
+                    Tab(
+                      icon: Image.asset(
+                        AppIcon.tag,
+                        width: AppSize.appSize22,
+                        color: allPostController.selectedTabIndex.value == 3
+                            ? AppColor.secondaryColor
+                            : AppColor.text1Color,
+                      ),
+                    ),
+                  ],
+                )),
           ),
           Expanded(
             child: TabBarView(
