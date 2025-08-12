@@ -80,7 +80,7 @@ import 'package:prime_social_media_flutter_ui_kit/config/app_color.dart';
 import 'package:prime_social_media_flutter_ui_kit/controller/profile/profile_controller.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/widget/home/post_view_dailog.dart';
 import '../../../../config/app_size.dart';
-import '../post_view_dialog_my_profile.dart';
+// import '../post_view_dialog_my_profile.dart';
 
 class ProfilePostsTabView extends StatelessWidget {
   ProfilePostsTabView({Key? key}) : super(key: key);
@@ -115,7 +115,10 @@ class ProfilePostsTabView extends StatelessWidget {
                   showDialog(
                     context: context,
                     barrierColor: AppColor.backgroundColor.withOpacity(0.7),
-                    builder: (_) => PostViewDialogMyProfile(post: post),
+                    builder: (_) => PostViewDialog(
+                      post: post,
+                      imageUrl: post.photo!,
+                    ),
                   );
                 }
               },

@@ -23,7 +23,7 @@ import 'package:prime_social_media_flutter_ui_kit/views/home/widgets/stories_sec
 import 'package:prime_social_media_flutter_ui_kit/views/home/widgets/text_post.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/new_post/reel/create_reel_view.dart';
 
-import '../../services/notification_service.dart';
+// import '../../services/notification_service.dart';
 
 final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -57,7 +57,7 @@ class _HomeViewState extends State<HomeView> {
     return FloatingActionButton(
       onPressed: () async {
         final token = await FirebaseMessaging.instance.getToken();
-        NotificationService().sendNotification(token!, "Test ", "Test");
+        // NotificationService().sendNotification(token!, "Test ", "Test");
         //   SocialService().getFriendRequest();
         // SocialService().getFrinds();
 
