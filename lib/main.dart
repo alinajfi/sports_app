@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_color.dart';
@@ -20,6 +21,9 @@ import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // Stripe.publishableKey =
+  //     'pk_test_51Joui7L1cSJT1UwBLOUBZqLx59AjgpFRE7hB6zF3hP74Kow1Q8UZt2sCSRxB6Y4DhX0lTxng5k22L17CHZeEYmpR00p30nE3kY'; // Your publishable key
+  // await Stripe.instance.applySettings();
   await initTranslation();
 
   // Check if Firebase is already initialized

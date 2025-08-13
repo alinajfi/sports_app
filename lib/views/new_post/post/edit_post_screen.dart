@@ -114,27 +114,52 @@ class _CreatePostScreenState extends State<EditPostScreen> {
                             mainAxisSpacing: 8,
                           ),
                           itemBuilder: (context, index) {
-                            if (index < controller.existingImages.length) {
-                              // Show network image
-                              return ClipRRect(
-                                borderRadius: BorderRadius.circular(8),
-                                child: Image.network(
-                                  controller.existingImages[index],
-                                  fit: BoxFit.cover,
+                            final isNetworkImage =
+                                index < controller.existingImages.length;
+
+                            return Stack(
+                              children: [
+                                // Image
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(8),
+                                  child: isNetworkImage
+                                      ? Image.network(
+                                          controller.existingImages[index],
+                                          fit: BoxFit.cover,
+                                          width: double.infinity,
+                                          height: double.infinity,
+                                        )
+                                      : Image.file(
+                                          controller.pickedImages[index -
+                                              controller.existingImages.length],
+                                          fit: BoxFit.cover,
+                                          width: double.infinity,
+                                          height: double.infinity,
+                                        ),
                                 ),
-                              );
-                            } else {
-                              // Show local picked image
-                              final localIndex =
-                                  index - controller.existingImages.length;
-                              return ClipRRect(
-                                borderRadius: BorderRadius.circular(8),
-                                child: Image.file(
-                                  controller.pickedImages[localIndex],
-                                  fit: BoxFit.cover,
+
+                                // Delete Icon
+                                Positioned(
+                                  top: 4,
+                                  right: 4,
+                                  child: GestureDetector(
+                                    onTap: () {},
+                                    child: Container(
+                                      decoration: const BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Colors.red,
+                                      ),
+                                      padding: const EdgeInsets.all(4),
+                                      child: const Icon(
+                                        Icons.close,
+                                        color: Colors.white,
+                                        size: 16,
+                                      ),
+                                    ),
+                                  ),
                                 ),
-                              );
-                            }
+                              ],
+                            );
                           },
                         ),
                       );
