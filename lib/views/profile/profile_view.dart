@@ -110,7 +110,9 @@ class _ProfileViewState extends State<ProfileView> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => ParentDetailsPage(),
+                              builder: (context) => ParentDetailsPage(
+                                  userId: profileController.user.value!.id
+                                      .toString()),
                             ));
                       },
                       child: const Padding(
