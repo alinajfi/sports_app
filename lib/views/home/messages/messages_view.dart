@@ -229,123 +229,25 @@ class MessagesView extends StatelessWidget {
   }
 
   Widget _buildMessageTabContent(BuildContext context) {
-    return ListView.builder(
-      shrinkWrap: true,
-      itemCount: messagesController.messageProfilesList.length,
-      itemBuilder: (context, index) {
-        return Padding(
-          padding: const EdgeInsets.only(bottom: AppSize.appSize8),
-          child: ListTile(
-            onTap: () {
-              Get.toNamed(AppRoutes.messagesChatView);
-            },
-            contentPadding: EdgeInsets.zero,
-            dense: true,
-            leading: SizedBox(
-              width: AppSize.appSize50,
-              height: AppSize.appSize50,
-              child: Center(
-                child: Image.asset(
-                  messagesController.messageProfilesList[index],
-                  width: messagesController.messageProfilesWidthList[index],
-                ),
-              ),
-            ),
-            title: Text(
-              messagesController.messageProfileNamesList[index],
-              style: const TextStyle(
-                fontSize: AppSize.appSize14,
-                fontWeight: FontWeight.w600,
-                fontFamily: AppFont.appFontSemiBold,
-                color: AppColor.secondaryColor,
-              ),
-            ),
-            subtitle: Row(
-              children: [
-                Text(
-                  messagesController.messagesList[index],
-                  style: TextStyle(
-                    fontSize: AppSize.appSize14,
-                    fontWeight: (index == 0 || index == 1 || index == 2)
-                        ? FontWeight.w600
-                        : FontWeight.w400,
-                    fontFamily: (index == 0 || index == 1 || index == 2)
-                        ? AppFont.appFontSemiBold
-                        : AppFont.appFontRegular,
-                    color: (index == 0 || index == 1 || index == 2)
-                        ? AppColor.secondaryColor
-                        : AppColor.text2Color,
-                  ),
-                ),
-                if (index == 0 ||
-                    index == 1 ||
-                    index == 2 ||
-                    index == 3 ||
-                    index == 4) ...[
-                  Container(
-                    width: AppSize.appSize4,
-                    height: AppSize.appSize4,
-                    margin: const EdgeInsets.only(
-                        left: AppSize.appSize8,
-                        right: AppSize.appSize8,
-                        top: AppSize.appSize6),
-                    decoration: const BoxDecoration(
-                      color: AppColor.text2Color,
-                      shape: BoxShape.circle,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: AppSize.appSize3),
-                    child: Text(
-                      messagesController.messageTimingsList[index],
-                      style: const TextStyle(
-                        fontSize: AppSize.appSize14,
-                        fontWeight: FontWeight.w400,
-                        fontFamily: AppFont.appFontRegular,
-                        color: AppColor.text2Color,
-                      ),
-                    ),
-                  ),
-                ],
-              ],
-            ),
-            trailing: (index == 0 || index == 1)
-                ? Container(
-                    width: AppSize.appSize6,
-                    height: AppSize.appSize6,
-                    margin: const EdgeInsets.only(
-                        left: AppSize.appSize8,
-                        right: AppSize.appSize8,
-                        top: AppSize.appSize6),
-                    decoration: const BoxDecoration(
-                      color: AppColor.primaryColor,
-                      shape: BoxShape.circle,
-                    ),
-                  )
-                : const SizedBox.shrink(),
-          ),
-        );
-      },
-    );
-  }
-
-  Widget _buildRequestsTabContent(BuildContext context) {
     return GetX<MessagesController>(
       builder: (controller) {
-        return controller.friendRequests.isEmpty
+        return controller.chats.isEmpty
             ? Center(
                 child: Text(
-                  "No request found",
+                  "No Chats found",
                   style: TextStyle(color: Colors.white),
                 ),
               )
             : ListView.builder(
                 shrinkWrap: true,
-                itemCount: AppSize.size2,
+                itemCount: controller.chats.length,
                 itemBuilder: (context, index) {
                   return Padding(
                     padding: const EdgeInsets.only(bottom: AppSize.appSize8),
                     child: ListTile(
+                      onTap: () {
+                        Get.toNamed(AppRoutes.messagesChatView);
+                      },
                       contentPadding: EdgeInsets.zero,
                       dense: true,
                       leading: SizedBox(
@@ -353,17 +255,16 @@ class MessagesView extends StatelessWidget {
                         height: AppSize.appSize50,
                         child: Center(
                           child: ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
+                            borderRadius: BorderRadius.circular(12),
                             child: Image.network(
-                              messagesController.friendRequests[index].photo,
-                              // width: messagesController
-                              //     .messageProfilesWidthList[index],
+                              messagesController.chats[index].profilePhoto,
+                              // width: messagesController.messageProfilesWidthList[index],
                             ),
                           ),
                         ),
                       ),
                       title: Text(
-                        messagesController.messageProfileNamesList[index],
+                        messagesController.chats[index].profileName,
                         style: const TextStyle(
                           fontSize: AppSize.appSize14,
                           fontWeight: FontWeight.w600,
@@ -374,7 +275,7 @@ class MessagesView extends StatelessWidget {
                       subtitle: Row(
                         children: [
                           Text(
-                            messagesController.messagesList[index],
+                            messagesController.chats[index].lastMsg,
                             style: TextStyle(
                               fontSize: AppSize.appSize14,
                               fontWeight:
@@ -411,7 +312,7 @@ class MessagesView extends StatelessWidget {
                               padding:
                                   const EdgeInsets.only(top: AppSize.appSize3),
                               child: Text(
-                                messagesController.messageTimingsList[index],
+                                messagesController.chats[index].msgTime,
                                 style: const TextStyle(
                                   fontSize: AppSize.appSize14,
                                   fontWeight: FontWeight.w400,
@@ -437,6 +338,70 @@ class MessagesView extends StatelessWidget {
                               ),
                             )
                           : const SizedBox.shrink(),
+                    ),
+                  );
+                },
+              );
+      },
+    );
+  }
+
+  Widget _buildRequestsTabContent(BuildContext context) {
+    return GetX<MessagesController>(
+      builder: (controller) {
+        return controller.friendRequests.isEmpty
+            ? Center(
+                child: Text(
+                  "No request found",
+                  style: TextStyle(color: Colors.white),
+                ),
+              )
+            : ListView.builder(
+                shrinkWrap: true,
+                itemCount: AppSize.size2,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: AppSize.appSize18),
+                    child: ListTile(
+                      contentPadding: EdgeInsets.zero,
+                      dense: true,
+                      leading: SizedBox(
+                        width: AppSize.appSize50,
+                        height: AppSize.appSize50,
+                        child: Center(
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: Image.network(
+                              messagesController.friendRequests[index].photo,
+                            ),
+                          ),
+                        ),
+                      ),
+                      title: Text(
+                        messagesController.friendRequests[index].name,
+                        style: const TextStyle(
+                          fontSize: AppSize.appSize14,
+                          fontWeight: FontWeight.w600,
+                          fontFamily: AppFont.appFontSemiBold,
+                          color: AppColor.secondaryColor,
+                        ),
+                      ),
+                      trailing: TextButton(
+                        onPressed: () {
+                          // // Handle accept friend request here
+                          // messagesController.acceptFriendRequest(
+                          //   messagesController.friendRequests[index].id,
+                          // );
+                        },
+                        child: const Text(
+                          'Accept',
+                          style: TextStyle(
+                            fontSize: AppSize.appSize14,
+                            fontWeight: FontWeight.w500,
+                            color: AppColor.primaryColor,
+                          ),
+                        ),
+                      ),
                     ),
                   );
                 },
