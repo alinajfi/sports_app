@@ -3,8 +3,24 @@ import 'package:get/get.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_image.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_size.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_string.dart';
+import 'package:prime_social_media_flutter_ui_kit/services/social_service.dart';
+
+import '../../model/friend_request_model.dart';
 
 class MessagesController extends GetxController {
+  SocialService _socialService = SocialService();
+
+  RxList<FriendRequestModel> friendRequests = <FriendRequestModel>[].obs;
+  Future<void> getFriendRequests() async {
+    friendRequests.value = await _socialService.getFriendRequest() ?? [];
+  }
+
+  @override
+  onInit() {
+    super.onInit();
+    getFriendRequests();
+  }
+
   TextEditingController searchFieldController = TextEditingController();
 
   RxInt selectedIndex = 0.obs;

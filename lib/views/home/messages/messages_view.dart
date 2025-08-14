@@ -33,8 +33,12 @@ class MessagesView extends StatelessWidget {
       backgroundColor: AppColor.backgroundColor,
       leading: Padding(
         padding: EdgeInsets.only(
-          left: languageController.selectedLanguageIndex.value == AppSize.size2 ? AppSize.appSize0 : AppSize.appSize20,
-          right: languageController.selectedLanguageIndex.value == AppSize.size2 ? AppSize.appSize20 : AppSize.appSize0,
+          left: languageController.selectedLanguageIndex.value == AppSize.size2
+              ? AppSize.appSize0
+              : AppSize.appSize20,
+          right: languageController.selectedLanguageIndex.value == AppSize.size2
+              ? AppSize.appSize20
+              : AppSize.appSize0,
           top: AppSize.appSize6,
         ),
         child: GestureDetector(
@@ -42,7 +46,9 @@ class MessagesView extends StatelessWidget {
             Get.back();
           },
           child: Image.asset(
-            languageController.selectedLanguageIndex.value == AppSize.size2 ? AppIcon.backRight : AppIcon.back,
+            languageController.selectedLanguageIndex.value == AppSize.size2
+                ? AppIcon.backRight
+                : AppIcon.back,
           ),
         ),
       ),
@@ -59,12 +65,18 @@ class MessagesView extends StatelessWidget {
       actions: [
         Padding(
           padding: EdgeInsets.only(
-            left: languageController.selectedLanguageIndex.value == AppSize.size2 ? AppSize.appSize20 : AppSize.appSize0,
-            right: languageController.selectedLanguageIndex.value == AppSize.size2 ? AppSize.appSize0 : AppSize.appSize20,
+            left:
+                languageController.selectedLanguageIndex.value == AppSize.size2
+                    ? AppSize.appSize20
+                    : AppSize.appSize0,
+            right:
+                languageController.selectedLanguageIndex.value == AppSize.size2
+                    ? AppSize.appSize0
+                    : AppSize.appSize20,
             top: AppSize.appSize5,
           ),
           child: GestureDetector(
-            onTap: () { },
+            onTap: () {},
             child: SizedBox(
               width: AppSize.appSize20,
               child: Image.asset(
@@ -81,7 +93,9 @@ class MessagesView extends StatelessWidget {
   _body(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(
-        top: AppSize.appSize24, left: AppSize.appSize20, right: AppSize.appSize20,
+        top: AppSize.appSize24,
+        left: AppSize.appSize20,
+        right: AppSize.appSize20,
       ),
       child: Column(
         children: [
@@ -94,7 +108,8 @@ class MessagesView extends StatelessWidget {
             decoration: BoxDecoration(
               color: AppColor.cardBackgroundColor,
               borderRadius: BorderRadius.circular(AppSize.appSize12),
-              border: Border.all(color: AppColor.borderColor, width: AppSize.appSizePoint7),
+              border: Border.all(
+                  color: AppColor.borderColor, width: AppSize.appSizePoint7),
             ),
             child: Center(
               child: TextFormField(
@@ -129,8 +144,14 @@ class MessagesView extends StatelessWidget {
                   ),
                   prefixIcon: Padding(
                     padding: EdgeInsets.only(
-                      left: languageController.selectedLanguageIndex.value == AppSize.size2 ? AppSize.appSize8 : AppSize.appSize0,
-                      right: languageController.selectedLanguageIndex.value == AppSize.size2 ? AppSize.appSize0 : AppSize.appSize8,
+                      left: languageController.selectedLanguageIndex.value ==
+                              AppSize.size2
+                          ? AppSize.appSize8
+                          : AppSize.appSize0,
+                      right: languageController.selectedLanguageIndex.value ==
+                              AppSize.size2
+                          ? AppSize.appSize0
+                          : AppSize.appSize8,
                     ),
                     child: Image.asset(AppIcon.searchLike),
                   ),
@@ -142,14 +163,16 @@ class MessagesView extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: AppSize.appSize24, bottom: AppSize.appSize24),
+            padding: const EdgeInsets.only(
+                top: AppSize.appSize24, bottom: AppSize.appSize24),
             child: SizedBox(
               height: AppSize.appSize36,
               child: Row(
                 children: [
                   Expanded(
                     child: Obx(() {
-                      return _buildTabButton(0, AppString.messages, messagesController.selectedIndex.value == 0);
+                      return _buildTabButton(0, AppString.messages,
+                          messagesController.selectedIndex.value == 0);
                     }),
                   ),
                   const SizedBox(
@@ -157,7 +180,8 @@ class MessagesView extends StatelessWidget {
                   ),
                   Expanded(
                     child: Obx(() {
-                      return _buildTabButton(1, AppString.requests, messagesController.selectedIndex.value == 1);
+                      return _buildTabButton(1, AppString.requests,
+                          messagesController.selectedIndex.value == 1);
                     }),
                   ),
                 ],
@@ -166,7 +190,7 @@ class MessagesView extends StatelessWidget {
           ),
           Expanded(
             child: Obx(
-                  () => messagesController.selectedIndex.value == 0
+              () => messagesController.selectedIndex.value == 0
                   ? _buildMessageTabContent(context)
                   : _buildRequestsTabContent(context),
             ),
@@ -181,7 +205,9 @@ class MessagesView extends StatelessWidget {
       onTap: () => messagesController.selectTab(index),
       child: Container(
         decoration: BoxDecoration(
-          color: isSelected ? AppColor.secondaryColor : AppColor.cardBackgroundColor,
+          color: isSelected
+              ? AppColor.secondaryColor
+              : AppColor.cardBackgroundColor,
           borderRadius: BorderRadius.circular(AppSize.appSize6),
         ),
         child: Center(
@@ -190,8 +216,11 @@ class MessagesView extends StatelessWidget {
             style: TextStyle(
               fontSize: AppSize.appSize14,
               fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
-              fontFamily: isSelected ? AppFont.appFontSemiBold : AppFont.appFontRegular,
-              color: isSelected ? AppColor.backgroundColor : AppColor.secondaryColor,
+              fontFamily:
+                  isSelected ? AppFont.appFontSemiBold : AppFont.appFontRegular,
+              color: isSelected
+                  ? AppColor.backgroundColor
+                  : AppColor.secondaryColor,
             ),
           ),
         ),
@@ -237,16 +266,29 @@ class MessagesView extends StatelessWidget {
                   messagesController.messagesList[index],
                   style: TextStyle(
                     fontSize: AppSize.appSize14,
-                    fontWeight: (index == 0 || index == 1 || index == 2) ? FontWeight.w600 : FontWeight.w400,
-                    fontFamily: (index == 0 || index == 1 || index == 2) ? AppFont.appFontSemiBold : AppFont.appFontRegular,
-                    color: (index == 0 || index == 1 || index == 2) ? AppColor.secondaryColor : AppColor.text2Color,
+                    fontWeight: (index == 0 || index == 1 || index == 2)
+                        ? FontWeight.w600
+                        : FontWeight.w400,
+                    fontFamily: (index == 0 || index == 1 || index == 2)
+                        ? AppFont.appFontSemiBold
+                        : AppFont.appFontRegular,
+                    color: (index == 0 || index == 1 || index == 2)
+                        ? AppColor.secondaryColor
+                        : AppColor.text2Color,
                   ),
                 ),
-                if(index == 0 || index == 1 || index == 2 || index == 3 || index == 4)...[
+                if (index == 0 ||
+                    index == 1 ||
+                    index == 2 ||
+                    index == 3 ||
+                    index == 4) ...[
                   Container(
                     width: AppSize.appSize4,
                     height: AppSize.appSize4,
-                    margin: const EdgeInsets.only(left: AppSize.appSize8, right: AppSize.appSize8, top: AppSize.appSize6),
+                    margin: const EdgeInsets.only(
+                        left: AppSize.appSize8,
+                        right: AppSize.appSize8,
+                        top: AppSize.appSize6),
                     decoration: const BoxDecoration(
                       color: AppColor.text2Color,
                       shape: BoxShape.circle,
@@ -267,15 +309,20 @@ class MessagesView extends StatelessWidget {
                 ],
               ],
             ),
-            trailing: (index == 0 || index == 1) ? Container(
-              width: AppSize.appSize6,
-              height: AppSize.appSize6,
-              margin: const EdgeInsets.only(left: AppSize.appSize8, right: AppSize.appSize8, top: AppSize.appSize6),
-              decoration: const BoxDecoration(
-                color: AppColor.primaryColor,
-                shape: BoxShape.circle,
-              ),
-            ) : const SizedBox.shrink(),
+            trailing: (index == 0 || index == 1)
+                ? Container(
+                    width: AppSize.appSize6,
+                    height: AppSize.appSize6,
+                    margin: const EdgeInsets.only(
+                        left: AppSize.appSize8,
+                        right: AppSize.appSize8,
+                        top: AppSize.appSize6),
+                    decoration: const BoxDecoration(
+                      color: AppColor.primaryColor,
+                      shape: BoxShape.circle,
+                    ),
+                  )
+                : const SizedBox.shrink(),
           ),
         );
       },
@@ -283,81 +330,117 @@ class MessagesView extends StatelessWidget {
   }
 
   Widget _buildRequestsTabContent(BuildContext context) {
-    return ListView.builder(
-      shrinkWrap: true,
-      itemCount: AppSize.size2,
-      itemBuilder: (context, index) {
-        return Padding(
-          padding: const EdgeInsets.only(bottom: AppSize.appSize8),
-          child: ListTile(
-            contentPadding: EdgeInsets.zero,
-            dense: true,
-            leading: SizedBox(
-              width: AppSize.appSize50,
-              height: AppSize.appSize50,
-              child: Center(
-                child: Image.asset(
-                  messagesController.messageProfilesList[index],
-                  width: messagesController.messageProfilesWidthList[index],
+    return GetX<MessagesController>(
+      builder: (controller) {
+        return controller.friendRequests.isEmpty
+            ? Center(
+                child: Text(
+                  "No request found",
+                  style: TextStyle(color: Colors.white),
                 ),
-              ),
-            ),
-            title: Text(
-              messagesController.messageProfileNamesList[index],
-              style: const TextStyle(
-                fontSize: AppSize.appSize14,
-                fontWeight: FontWeight.w600,
-                fontFamily: AppFont.appFontSemiBold,
-                color: AppColor.secondaryColor,
-              ),
-            ),
-            subtitle: Row(
-              children: [
-                Text(
-                  messagesController.messagesList[index],
-                  style: TextStyle(
-                    fontSize: AppSize.appSize14,
-                    fontWeight: (index == 0 || index == 1 || index == 2) ? FontWeight.w600 : FontWeight.w400,
-                    fontFamily: (index == 0 || index == 1 || index == 2) ? AppFont.appFontSemiBold : AppFont.appFontRegular,
-                    color: (index == 0 || index == 1 || index == 2) ? AppColor.secondaryColor : AppColor.text2Color,
-                  ),
-                ),
-                if(index == 0 || index == 1 || index == 2 || index == 3 || index == 4)...[
-                  Container(
-                    width: AppSize.appSize4,
-                    height: AppSize.appSize4,
-                    margin: const EdgeInsets.only(left: AppSize.appSize8, right: AppSize.appSize8, top: AppSize.appSize6),
-                    decoration: const BoxDecoration(
-                      color: AppColor.text2Color,
-                      shape: BoxShape.circle,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: AppSize.appSize3),
-                    child: Text(
-                      messagesController.messageTimingsList[index],
-                      style: const TextStyle(
-                        fontSize: AppSize.appSize14,
-                        fontWeight: FontWeight.w400,
-                        fontFamily: AppFont.appFontRegular,
-                        color: AppColor.text2Color,
+              )
+            : ListView.builder(
+                shrinkWrap: true,
+                itemCount: AppSize.size2,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: AppSize.appSize8),
+                    child: ListTile(
+                      contentPadding: EdgeInsets.zero,
+                      dense: true,
+                      leading: SizedBox(
+                        width: AppSize.appSize50,
+                        height: AppSize.appSize50,
+                        child: Center(
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: Image.network(
+                              messagesController.friendRequests[index].photo,
+                              // width: messagesController
+                              //     .messageProfilesWidthList[index],
+                            ),
+                          ),
+                        ),
                       ),
+                      title: Text(
+                        messagesController.messageProfileNamesList[index],
+                        style: const TextStyle(
+                          fontSize: AppSize.appSize14,
+                          fontWeight: FontWeight.w600,
+                          fontFamily: AppFont.appFontSemiBold,
+                          color: AppColor.secondaryColor,
+                        ),
+                      ),
+                      subtitle: Row(
+                        children: [
+                          Text(
+                            messagesController.messagesList[index],
+                            style: TextStyle(
+                              fontSize: AppSize.appSize14,
+                              fontWeight:
+                                  (index == 0 || index == 1 || index == 2)
+                                      ? FontWeight.w600
+                                      : FontWeight.w400,
+                              fontFamily:
+                                  (index == 0 || index == 1 || index == 2)
+                                      ? AppFont.appFontSemiBold
+                                      : AppFont.appFontRegular,
+                              color: (index == 0 || index == 1 || index == 2)
+                                  ? AppColor.secondaryColor
+                                  : AppColor.text2Color,
+                            ),
+                          ),
+                          if (index == 0 ||
+                              index == 1 ||
+                              index == 2 ||
+                              index == 3 ||
+                              index == 4) ...[
+                            Container(
+                              width: AppSize.appSize4,
+                              height: AppSize.appSize4,
+                              margin: const EdgeInsets.only(
+                                  left: AppSize.appSize8,
+                                  right: AppSize.appSize8,
+                                  top: AppSize.appSize6),
+                              decoration: const BoxDecoration(
+                                color: AppColor.text2Color,
+                                shape: BoxShape.circle,
+                              ),
+                            ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(top: AppSize.appSize3),
+                              child: Text(
+                                messagesController.messageTimingsList[index],
+                                style: const TextStyle(
+                                  fontSize: AppSize.appSize14,
+                                  fontWeight: FontWeight.w400,
+                                  fontFamily: AppFont.appFontRegular,
+                                  color: AppColor.text2Color,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ],
+                      ),
+                      trailing: (index == 0 || index == 1)
+                          ? Container(
+                              width: AppSize.appSize6,
+                              height: AppSize.appSize6,
+                              margin: const EdgeInsets.only(
+                                  left: AppSize.appSize8,
+                                  right: AppSize.appSize8,
+                                  top: AppSize.appSize6),
+                              decoration: const BoxDecoration(
+                                color: AppColor.primaryColor,
+                                shape: BoxShape.circle,
+                              ),
+                            )
+                          : const SizedBox.shrink(),
                     ),
-                  ),
-                ],
-              ],
-            ),
-            trailing: (index == 0 || index == 1) ? Container(
-              width: AppSize.appSize6,
-              height: AppSize.appSize6,
-              margin: const EdgeInsets.only(left: AppSize.appSize8, right: AppSize.appSize8, top: AppSize.appSize6),
-              decoration: const BoxDecoration(
-                color: AppColor.primaryColor,
-                shape: BoxShape.circle,
-              ),
-            ) : const SizedBox.shrink(),
-          ),
-        );
+                  );
+                },
+              );
       },
     );
   }
