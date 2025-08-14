@@ -101,6 +101,32 @@ class AuthService extends CommonApiFunctions {
     if (response.statusCode == 200) {}
   }
 
+  Future<bool> forgotPassword(String email) async {
+    final url = Uri.parse(
+        '${ApiConstants.baseUrl}${ApiConstants.forgetPasswordRequest}');
+
+    // Make sure this returns proper headers
+    final headers = getHeadersWithTokenJson();
+
+    final body = jsonEncode({'email': email});
+
+    try {
+      final res = await http.post(
+        url,
+        headers: headers,
+        body: body,
+      );
+
+      if (res.statusCode == 200) {
+        final data = jsonDecode(res.body);
+        return data['success'] == true;
+      }
+      return false;
+    } catch (e) {
+      return false;
+    }
+  }
+
   Future<http.Response> updatePassword(String token, String newPassword) {
     final url =
         getUrlFromEndPoints(endPoint: ApiConstants.updatePasswordRequest);
