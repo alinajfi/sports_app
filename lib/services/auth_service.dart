@@ -3,8 +3,6 @@ import 'dart:developer';
 
 import 'package:http/http.dart' as http;
 import 'package:prime_social_media_flutter_ui_kit/constants/api_constants.dart';
-import 'package:prime_social_media_flutter_ui_kit/constants/db_constants.dart';
-import 'package:prime_social_media_flutter_ui_kit/controller/db_controller.dart';
 import 'package:prime_social_media_flutter_ui_kit/model/login_response_model.dart';
 import 'package:prime_social_media_flutter_ui_kit/model/user_model.dart';
 import 'package:prime_social_media_flutter_ui_kit/utils/common_api_functions.dart';

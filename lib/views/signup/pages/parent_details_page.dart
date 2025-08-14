@@ -82,18 +82,6 @@ class ParentDetailsPage extends StatelessWidget {
                           fontSize: 28,
                           fontWeight: FontWeight.bold,
                           color: Colors.white)),
-                  const SizedBox(height: 8),
-                  const Text('Step 4 of 5',
-                      style: TextStyle(fontSize: 16, color: Colors.grey)),
-                  const SizedBox(height: 24),
-                  Container(
-                    height: 6,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(3),
-                        gradient: const LinearGradient(
-                            colors: [Colors.red, Colors.pink, Colors.purple],
-                            stops: [0.0, 0.5, 1.0])),
-                  ),
                   const SizedBox(height: 32),
                   Expanded(
                     child: SingleChildScrollView(
@@ -149,7 +137,7 @@ class ParentDetailsPage extends StatelessWidget {
                                   .value
                               ? const CircularProgressIndicator(
                                   color: Colors.white)
-                              : const Text('Continue',
+                              : const Text('Save',
                                   style: TextStyle(
                                       fontSize: 18,
                                       fontWeight: FontWeight.w600,
