@@ -16,6 +16,9 @@ class EditPostController extends GetxController {
   onInit() {
     super.onInit();
     descriptionController = TextEditingController(text: post.description);
+    if (post.photo != null && post.photo!.isNotEmpty) {
+      existingImages.assignAll(post.postImages!);
+    }
   }
 
   RxBool isSwitchLike = false.obs;
@@ -25,6 +28,7 @@ class EditPostController extends GetxController {
   RxString selectedFeeling = ''.obs;
   RxString location = ''.obs;
   RxString event = ''.obs;
+  var existingImages = <String>[].obs;
 
   Future<void> pickImage() async {
     final picked = await ImagePicker().pickImage(source: ImageSource.gallery);

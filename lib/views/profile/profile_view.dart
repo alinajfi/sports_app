@@ -263,6 +263,8 @@ class _ProfileViewState extends State<ProfileView> {
               children: [
                 Obx(() {
                   final user = profileController.user.value;
+                  print("Profile photo URL: ${user?.photo}");
+
                   return GestureDetector(
                     onTap: () {
                       Get.toNamed(AppRoutes.storyWithMessageView);

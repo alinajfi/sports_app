@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:prime_social_media_flutter_ui_kit/main.dart';
+
 import 'package:prime_social_media_flutter_ui_kit/routes/app_routes.dart';
 import '../../../config/app_color.dart'; // your AppColor dark theme class
 
@@ -414,3 +414,72 @@ class _PaymentSummaryScreenState extends State<PaymentSummaryScreen> {
     super.dispose();
   }
 }
+
+// import 'dart:convert';
+// import 'package:flutter/material.dart';
+// import 'package:flutter_stripe/flutter_stripe.dart';
+// import 'package:http/http.dart' as http;
+
+// class PaymentSummaryScreen extends StatefulWidget {
+//   const PaymentSummaryScreen({super.key});
+
+//   @override
+//   State<PaymentSummaryScreen> createState() => _PaymentTestPageState();
+// }
+
+// class _PaymentTestPageState extends State<PaymentSummaryScreen> {
+//   Future<void> _makeTestPayment() async {
+//     try {
+//       // 1. Create PaymentIntent directly with secret key (test only)
+//       final response = await http.post(
+//         Uri.parse('https://api.stripe.com/v1/payment_intents'),
+//         headers: {
+//           'Authorization': 'Bearer sk_test_...', // Secret key here (TEST ONLY!)
+//           'Content-Type': 'application/x-www-form-urlencoded',
+//         },
+//         body: {
+//           'amount': '5000', // $50.00 in cents
+//           'currency': 'usd',
+//           'automatic_payment_methods[enabled]': 'true',
+//         },
+//       );
+
+//       final paymentIntent = json.decode(response.body);
+//       final clientSecret = paymentIntent['client_secret'];
+
+//       // 2. Initialize Payment Sheet
+//       await Stripe.instance.initPaymentSheet(
+//         paymentSheetParameters: SetupPaymentSheetParameters(
+//           paymentIntentClientSecret: clientSecret,
+//           merchantDisplayName: 'Test Store',
+//         ),
+//       );
+
+//       // 3. Present Payment Sheet
+//       await Stripe.instance.presentPaymentSheet();
+
+//       if (mounted) {
+//         ScaffoldMessenger.of(context).showSnackBar(
+//           const SnackBar(content: Text('Payment Successful ✅')),
+//         );
+//       }
+//     } catch (e) {
+//       ScaffoldMessenger.of(context).showSnackBar(
+//         SnackBar(content: Text('Payment Failed: $e')),
+//       );
+//     }
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(title: const Text('Stripe Payment Test')),
+//       body: Center(
+//         child: ElevatedButton(
+//           onPressed: _makeTestPayment,
+//           child: Text('Pay ${50}'),
+//         ),
+//       ),
+//     );
+//   }
+// }

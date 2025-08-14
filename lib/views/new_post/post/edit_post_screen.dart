@@ -97,29 +97,68 @@ class _CreatePostScreenState extends State<EditPostScreen> {
                     const SizedBox(height: 8),
                     _iconRow(),
                     Obx(() {
-                      if (controller.pickedImages.isEmpty)
-                        return SizedBox.shrink();
+                      final totalImagesCount =
+                          controller.existingImages.length +
+                              controller.pickedImages.length;
+
+                      if (totalImagesCount == 0) return SizedBox.shrink();
 
                       return SizedBox(
-                        height: 230, // ✅ Set your desired height here
+                        height: 230,
                         child: GridView.builder(
-                          itemCount: controller.pickedImages.length,
+                          itemCount: totalImagesCount,
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 3,
                             crossAxisSpacing: 8,
                             mainAxisSpacing: 8,
-                            childAspectRatio: 1,
                           ),
-                          scrollDirection: Axis.vertical,
                           itemBuilder: (context, index) {
-                            final imageFile = controller.pickedImages[index];
-                            return ClipRRect(
-                              borderRadius: BorderRadius.circular(8),
-                              child: Image.file(
-                                imageFile,
-                                fit: BoxFit.cover,
-                              ),
+                            final isNetworkImage =
+                                index < controller.existingImages.length;
+
+                            return Stack(
+                              children: [
+                                // Image
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(8),
+                                  child: isNetworkImage
+                                      ? Image.network(
+                                          controller.existingImages[index],
+                                          fit: BoxFit.cover,
+                                          width: double.infinity,
+                                          height: double.infinity,
+                                        )
+                                      : Image.file(
+                                          controller.pickedImages[index -
+                                              controller.existingImages.length],
+                                          fit: BoxFit.cover,
+                                          width: double.infinity,
+                                          height: double.infinity,
+                                        ),
+                                ),
+
+                                // Delete Icon
+                                Positioned(
+                                  top: 4,
+                                  right: 4,
+                                  child: GestureDetector(
+                                    onTap: () {},
+                                    child: Container(
+                                      decoration: const BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Colors.red,
+                                      ),
+                                      padding: const EdgeInsets.all(4),
+                                      child: const Icon(
+                                        Icons.close,
+                                        color: Colors.white,
+                                        size: 16,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             );
                           },
                         ),
