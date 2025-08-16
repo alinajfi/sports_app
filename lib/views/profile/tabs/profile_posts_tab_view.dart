@@ -111,13 +111,13 @@ class ProfilePostsTabView extends StatelessWidget {
 
             return GestureDetector(
               onTap: () {
-                // if (imageUrl != null) {
-                //   showDialog(
-                //     context: context,
-                //     barrierColor: AppColor.backgroundColor.withOpacity(0.7),
-                //     builder: (_) => PostViewDialogMyProfile(post: post),
-                //   );
-                // }
+                if (imageUrl != null) {
+                  // showDialog(
+                  //   context: context,
+                  //   barrierColor: AppColor.backgroundColor.withOpacity(0.7),
+                  //   builder: (_) => PostViewDialogMyProfile(post: post),
+                  // );
+                }
               },
               child: Container(
                 decoration: BoxDecoration(

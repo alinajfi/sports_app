@@ -13,7 +13,9 @@ import 'package:prime_social_media_flutter_ui_kit/controller/home/home_controlle
 import 'package:prime_social_media_flutter_ui_kit/controller/profile/settings_options/language_controller.dart';
 import 'package:prime_social_media_flutter_ui_kit/model/social_media_post_model.dart';
 import 'package:prime_social_media_flutter_ui_kit/services/home_services.dart';
+import 'package:prime_social_media_flutter_ui_kit/services/payment_service.dart';
 import 'package:prime_social_media_flutter_ui_kit/services/social_service.dart';
+import 'package:prime_social_media_flutter_ui_kit/services/third_party_login_service.dart';
 import 'package:prime_social_media_flutter_ui_kit/services/user_service.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/home/widgets/home_app_bar.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/home/widgets/my_drawer.dart';
@@ -22,6 +24,8 @@ import 'package:prime_social_media_flutter_ui_kit/views/home/widgets/repost_item
 import 'package:prime_social_media_flutter_ui_kit/views/home/widgets/stories_section.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/home/widgets/text_post.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/new_post/reel/create_reel_view.dart';
+
+import '../../services/notification_service.dart';
 
 // import '../../services/notification_service.dart';
 
@@ -53,10 +57,29 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 
+  // Future<void> makePayment() async {
+  //   final clientSecret = await PaymentService().createPaymentIntent();
+
+  //   await Stripe.instance.initPaymentSheet(
+  //     paymentSheetParameters: SetupPaymentSheetParameters(
+  //       paymentIntentClientSecret: clientSecret,
+  //       merchantDisplayName: 'Test Store',
+  //     ),
+  //   );
+
+  //   await Stripe.instance.presentPaymentSheet();
+  // }
+
   Widget _buildFloatingActionButton() {
     return FloatingActionButton(
       onPressed: () async {
-        //   final token = await FirebaseMessaging.instance.getToken();
+        try {
+          ThirdPartyLoginService().signInWithGoogle();
+        } catch (e) {
+          log(e.toString());
+        }
+        // makePayment();
+        // final token = await FirebaseMessaging.instance.getToken();
         // NotificationService().sendNotification(token!, "Test ", "Test");
         //   SocialService().getFriendRequest();
         // SocialService().getFrinds();

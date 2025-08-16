@@ -423,4 +423,15 @@ class HomeServices extends CommonApiFunctions {
       return false;
     }
   }
+
+  dynamic getNotificaitons() async {
+    final url = getUrlFromEndPoints(endPoint: "/notifications	");
+
+    final response = await http.get(url, headers: getHeadersWithToken());
+    if (response.statusCode == 200) {
+      log(response.body.toString());
+      return [];
+    }
+    return [];
+  }
 }

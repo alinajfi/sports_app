@@ -5,10 +5,12 @@ import 'package:get/get.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_color.dart';
 import 'package:prime_social_media_flutter_ui_kit/controller/bottom_bar/bottom_bar_controller.dart';
 import 'package:prime_social_media_flutter_ui_kit/controller/profile/settings_options/language_controller.dart';
+import 'package:prime_social_media_flutter_ui_kit/controller/profile/settings_options/notification_option_controller.dart';
 import '../../config/app_font.dart';
 import '../../config/app_icon.dart';
 import '../../config/app_size.dart';
 import '../../config/app_string.dart';
+import '../../controller/notifications_controller.dart';
 
 class NotificationsView extends StatelessWidget {
   NotificationsView({Key? key}) : super(key: key);
@@ -31,21 +33,29 @@ class NotificationsView extends StatelessWidget {
       scrolledUnderElevation: AppSize.appSize0,
       automaticallyImplyLeading: false,
       title: Padding(
-        padding: const EdgeInsets.only(top: AppSize.appSize12, left: AppSize.appSize6),
+        padding: const EdgeInsets.only(
+            top: AppSize.appSize12, left: AppSize.appSize6),
         child: Row(
           children: [
             Padding(
               padding: EdgeInsets.only(
                 right: AppSize.appSize12,
-                left: languageController.selectedLanguageIndex.value == AppSize.size2 ? AppSize.appSize13 : AppSize.appSize0,
+                left: languageController.selectedLanguageIndex.value ==
+                        AppSize.size2
+                    ? AppSize.appSize13
+                    : AppSize.appSize0,
               ),
               child: GestureDetector(
                 onTap: () {
-                  BottomBarController bottomBarController = Get.put(BottomBarController());
+                  BottomBarController bottomBarController =
+                      Get.put(BottomBarController());
                   bottomBarController.pageController.jumpToPage(0);
                 },
                 child: Image.asset(
-                  languageController.selectedLanguageIndex.value == AppSize.size2 ? AppIcon.backRight : AppIcon.back,
+                  languageController.selectedLanguageIndex.value ==
+                          AppSize.size2
+                      ? AppIcon.backRight
+                      : AppIcon.back,
                   width: AppSize.appSize24,
                 ),
               ),
@@ -68,103 +78,158 @@ class NotificationsView extends StatelessWidget {
   _body() {
     return SingleChildScrollView(
       padding: const EdgeInsets.only(
-        top: AppSize.appSize24, left: AppSize.appSize20, right: AppSize.appSize20, bottom: AppSize.appSize10,
+        top: AppSize.appSize24,
+        left: AppSize.appSize20,
+        right: AppSize.appSize20,
+        bottom: AppSize.appSize10,
       ),
-      child: Column(
-        children: [
-          _customNotification(
-            container: Container(
-              width: AppSize.appSize62,
-              height: AppSize.appSize62,
-              margin: EdgeInsets.only(
-                right: languageController.selectedLanguageIndex.value == AppSize.size2 ? AppSize.appSize0 : AppSize.appSize14,
-                left: languageController.selectedLanguageIndex.value == AppSize.size2 ? AppSize.appSize14 : AppSize.appSize0,
-                top: AppSize.appSize6,
-              ),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(AppSize.appSize6),
-                color: AppColor.containerColor,
-              ),
-            ),
-            text1: AppString.loremIpsum,
-            text2: AppString.loremString2,
-            text3: AppString.hours4Ago,
-          ),
-          _customNotification(
-            container: Container(
-              width: AppSize.appSize62,
-              height: AppSize.appSize62,
-              margin: EdgeInsets.only(
-                right: languageController.selectedLanguageIndex.value == AppSize.size2 ? AppSize.appSize0 : AppSize.appSize14,
-                left: languageController.selectedLanguageIndex.value == AppSize.size2 ? AppSize.appSize14 : AppSize.appSize0,
-                top: AppSize.appSize6,
-              ),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(AppSize.appSize6),
-                color: AppColor.containerColor,
-              ),
-            ),
-            text1: AppString.loremIpsum,
-            text2: AppString.loremIpsumText2,
-            text3: AppString.yesterday,
-          ),
-          _customNotification(
-            text1: AppString.loremIpsumText4,
-            text2: AppString.loremIpsumText3,
-            text3: AppString.thursday,
-          ),
-          _customNotification(
-            text1: AppString.loremIpsumText4,
-            text2: AppString.loremString2,
-            text3: AppString.monday,
-          ),
-          _customNotification(
-            container: Container(
-              width: AppSize.appSize62,
-              height: AppSize.appSize62,
-              margin: EdgeInsets.only(
-                right: languageController.selectedLanguageIndex.value == AppSize.size2 ? AppSize.appSize0 : AppSize.appSize14,
-                left: languageController.selectedLanguageIndex.value == AppSize.size2 ? AppSize.appSize14 : AppSize.appSize0,
-                top: AppSize.appSize6,
-              ),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(AppSize.appSize6),
-                color: AppColor.containerColor,
-              ),
-            ),
-            text1: AppString.loremIpsum,
-            text2: AppString.loremString2,
-            text3: AppString.days4Ago,
-          ),
-          _customNotification(
-            text1: AppString.loremIpsumText4,
-            text2: AppString.loremIpsumText5,
-            text3: AppString.days4Ago,
-          ),
-          _customNotification(
-            container: Container(
-              width: AppSize.appSize62,
-              height: AppSize.appSize62,
-              margin: EdgeInsets.only(
-                right: languageController.selectedLanguageIndex.value == AppSize.size2 ? AppSize.appSize0 : AppSize.appSize14,
-                left: languageController.selectedLanguageIndex.value == AppSize.size2 ? AppSize.appSize14 : AppSize.appSize0,
-                top: AppSize.appSize6,
-              ),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(AppSize.appSize6),
-                color: AppColor.containerColor,
-              ),
-            ),
-            text1: AppString.loremIpsum,
-            text2: AppString.loremString2,
-            text3: AppString.hours4Ago,
-          ),
-        ],
-      ),
+      child: GetBuilder<NotificationsController>(
+          init: NotificationsController(),
+          builder: (controller) {
+            return controller.isLoading
+                ? Center(
+                    child: CircularProgressIndicator.adaptive(),
+                  )
+                : controller.notifications.isEmpty
+                    ? Center(
+                        child: Text(
+                          "No Notiifcations",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      )
+                    : Column(
+                        children: [
+                          _customNotification(
+                            container: Container(
+                              width: AppSize.appSize62,
+                              height: AppSize.appSize62,
+                              margin: EdgeInsets.only(
+                                right: languageController
+                                            .selectedLanguageIndex.value ==
+                                        AppSize.size2
+                                    ? AppSize.appSize0
+                                    : AppSize.appSize14,
+                                left: languageController
+                                            .selectedLanguageIndex.value ==
+                                        AppSize.size2
+                                    ? AppSize.appSize14
+                                    : AppSize.appSize0,
+                                top: AppSize.appSize6,
+                              ),
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.circular(AppSize.appSize6),
+                                color: AppColor.containerColor,
+                              ),
+                            ),
+                            text1: AppString.loremIpsum,
+                            text2: AppString.loremString2,
+                            text3: AppString.hours4Ago,
+                          ),
+                          _customNotification(
+                            container: Container(
+                              width: AppSize.appSize62,
+                              height: AppSize.appSize62,
+                              margin: EdgeInsets.only(
+                                right: languageController
+                                            .selectedLanguageIndex.value ==
+                                        AppSize.size2
+                                    ? AppSize.appSize0
+                                    : AppSize.appSize14,
+                                left: languageController
+                                            .selectedLanguageIndex.value ==
+                                        AppSize.size2
+                                    ? AppSize.appSize14
+                                    : AppSize.appSize0,
+                                top: AppSize.appSize6,
+                              ),
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.circular(AppSize.appSize6),
+                                color: AppColor.containerColor,
+                              ),
+                            ),
+                            text1: AppString.loremIpsum,
+                            text2: AppString.loremIpsumText2,
+                            text3: AppString.yesterday,
+                          ),
+                          _customNotification(
+                            text1: AppString.loremIpsumText4,
+                            text2: AppString.loremIpsumText3,
+                            text3: AppString.thursday,
+                          ),
+                          _customNotification(
+                            text1: AppString.loremIpsumText4,
+                            text2: AppString.loremString2,
+                            text3: AppString.monday,
+                          ),
+                          _customNotification(
+                            container: Container(
+                              width: AppSize.appSize62,
+                              height: AppSize.appSize62,
+                              margin: EdgeInsets.only(
+                                right: languageController
+                                            .selectedLanguageIndex.value ==
+                                        AppSize.size2
+                                    ? AppSize.appSize0
+                                    : AppSize.appSize14,
+                                left: languageController
+                                            .selectedLanguageIndex.value ==
+                                        AppSize.size2
+                                    ? AppSize.appSize14
+                                    : AppSize.appSize0,
+                                top: AppSize.appSize6,
+                              ),
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.circular(AppSize.appSize6),
+                                color: AppColor.containerColor,
+                              ),
+                            ),
+                            text1: AppString.loremIpsum,
+                            text2: AppString.loremString2,
+                            text3: AppString.days4Ago,
+                          ),
+                          _customNotification(
+                            text1: AppString.loremIpsumText4,
+                            text2: AppString.loremIpsumText5,
+                            text3: AppString.days4Ago,
+                          ),
+                          _customNotification(
+                            container: Container(
+                              width: AppSize.appSize62,
+                              height: AppSize.appSize62,
+                              margin: EdgeInsets.only(
+                                right: languageController
+                                            .selectedLanguageIndex.value ==
+                                        AppSize.size2
+                                    ? AppSize.appSize0
+                                    : AppSize.appSize14,
+                                left: languageController
+                                            .selectedLanguageIndex.value ==
+                                        AppSize.size2
+                                    ? AppSize.appSize14
+                                    : AppSize.appSize0,
+                                top: AppSize.appSize6,
+                              ),
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.circular(AppSize.appSize6),
+                                color: AppColor.containerColor,
+                              ),
+                            ),
+                            text1: AppString.loremIpsum,
+                            text2: AppString.loremString2,
+                            text3: AppString.hours4Ago,
+                          ),
+                        ],
+                      );
+          }),
     );
   }
 
-  _customNotification({Widget? container, String? text1, String? text2, String? text3}) {
+  _customNotification(
+      {Widget? container, String? text1, String? text2, String? text3}) {
     return Column(
       children: [
         Row(
