@@ -70,7 +70,9 @@ class ParentDetailsPage extends StatelessWidget {
               elevation: 0,
               leading: IconButton(
                   icon: const Icon(Icons.arrow_back_ios, color: Colors.white70),
-                  onPressed: () {}),
+                  onPressed: () {
+                    Get.back();
+                  }),
             ),
             body: Padding(
               padding: const EdgeInsets.all(20.0),

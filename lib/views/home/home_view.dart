@@ -119,8 +119,9 @@ class _HomeViewState extends State<HomeView> {
                     builder: (cont) {
                       return PostItem(
                         commentsCount: post.commentsCount.toString(),
-                        reactionCount:
-                            post.reactionCounts?.love.toString() ?? "0",
+                        reactionCount: "",
+                        // reactionCount:
+                        //     post.reactionCounts?.love.toString() ?? "0",
                         controller: Get.find<HomeController>(),
                         socialPost: post,
                         onLike: () {
@@ -139,12 +140,20 @@ class _HomeViewState extends State<HomeView> {
                                 .indexWhere((p) => p.postId == post.postId);
 
                             if (index != -1) {
+                              homeController.favIds.add(postId);
+                              DbController.instance.writeData(
+                                  DbConstants.itemAddedToFav,
+                                  homeController.favIds.toList());
+                              cont.update(
+                                  ['on_like', 'actions', 'update_all_actions']);
                               homeController
                                   .addReactionToPost(postId, index)
                                   .then((success) {
-                                if (success) {
-                                  homeController.favIds.add(postId);
-                                  DbController.instance.writeData(
+                                if (success) {}
+                              }).onError(
+                                (error, stackTrace) {
+                                  homeController.favIds.remove(postId);
+                                  DbController.instance.writeData<List>(
                                       DbConstants.itemAddedToFav,
                                       homeController.favIds.toList());
                                   cont.update([
@@ -152,8 +161,8 @@ class _HomeViewState extends State<HomeView> {
                                     'actions',
                                     'update_all_actions'
                                   ]);
-                                }
-                              });
+                                },
+                              );
                             } else {
                               log('⚠️ Post not found in timeline for liking.');
                             }

@@ -58,7 +58,7 @@ class SocialService extends CommonApiFunctions {
     "/unfriend/{id}";
   }
 
-  unfollow() {
+  unfollow(String userId) {
     "/unfollow/{id}";
   }
 }

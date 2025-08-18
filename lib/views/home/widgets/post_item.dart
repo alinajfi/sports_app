@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:video_player/video_player.dart';
-
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_color.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_font.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_icon.dart';
@@ -138,8 +138,8 @@ class PostItem extends StatelessWidget {
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(20),
-                    child: Image.network(
-                      socialPost.photo!,
+                    child: CachedNetworkImage(
+                      imageUrl: socialPost.photo!,
                       width: 36,
                       height: 36,
                       fit: BoxFit.cover,
@@ -285,12 +285,12 @@ class PostItem extends StatelessWidget {
         height: height,
       );
     } else {
-      return Image.network(
-        url,
+      return CachedNetworkImage(
+        imageUrl: url,
         fit: BoxFit.cover,
         width: width,
         height: height,
-        errorBuilder: (context, error, stackTrace) {
+        errorWidget: (context, error, stackTrace) {
           return Container(
             width: width,
             height: height,

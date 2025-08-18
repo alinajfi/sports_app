@@ -310,7 +310,11 @@ class _ProfileViewState extends State<ProfileView> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         _customPostFollowersFollowingCount(
-                            AppString.posts176, AppString.posts),
+                            Get.find<ProfileController>()
+                                .postsList
+                                .length
+                                .toString(),
+                            AppString.posts),
                         _customPostFollowersFollowingCount(
                             profileController.followersCount.toString(),
                             AppString.followers),
