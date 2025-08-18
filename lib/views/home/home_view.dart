@@ -48,7 +48,7 @@ class _HomeViewState extends State<HomeView> {
     return SafeArea(
       child: Scaffold(
         key: _scaffoldKey,
-        floatingActionButton: _buildFloatingActionButton(),
+        // floatingActionButton: _buildFloatingActionButton(),
         endDrawer: MyDrawer(),
         backgroundColor: AppColor.backgroundColor,
         appBar: HomeAppBar(scaffoldKey: _scaffoldKey),
@@ -73,11 +73,6 @@ class _HomeViewState extends State<HomeView> {
   Widget _buildFloatingActionButton() {
     return FloatingActionButton(
       onPressed: () async {
-        try {
-          ThirdPartyLoginService().signInWithGoogle();
-        } catch (e) {
-          log(e.toString());
-        }
         // makePayment();
         // final token = await FirebaseMessaging.instance.getToken();
         // NotificationService().sendNotification(token!, "Test ", "Test");

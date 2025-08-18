@@ -47,7 +47,6 @@ void main() async {
 
   NotificationService().initialize();
   await NotificationService().initializeLocalNotifications();
-
   Get.put(
     DbService.init(GetStorage()),
     permanent: true,

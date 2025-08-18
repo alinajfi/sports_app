@@ -7,6 +7,7 @@ import 'package:prime_social_media_flutter_ui_kit/config/app_size.dart';
 import 'package:prime_social_media_flutter_ui_kit/controller/forgot_password/your_account_controller.dart';
 import 'package:prime_social_media_flutter_ui_kit/routes/app_routes.dart';
 import 'package:prime_social_media_flutter_ui_kit/services/auth_service.dart';
+import 'package:prime_social_media_flutter_ui_kit/utils/widget_helper.dart';
 
 import '../../config/app_color.dart';
 import '../../config/app_font.dart';
@@ -61,7 +62,7 @@ class YourAccountView extends StatelessWidget {
           const Padding(
             padding: EdgeInsets.only(top: AppSize.appSize24),
             child: Text(
-              AppString.letsFindYourAccount,
+              "Reset Password",
               style: TextStyle(
                 fontSize: AppSize.appSize24,
                 fontWeight: FontWeight.w700,
@@ -114,17 +115,25 @@ class YourAccountView extends StatelessWidget {
             ],
           ),
           AppButton(
-            onPressed: () {
+            onPressed: () async {
               if (yourAccountController.email.value.isEmpty) {
                 yourAccountController.isButtonTap.value = true;
               } else {
                 yourAccountController.isButtonTap.value = false;
-                AuthService().sendForgetPasswordRequest(
+                final response = await AuthService().sendForgetPasswordRequest(
                     email: yourAccountController.email.value);
+                if (response) {
+                  WidgetHelper.showSnackBar(
+                      title: "Link has been sent to your email",
+                      description: "");
+                } else {
+                  WidgetHelper.showSnackBar(
+                      title: "Failed to send", description: "");
+                }
                 //  Get.toNamed(AppRoutes.codeConfirmationView);
               }
             },
-            text: AppString.buttonTextNext,
+            text: "Send",
             backgroundColor: AppColor.primaryColor,
             margin: const EdgeInsets.only(top: AppSize.appSize32),
           ),
