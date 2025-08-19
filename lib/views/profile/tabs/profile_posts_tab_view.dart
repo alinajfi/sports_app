@@ -119,7 +119,7 @@ class ProfilePostsTabView extends StatelessWidget {
                     barrierColor: AppColor.backgroundColor.withOpacity(0.7),
                     builder: (_) => PostViewDialog(
                       post: post,
-                      imageUrl: post.photo!,
+                      imageUrl: post.postImages!.first,
                     ),
                   );
                 }
