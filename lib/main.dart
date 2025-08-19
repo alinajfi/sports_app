@@ -5,7 +5,6 @@ import 'package:get_storage/get_storage.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_color.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_size.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_string.dart';
-import 'package:prime_social_media_flutter_ui_kit/controller/profile/profile_controller.dart';
 import 'package:prime_social_media_flutter_ui_kit/services/db_service.dart';
 import 'package:prime_social_media_flutter_ui_kit/translation/app_translation.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/splash/splash_view.dart';
@@ -14,46 +13,15 @@ import 'controller/db_controller.dart';
 import 'controller/translation_controller.dart';
 import 'routes/app_routes.dart';
 
-import 'package:firebase_core/firebase_core.dart';
-import 'firebase_options.dart';
-// import 'services/notification_service.dart';
-//import 'services/notification_service.dart';
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initTranslation();
-
-  // Check if Firebase is already initialized
-  try {
-    if (Firebase.apps.isEmpty) {
-      await Firebase.initializeApp(
-        options: DefaultFirebaseOptions.currentPlatform,
-      );
-    }
-  } catch (e) {
-    // Ignore duplicate initialization error
-    if (e
-        .toString()
-        .contains("A Firebase App named \"[DEFAULT]\" already exists")) {
-      // Already initialized, do nothing
-    } else {
-      rethrow; // Re-throw unexpected errors
-    }
-  }
-
-  // Stripe.publishableKey =
-  //     "pk_test_51Joui7L1cSJT1UwBLOUBZqLx59AjgpFRE7hB6zF3hP74Kow1Q8UZt2sCSRxB6Y4DhX0lTxng5k22L17CHZeEYmpR00p30nE3kY";
-  // await Stripe.instance.applySettings();
-
-  // NotificationService().initialize();
-  // await NotificationService().initializeLocalNotifications();
 
   Get.put(
     DbService.init(GetStorage()),
     permanent: true,
   );
   Get.put(DbController(), permanent: true);
-
   runApp(const MyApp());
 }
 
@@ -68,7 +36,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     TranslationController translationController =
         Get.put(TranslationController());
-    Get.put(ProfileController());
     return GetMaterialApp(
       title: AppString.appDisplayName,
       translations: AppTranslations(),

@@ -9,7 +9,10 @@ import 'package:prime_social_media_flutter_ui_kit/config/app_string.dart';
 import 'package:prime_social_media_flutter_ui_kit/constants/db_constants.dart';
 import 'package:prime_social_media_flutter_ui_kit/controller/db_controller.dart';
 import 'package:http/http.dart' as http;
+import 'package:prime_social_media_flutter_ui_kit/model/edit_profile_model.dart';
 import 'package:prime_social_media_flutter_ui_kit/model/user_model.dart';
+import 'package:prime_social_media_flutter_ui_kit/services/home_services.dart';
+import 'package:prime_social_media_flutter_ui_kit/utils/widget_helper.dart';
 import '../../config/app_color.dart';
 
 class EditProfileController extends GetxController {
@@ -51,26 +54,13 @@ class EditProfileController extends GetxController {
     isLoading.value = true;
 
     try {
-      final uri =
-          Uri.parse('https://mysportsjourney.co.uk/api/update_profile_pic');
-      final request = http.MultipartRequest('POST', uri);
-
-      request.files.add(await http.MultipartFile.fromPath(
-        'profile_pic', // Make sure this is the correct field key for the backend
-        profileImagePath.value,
-      ));
-
-      final streamedResponse = await request.send();
-      final response = await http.Response.fromStream(streamedResponse);
-
-      final data = jsonDecode(response.body);
-      if (response.statusCode == 200) {
-        Get.snackbar('Success', 'Profile picture updated successfully',
-            backgroundColor: Colors.green, colorText: Colors.white);
-      } else {
-        Get.snackbar('Failed', data['message'] ?? 'Upload failed',
-            backgroundColor: Colors.red, colorText: Colors.white);
+      final result = await HomeServices()
+          .uploadProfilePicture(profileImagePath: profileImagePath.value);
+      if (result) {
+        WidgetHelper.showSnackBar(title: "Success", description: "");
+        return;
       }
+      WidgetHelper.showSnackBar(title: "Failed", description: "");
     } catch (e) {
       Get.snackbar('Error', 'Error uploading image: $e',
           backgroundColor: Colors.red, colorText: Colors.white);
@@ -80,65 +70,42 @@ class EditProfileController extends GetxController {
   }
 
   Future<void> updateProfile() async {
-    try {
-      isLoading.value = true;
+    isLoading.value = true;
 
-      // Validation before sending request
-      if (!_validateForm()) {
-        isLoading.value = false;
+    if (!_validateForm()) {
+      isLoading.value = false;
+      return;
+    }
+
+    final userInfo = EditProfileModel(
+      name: nameController.text.trim(),
+      nickname: usernameController.text.trim(),
+      phone: mobileNumberController.text.trim(),
+      bio: bioController.text.trim(),
+      gender: genderController.text.trim(),
+      dob: dobController.text.trim(),
+
+      email: emailController.text.trim(),
+      location: locationController.text.trim(),
+
+      username: usernameController.text.trim(), // For the username field
+      mobileNumber: mobileNumberController.text.trim(), // Alternativ
+    );
+
+    try {
+      final result = await HomeServices().updateProfile(userInfo: userInfo);
+      if (result) {
+        WidgetHelper.showSnackBar(
+            title: "Success", description: "Info update successfull");
         return;
       }
-
-      final token =
-          await DbController.instance.readData<String>(DbConstants.apiToken);
-
-      final response = await http.post(
-        Uri.parse("https://mysportsjourney.co.uk/api/edit_profile"),
-        headers: {
-          "Authorization": "Bearer $token",
-          "Accept": "application/json",
-        },
-        body: {
-          // Keep existing fields for backward compatibility
-          "name": nameController.text.trim(),
-          "nickname": usernameController.text.trim(),
-          "phone": mobileNumberController.text.trim(),
-          "bio": bioController.text.trim(),
-          "gender": genderController.text.trim(),
-          "dob": dobController.text.trim(),
-          // Add new fields
-          "email": emailController.text.trim(),
-          "location": locationController.text.trim(),
-          // Send only the active fields based on UI
-          "username": usernameController.text.trim(), // For the username field
-          "mobile_number":
-              mobileNumberController.text.trim(), // Alternative key
-        },
-      );
-
-      final data = json.decode(response.body);
-
-      if (response.statusCode == 200 && data['status'] == 200) {
-        Get.snackbar("Success", "Profile updated successfully",
-            backgroundColor: Colors.green,
-            colorText: Colors.white,
-            duration: const Duration(seconds: 2));
-
-        // Optionally navigate back after successful update
-        // Get.back();
-      } else {
-        Get.snackbar("Failed", data['message'] ?? "Failed to update profile",
-            backgroundColor: Colors.red,
-            colorText: Colors.white,
-            duration: const Duration(seconds: 3));
-      }
+      WidgetHelper.showSnackBar(
+          title: "Failed", description: "Info update Failed");
     } catch (e) {
-      Get.snackbar("Error", "Network error: ${e.toString()}",
-          backgroundColor: Colors.red,
-          colorText: Colors.white,
-          duration: const Duration(seconds: 3));
+      WidgetHelper.showSnackBar(
+          title: "Success", description: "Info update Failed $e");
     } finally {
-      isLoading.value = false;
+      isLoading.value = true;
     }
   }
 
