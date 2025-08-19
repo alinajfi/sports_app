@@ -5,8 +5,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/services.dart';
+import 'package:prime_social_media_flutter_ui_kit/model/user_model.dart';
+import 'package:prime_social_media_flutter_ui_kit/utils/common_api_functions.dart';
 
-class ThirdPartyLoginService {
+import '../model/user_model_google.dart';
+
+class ThirdPartyLoginService extends CommonApiFunctions {
   // Future<UserCredential> signInWithFacebook() async {
   //   //final arr = [];
 
@@ -42,7 +46,7 @@ class ThirdPartyLoginService {
       // Sign in to Firebase with the Google credential
       return await _auth.signInWithCredential(credential);
     } catch (e) {
-      print('Error signing in with Google: $e');
+      log('Error signing in with Google: $e');
       return null;
     }
   }
@@ -71,6 +75,37 @@ class ThirdPartyLoginService {
       log('Token verified successfully');
     } else {
       log('Token verification failed');
+    }
+  }
+
+  Future<(UserModelGoogle?, String?)> loginWithProvider(
+      String provider, String accessToken) async {
+    final url = getUrlFromEndPoints(endPoint: "/login/$provider");
+
+    //Uri.parse("http://your-api-url.com/api/auth/$provider/callback");
+
+    try {
+      final response = await http.post(
+        url,
+        headers: headersWithOutTokeAccpetJsonType(),
+        body: {"access_token": accessToken},
+      );
+
+      if (response.statusCode == 200) {
+        // Parse user JSON
+        final user = jsonDecode(response.body)['user'];
+        final parsedData = UserModelGoogle.fromJson(user);
+
+        // Access the token from headers
+        String authToken = jsonDecode(response.body)['token'];
+
+        return (parsedData, authToken);
+      } else {
+        return (null, null);
+      }
+    } catch (e) {
+      log(e.toString());
+      return (null, null);
     }
   }
 }

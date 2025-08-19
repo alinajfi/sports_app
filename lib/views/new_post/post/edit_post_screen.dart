@@ -261,7 +261,7 @@ class _CreatePostScreenState extends State<EditPostScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Adeel Abbasi',
+              Get.find<EditPostController>().post.name ?? 'Elon Musk',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
