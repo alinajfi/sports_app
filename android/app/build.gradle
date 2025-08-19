@@ -55,9 +55,17 @@ flutter {
 }
 
 dependencies {
-    // ✅ Required for Google Sign-In
+   
     implementation("com.google.android.gms:play-services-auth:20.7.0")
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
+
+}
+
+
+configurations.all {
+    resolutionStrategy {
+        force 'org.bouncycastle:bcprov-jdk15to18:1.68' // Use an older, stable version
+    }
 }
 
 apply plugin: 'com.google.gms.google-services'

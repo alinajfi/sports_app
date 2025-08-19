@@ -350,6 +350,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "flutter_stripe",
+      "rootUri": "file:///Users/mac/.pub-cache/hosted/pub.dev/flutter_stripe-11.5.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
+    },
+    {
       "name": "flutter_test",
       "rootUri": "file:///Users/mac/development/flutter/packages/flutter_test",
       "packageUri": "lib/",
@@ -366,6 +372,12 @@
       "rootUri": "file:///Users/mac/.pub-cache/hosted/pub.dev/fluttertoast-8.2.12",
       "packageUri": "lib/",
       "languageVersion": "2.12"
+    },
+    {
+      "name": "freezed_annotation",
+      "rootUri": "file:///Users/mac/.pub-cache/hosted/pub.dev/freezed_annotation-2.4.4",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
     },
     {
       "name": "get",
@@ -830,6 +842,24 @@
       "languageVersion": "2.18"
     },
     {
+      "name": "stripe_android",
+      "rootUri": "file:///Users/mac/.pub-cache/hosted/pub.dev/stripe_android-11.5.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
+    },
+    {
+      "name": "stripe_ios",
+      "rootUri": "file:///Users/mac/.pub-cache/hosted/pub.dev/stripe_ios-11.5.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
+    },
+    {
+      "name": "stripe_platform_interface",
+      "rootUri": "file:///Users/mac/.pub-cache/hosted/pub.dev/stripe_platform_interface-11.5.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
+    },
+    {
       "name": "synchronized",
       "rootUri": "file:///Users/mac/.pub-cache/hosted/pub.dev/synchronized-3.3.0+3",
       "packageUri": "lib/",
@@ -986,7 +1016,7 @@
       "languageVersion": "3.1"
     }
   ],
-  "generated": "2025-08-19T10:58:42.653530Z",
+  "generated": "2025-08-19T12:07:50.680965Z",
   "generator": "pub",
   "generatorVersion": "3.5.1",
   "flutterRoot": "file:///Users/mac/development/flutter",
