@@ -256,7 +256,16 @@ class _LoginViewState extends State<LoginView> {
                     child: ElevatedButton(
                       onPressed: () async {
                         try {
-                          ThirdPartyLoginService().signInWithGoogle();
+                          final res =
+                              await ThirdPartyLoginService().signInWithGoogle();
+
+                          final data = await ThirdPartyLoginService()
+                              .loginWithProvider(
+                                  "google", res!.credential!.accessToken!);
+                          await Get.find<LoginController>()
+                              .onGoogleLoginSuccessfull(
+                                  token: data.$2!,
+                                  userId: data.$1!.id.toString());
                         } catch (e) {
                           log(e.toString());
                         }

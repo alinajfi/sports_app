@@ -49,6 +49,27 @@ class LoginController extends GetxController {
     Get.offAllNamed(AppRoutes.welcomeView);
   }
 
+  Future<void> onGoogleLoginSuccessfull(
+      {required String token, required String userId}) async {
+    isLoading.value = false;
+    // NotificationService().showLocalNotification(
+    //     id: DateTime.now().microsecondsSinceEpoch,
+    //     body: "dsfasdfaf",
+    //     title: "sdfasjflkad");
+
+    DbController.instance.writeData<String>(
+      DbConstants.apiToken,
+      token,
+    );
+    DbController.instance.writeData<bool>(
+      DbConstants.isUserLoggedIn,
+      true,
+    );
+    DbController.instance.writeData<String>(DbConstants.userId, userId);
+
+    Get.offAllNamed(AppRoutes.welcomeView);
+  }
+
   Future<void> onLoginFailed(String errorMessage) async {
     isLoading.value = false;
     WidgetHelper.showSnackBar(title: errorMessage, description: errorMessage);
