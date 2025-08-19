@@ -16,7 +16,6 @@ class SignUpScreen extends StatelessWidget {
     OtpPage(),
     SportSelectionScreen(),
     SocialDetailsPage(),
-    ParentDetailsPage(),
     CompleteProfileScreen()
   ];
 

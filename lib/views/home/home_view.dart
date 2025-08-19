@@ -13,7 +13,9 @@ import 'package:prime_social_media_flutter_ui_kit/controller/home/home_controlle
 import 'package:prime_social_media_flutter_ui_kit/controller/profile/settings_options/language_controller.dart';
 import 'package:prime_social_media_flutter_ui_kit/model/social_media_post_model.dart';
 import 'package:prime_social_media_flutter_ui_kit/services/home_services.dart';
+import 'package:prime_social_media_flutter_ui_kit/services/payment_service.dart';
 import 'package:prime_social_media_flutter_ui_kit/services/social_service.dart';
+import 'package:prime_social_media_flutter_ui_kit/services/third_party_login_service.dart';
 import 'package:prime_social_media_flutter_ui_kit/services/user_service.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/home/widgets/home_app_bar.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/home/widgets/my_drawer.dart';
@@ -22,6 +24,8 @@ import 'package:prime_social_media_flutter_ui_kit/views/home/widgets/repost_item
 import 'package:prime_social_media_flutter_ui_kit/views/home/widgets/stories_section.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/home/widgets/text_post.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/new_post/reel/create_reel_view.dart';
+
+// import '../../services/notification_service.dart';
 
 // import '../../services/notification_service.dart';
 
@@ -44,7 +48,7 @@ class _HomeViewState extends State<HomeView> {
     return SafeArea(
       child: Scaffold(
         key: _scaffoldKey,
-        floatingActionButton: _buildFloatingActionButton(),
+        // floatingActionButton: _buildFloatingActionButton(),
         endDrawer: MyDrawer(),
         backgroundColor: AppColor.backgroundColor,
         appBar: HomeAppBar(scaffoldKey: _scaffoldKey),
@@ -53,10 +57,24 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 
+  // Future<void> makePayment() async {
+  //   final clientSecret = await PaymentService().createPaymentIntent();
+
+  //   await Stripe.instance.initPaymentSheet(
+  //     paymentSheetParameters: SetupPaymentSheetParameters(
+  //       paymentIntentClientSecret: clientSecret,
+  //       merchantDisplayName: 'Test Store',
+  //     ),
+  //   );
+
+  //   await Stripe.instance.presentPaymentSheet();
+  // }
+
   Widget _buildFloatingActionButton() {
     return FloatingActionButton(
       onPressed: () async {
-        final token = await FirebaseMessaging.instance.getToken();
+        // makePayment();
+        // final token = await FirebaseMessaging.instance.getToken();
         // NotificationService().sendNotification(token!, "Test ", "Test");
         //   SocialService().getFriendRequest();
         // SocialService().getFrinds();
@@ -101,8 +119,9 @@ class _HomeViewState extends State<HomeView> {
                     builder: (cont) {
                       return PostItem(
                         commentsCount: post.commentsCount.toString(),
-                        reactionCount:
-                            post.reactionCounts?.love.toString() ?? "0",
+                        reactionCount: "",
+                        // reactionCount:
+                        //     post.reactionCounts?.love.toString() ?? "0",
                         controller: Get.find<HomeController>(),
                         socialPost: post,
                         onLike: () {
@@ -121,12 +140,20 @@ class _HomeViewState extends State<HomeView> {
                                 .indexWhere((p) => p.postId == post.postId);
 
                             if (index != -1) {
+                              homeController.favIds.add(postId);
+                              DbController.instance.writeData(
+                                  DbConstants.itemAddedToFav,
+                                  homeController.favIds.toList());
+                              cont.update(
+                                  ['on_like', 'actions', 'update_all_actions']);
                               homeController
                                   .addReactionToPost(postId, index)
                                   .then((success) {
-                                if (success) {
-                                  homeController.favIds.add(postId);
-                                  DbController.instance.writeData(
+                                if (success) {}
+                              }).onError(
+                                (error, stackTrace) {
+                                  homeController.favIds.remove(postId);
+                                  DbController.instance.writeData<List>(
                                       DbConstants.itemAddedToFav,
                                       homeController.favIds.toList());
                                   cont.update([
@@ -134,8 +161,8 @@ class _HomeViewState extends State<HomeView> {
                                     'actions',
                                     'update_all_actions'
                                   ]);
-                                }
-                              });
+                                },
+                              );
                             } else {
                               log('⚠️ Post not found in timeline for liking.');
                             }

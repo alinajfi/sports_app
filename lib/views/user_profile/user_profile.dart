@@ -260,8 +260,8 @@ class UserProfile extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           GestureDetector(
-                            onTap: () {
-                              controller.followFriend();
+                            onTap: () async {
+                              await controller.followFriend();
                             },
                             child: Container(
                               width: kIsWeb
@@ -290,11 +290,7 @@ class UserProfile extends StatelessWidget {
                           Expanded(
                             child: GestureDetector(
                               onTap: () {
-                                try {
-                                  Share.share(AppString.eleanorPena);
-                                } catch (e) {
-                                  debugPrint('Share error: $e');
-                                }
+                                Get.toNamed(AppRoutes.messagesChatView);
                               },
                               child: Container(
                                 height: AppSize.appSize32,

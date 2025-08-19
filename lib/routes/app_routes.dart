@@ -170,7 +170,7 @@ class AppRoutes {
     GetPage(name: profileScreenRoute, page: () => ProfileScreen()),
     GetPage(name: supportersScreenRoute, page: () => SupportersScreen()),
     GetPage(name: otpPageRoute, page: () => OtpPage()),
-    GetPage(name: parentDetailsPage, page: () => ParentDetailsPage()),
+    //GetPage(name: parentDetailsPage, page: () => ParentDetailsPage()),
     GetPage(name: donationScreen, page: () => DonationScreen()),
     GetPage(name: paymentSummaryScreen, page: () => PaymentSummaryScreen()),
     GetPage(name: bankDetailsScreen, page: () => BankDetailsScreen()),

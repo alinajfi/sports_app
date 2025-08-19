@@ -19,6 +19,7 @@ import 'package:prime_social_media_flutter_ui_kit/model/all_user_list_model.dart
 import 'package:prime_social_media_flutter_ui_kit/model/comment_model.dart';
 import 'package:path/path.dart';
 import 'package:prime_social_media_flutter_ui_kit/model/create_story_model.dart';
+import 'package:prime_social_media_flutter_ui_kit/model/edit_profile_model.dart';
 
 import 'package:prime_social_media_flutter_ui_kit/model/post_model.dart';
 import 'package:prime_social_media_flutter_ui_kit/model/social_media_post_model.dart';
@@ -420,6 +421,80 @@ class HomeServices extends CommonApiFunctions {
       }
     } catch (e) {
       log("❌ Error sending multipart post: $e");
+      return false;
+    }
+  }
+
+  dynamic getNotificaitons() async {
+    final url = getUrlFromEndPoints(endPoint: "/notifications	");
+
+    final response = await http.get(url, headers: getHeadersWithToken());
+    if (response.statusCode == 200) {
+      log(response.body.toString());
+      return [];
+    }
+    return [];
+  }
+
+  Future<bool> uploadProfilePicture({required String profileImagePath}) async {
+    try {
+      final uri = getUrlFromEndPoints(endPoint: "/update_profile_pic");
+      final request = http.MultipartRequest('POST', uri);
+
+      // ✅ Correct field name: profile_photo (same as in PHP code)
+      request.files.add(await http.MultipartFile.fromPath(
+        'profile_photo',
+        profileImagePath,
+      ));
+
+      // ✅ Add headers for Sanctum auth
+      request.headers.addAll(getHeadersWithToken()!);
+
+      final streamedResponse = await request.send();
+      final response = await http.Response.fromStream(streamedResponse);
+
+      final data = jsonDecode(response.body);
+
+      if (response.statusCode == 200 && data['success'] == true) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<bool> updateProfile({required EditProfileModel userInfo}) async {
+    try {
+      final url = getUrlFromEndPoints(endPoint: "/edit_profile");
+
+      final response = await http.post(
+        url,
+        headers: getHeadersWithToken(),
+        body: {
+          // Keep existing fields for backward compatibility
+          "name": userInfo.name,
+          "nickname": userInfo.username,
+          "phone": userInfo.mobileNumber,
+          "bio": userInfo.bio,
+          "gender": userInfo.gender,
+          "dob": userInfo.dob,
+          "email": userInfo.email,
+          "location": userInfo.location,
+          "username": userInfo.username,
+          "mobile_number": userInfo.mobileNumber
+        },
+      );
+
+      final data = json.decode(response.body);
+
+      if (response.statusCode == 200 && data['status'] == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
       return false;
     }
   }

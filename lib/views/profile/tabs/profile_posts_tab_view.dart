@@ -82,6 +82,7 @@ import 'package:prime_social_media_flutter_ui_kit/controller/profile/profile_con
 import 'package:prime_social_media_flutter_ui_kit/views/widget/home/post_view_dailog.dart';
 import '../../../../config/app_size.dart';
 // import '../post_view_dialog_my_profile.dart';
+// import '../post_view_dialog_my_profile.dart';
 
 class ProfilePostsTabView extends StatelessWidget {
   ProfilePostsTabView({Key? key}) : super(key: key);

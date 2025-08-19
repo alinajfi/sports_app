@@ -55,6 +55,7 @@ class UserProfileController extends GetxController
         loadUserPosts();
       },
     );
+    getFriends();
   }
 
   @override
@@ -213,19 +214,33 @@ class UserProfileController extends GetxController
 
   RxList<PostModel> postsList = <PostModel>[].obs;
 
-  addFriend() async {
+  Future<void> addFriend() async {
     if (userId != null) {
-      SocialService().addFreind(userId: userId.toString());
+      final result = await SocialService().addFreind(userId: userId.toString());
+      if (result) {
+        WidgetHelper.showSnackBar(
+            title: "Sent", description: "Friend Request Sent");
+      }
     } else {
       WidgetHelper.showSnackBar(title: "User id null");
     }
   }
 
-  followFriend() {
+  Future<void> followFriend() async {
     if (userId != null) {
-      SocialService().followUser(userId: userId.toString());
+      final result =
+          await SocialService().followUser(userId: userId.toString());
+
+      if (result) {
+        WidgetHelper.showSnackBar(
+            title: "Follow request sent", description: "");
+      }
     } else {
       WidgetHelper.showSnackBar(title: 'User id null');
     }
+  }
+
+  getFriends() async {
+    await SocialService().getFrinds();
   }
 }

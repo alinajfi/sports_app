@@ -110,7 +110,9 @@ class _ProfileViewState extends State<ProfileView> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => ParentDetailsPage(),
+                              builder: (context) => ParentDetailsPage(
+                                  userId: profileController.user.value!.id
+                                      .toString()),
                             ));
                       },
                       child: const Padding(
@@ -308,7 +310,11 @@ class _ProfileViewState extends State<ProfileView> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         _customPostFollowersFollowingCount(
-                            AppString.posts176, AppString.posts),
+                            Get.find<ProfileController>()
+                                .postsList
+                                .length
+                                .toString(),
+                            AppString.posts),
                         _customPostFollowersFollowingCount(
                             profileController.followersCount.toString(),
                             AppString.followers),

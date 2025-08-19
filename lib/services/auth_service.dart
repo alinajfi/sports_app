@@ -3,8 +3,6 @@ import 'dart:developer';
 
 import 'package:http/http.dart' as http;
 import 'package:prime_social_media_flutter_ui_kit/constants/api_constants.dart';
-import 'package:prime_social_media_flutter_ui_kit/constants/db_constants.dart';
-import 'package:prime_social_media_flutter_ui_kit/controller/db_controller.dart';
 import 'package:prime_social_media_flutter_ui_kit/model/login_response_model.dart';
 import 'package:prime_social_media_flutter_ui_kit/model/user_model.dart';
 import 'package:prime_social_media_flutter_ui_kit/utils/common_api_functions.dart';
@@ -84,13 +82,13 @@ class AuthService extends CommonApiFunctions {
     return null;
   }
 
-  sendForgetPasswordRequest({required String email}) async {
+  Future<bool> sendForgetPasswordRequest({required String email}) async {
     if (getHeadersWithToken() == null) {
       log("headers are null");
-      return;
+      return false;
     }
 
-    final response = await http.get(
+    final response = await http.post(
       getUrlFromEndPoints(endPoint: ApiConstants.forgetPasswordRequest)
           .replace(queryParameters: {
         "email": email,
@@ -98,7 +96,10 @@ class AuthService extends CommonApiFunctions {
       headers: getHeadersWithTokenJson()!,
     );
     log(response.body.toString());
-    if (response.statusCode == 200) {}
+    if (response.statusCode == 200) {
+      return true;
+    }
+    return false;
   }
 
   Future<http.Response> updatePassword(String token, String newPassword) {

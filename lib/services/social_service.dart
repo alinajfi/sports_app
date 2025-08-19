@@ -39,26 +39,26 @@ class SocialService extends CommonApiFunctions {
 
   Future<List<FriendRequestModel>?> getFriendRequest() async {
     final url = getUrlFromEndPoints(endPoint: "/friend_request");
-    final userId = DbController.instance.readData<String?>(DbConstants.userId);
+    // final userId = DbController.instance.readData<String?>(DbConstants.userId);
 
-    if (userId != null && userId.isNotEmpty) {
-      final resp = await http.get(url, headers: getHeadersWithToken());
-      final data = List.from(jsonDecode(resp.body)['friendsList'] ?? []);
+    final resp = await http.get(url, headers: getHeadersWithToken());
+    final data = List.from(jsonDecode(resp.body)['friendsList'] ?? []);
 
-      final list = data.map((e) => FriendRequestModel.fromJson(e)).toList();
+    final list = data.map((e) => FriendRequestModel.fromJson(e)).toList();
 
-      list.removeWhere((element) => element.friendId.toString() == userId);
+    // list.removeWhere((element) => element.friendId.toString() == userId);
 
-      return list;
-    }
-    return null;
+    return list;
+
+    // if (userId != null && userId.isNotEmpty) {}
+    //  return null;
   }
 
   unfriend() {
     "/unfriend/{id}";
   }
 
-  unfollow() {
+  unfollow(String userId) {
     "/unfollow/{id}";
   }
 }

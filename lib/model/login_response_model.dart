@@ -62,7 +62,7 @@ class User {
   final String? x;
   final String? bio;
   final String? affiliateCode;
-  final String? sportId;
+  final dynamic sportId;
 
   User({
     required this.id,
