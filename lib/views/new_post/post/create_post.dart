@@ -217,6 +217,8 @@ import 'package:get/get.dart';
 import 'package:prime_social_media_flutter_ui_kit/controller/create_post_controller.dart';
 import 'package:prime_social_media_flutter_ui_kit/model/create_post_model.dart';
 
+import '../../../controller/auth_controller.dart';
+
 class CreatePostScreen extends StatefulWidget {
   CreatePostScreen({Key? key}) : super(key: key);
 
@@ -382,14 +384,18 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Adeel Abbasi',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-                color: primaryText,
-              ),
-            ),
+            GetBuilder<CreatePostController>(
+                id: "user_name",
+                builder: (_) {
+                  return Text(
+                    Get.put(AuthController()).currentUser?.name ?? "",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      color: primaryText,
+                    ),
+                  );
+                }),
             DropdownButtonHideUnderline(
               child: DropdownButton<String>(
                 dropdownColor: darkCard,

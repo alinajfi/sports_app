@@ -10,6 +10,7 @@ import 'package:prime_social_media_flutter_ui_kit/config/app_image.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_size.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_string.dart';
 import 'package:prime_social_media_flutter_ui_kit/constants/db_constants.dart';
+import 'package:prime_social_media_flutter_ui_kit/controller/auth_controller.dart';
 import 'package:prime_social_media_flutter_ui_kit/controller/db_controller.dart';
 import 'package:prime_social_media_flutter_ui_kit/model/comment_model.dart';
 import 'package:prime_social_media_flutter_ui_kit/model/post_model.dart';

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 
@@ -7,6 +8,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:prime_social_media_flutter_ui_kit/constants/api_constants.dart';
+import 'package:prime_social_media_flutter_ui_kit/controller/auth_controller.dart';
 import 'package:prime_social_media_flutter_ui_kit/model/create_post_model.dart';
 import 'package:prime_social_media_flutter_ui_kit/services/home_services.dart';
 import 'package:prime_social_media_flutter_ui_kit/utils/common_api_functions.dart';
@@ -43,6 +45,17 @@ class CreatePostController extends GetxController {
   void dispose() {
     super.dispose();
     descriptionController.clear();
+  }
+
+  @override
+  onInit() {
+    super.onInit();
+    Timer(
+      Duration(seconds: 3),
+      () {
+        update(["user_name"]);
+      },
+    );
   }
 
   void toggleLike() {
