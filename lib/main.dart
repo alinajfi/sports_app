@@ -16,7 +16,7 @@ import 'routes/app_routes.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
-import 'services/notification_service.dart';
+// import 'services/notification_service.dart';
 //import 'services/notification_service.dart';
 
 void main() async {
@@ -45,8 +45,8 @@ void main() async {
   //     "pk_test_51Joui7L1cSJT1UwBLOUBZqLx59AjgpFRE7hB6zF3hP74Kow1Q8UZt2sCSRxB6Y4DhX0lTxng5k22L17CHZeEYmpR00p30nE3kY";
   // await Stripe.instance.applySettings();
 
-  NotificationService().initialize();
-  await NotificationService().initializeLocalNotifications();
+  // NotificationService().initialize();
+  // await NotificationService().initializeLocalNotifications();
 
   Get.put(
     DbService.init(GetStorage()),
