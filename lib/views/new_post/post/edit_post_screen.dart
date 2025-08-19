@@ -97,30 +97,96 @@ class _CreatePostScreenState extends State<EditPostScreen> {
                     const SizedBox(height: 8),
                     _iconRow(),
                     Obx(() {
-                      if (controller.pickedImages.isEmpty)
-                        return SizedBox.shrink();
+                      final totalImagesCount =
+                          controller.existingImages.length +
+                              controller.pickedImages.length;
+
+                      if (totalImagesCount == 0) return SizedBox.shrink();
 
                       return SizedBox(
-                        height: 230, // ✅ Set your desired height here
+                        height: 230,
                         child: GridView.builder(
-                          itemCount: controller.pickedImages.length,
+                          itemCount: totalImagesCount,
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 3,
                             crossAxisSpacing: 8,
                             mainAxisSpacing: 8,
-                            childAspectRatio: 1,
                           ),
-                          scrollDirection: Axis.vertical,
                           itemBuilder: (context, index) {
-                            final imageFile = controller.pickedImages[index];
-                            return ClipRRect(
-                              borderRadius: BorderRadius.circular(8),
-                              child: Image.file(
-                                imageFile,
-                                fit: BoxFit.cover,
-                              ),
-                            );
+                            if (index < controller.existingImages.length) {
+                              // Show network image with close button
+                              return Stack(
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(8),
+                                    child: Image.network(
+                                      controller.existingImages[index],
+                                      fit: BoxFit.cover,
+                                      width: double.infinity,
+                                      height: double.infinity,
+                                    ),
+                                  ),
+                                  Positioned(
+                                    top: 4,
+                                    right: 4,
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        controller.existingImages
+                                            .removeAt(index);
+                                        controller.update(); // if using GetX
+                                      },
+                                      child: Container(
+                                        decoration: const BoxDecoration(
+                                          color: Colors.black54,
+                                          shape: BoxShape.circle,
+                                        ),
+                                        padding: const EdgeInsets.all(4),
+                                        child: const Icon(Icons.close,
+                                            color: Colors.white, size: 18),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            } else {
+                              // Show local picked image with close button
+                              final localIndex =
+                                  index - controller.existingImages.length;
+                              return Stack(
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(8),
+                                    child: Image.file(
+                                      controller.pickedImages[localIndex],
+                                      fit: BoxFit.cover,
+                                      width: double.infinity,
+                                      height: double.infinity,
+                                    ),
+                                  ),
+                                  Positioned(
+                                    top: 4,
+                                    right: 4,
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        controller.pickedImages
+                                            .removeAt(localIndex);
+                                        controller.update(); // if using GetX
+                                      },
+                                      child: Container(
+                                        decoration: const BoxDecoration(
+                                          color: Colors.black54,
+                                          shape: BoxShape.circle,
+                                        ),
+                                        padding: const EdgeInsets.all(4),
+                                        child: const Icon(Icons.close,
+                                            color: Colors.white, size: 18),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            }
                           },
                         ),
                       );
@@ -180,9 +246,15 @@ class _CreatePostScreenState extends State<EditPostScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        const CircleAvatar(
+        CircleAvatar(
           radius: 24,
-          backgroundImage: AssetImage('assets/images/profile_placeholder.png'),
+          backgroundImage: Get.find<EditPostController>().post.photo != null &&
+                  Get.find<EditPostController>().post.photo!.isNotEmpty
+              ? NetworkImage(Get.find<EditPostController>()
+                  .post
+                  .photo!) // user profile pic from API
+              : const AssetImage('assets/images/profile_placeholder.png')
+                  as ImageProvider, // fallback
         ),
         const SizedBox(width: 10),
         Column(
