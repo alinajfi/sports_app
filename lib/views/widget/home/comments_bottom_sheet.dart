@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -8,6 +9,7 @@ import 'package:prime_social_media_flutter_ui_kit/config/app_icon.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_image.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_size.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_string.dart';
+import 'package:prime_social_media_flutter_ui_kit/controller/auth_controller.dart';
 import 'package:prime_social_media_flutter_ui_kit/controller/home/comments_controller.dart';
 import 'package:prime_social_media_flutter_ui_kit/controller/home/home_controller.dart';
 import 'package:prime_social_media_flutter_ui_kit/controller/profile/settings_options/language_controller.dart';
@@ -114,15 +116,19 @@ commentsBottomSheet(BuildContext context, String postId) {
                               left: AppSize.appSize20,
                               right: AppSize.appSize20,
                             ),
-                            child: Column(
-                              children: [
-                                // Display actual comments from the list
-                                ...commentsController.comments
-                                    .map(
-                                        (comment) => _buildCommentItem(comment))
-                                    .toList(),
-                              ],
-                            ),
+                            child: GetBuilder<CommentsController>(
+                                id: 'comment',
+                                builder: (context) {
+                                  return Column(
+                                    children: [
+                                      // Display actual comments from the list
+                                      ...commentsController.comments
+                                          .map((comment) =>
+                                              _buildCommentItem(comment))
+                                          .toList(),
+                                    ],
+                                  );
+                                }),
                           ),
                         ),
                         Container(
@@ -137,10 +143,23 @@ commentsBottomSheet(BuildContext context, String postId) {
                           color: AppColor.cardBackgroundColor,
                           child: ListTile(
                             contentPadding: EdgeInsets.zero,
-                            leading: Image.asset(
-                              AppImage.profile4,
-                              width: AppSize.appSize32,
-                            ),
+                            leading:
+                                AuthController.instance.currentUser?.photo ==
+                                        null
+                                    ? Image.asset(
+                                        AppImage.profile4,
+                                        width: AppSize.appSize32,
+                                        height: AppSize.appSize32,
+                                      )
+                                    : ClipOval(
+                                        child: CachedNetworkImage(
+                                          imageUrl: AuthController
+                                              .instance.currentUser!.photo,
+                                          width: AppSize.appSize32,
+                                          height: AppSize.appSize32,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
                             title: TextFormField(
                               cursorColor: AppColor.secondaryColor,
                               controller:

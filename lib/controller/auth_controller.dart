@@ -8,6 +8,7 @@ import 'package:prime_social_media_flutter_ui_kit/services/home_services.dart';
 import '../model/user_model.dart';
 
 class AuthController extends GetxController {
+  static AuthController instance = Get.find<AuthController>();
   String? userName;
   UserModel? currentUser;
 

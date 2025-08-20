@@ -1,10 +1,16 @@
 import 'dart:developer';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:prime_social_media_flutter_ui_kit/constants/db_constants.dart';
 import 'package:prime_social_media_flutter_ui_kit/controller/db_controller.dart';
+import 'package:prime_social_media_flutter_ui_kit/routes/app_routes.dart';
+import 'package:prime_social_media_flutter_ui_kit/views/home/messages/messages_view.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/login/login_view.dart';
+
+import '../../../controller/auth_controller.dart';
 
 class MyDrawer extends StatelessWidget {
   const MyDrawer({Key? key}) : super(key: key);
@@ -37,6 +43,13 @@ class MyDrawer extends StatelessWidget {
                   children: [
                     // Profile Picture
                     Container(
+                      clipBehavior: Clip.hardEdge,
+                      child: CachedNetworkImage(
+                          errorWidget: (context, url, error) {
+                            return Icon(Icons.person);
+                          },
+                          fit: BoxFit.fill,
+                          imageUrl: AuthController.instance.currentUser!.photo),
                       width: 80,
                       height: 80,
                       decoration: BoxDecoration(
@@ -46,8 +59,8 @@ class MyDrawer extends StatelessWidget {
                     ),
                     const SizedBox(height: 16),
                     // Name and Username
-                    const Text(
-                      'Adnan R',
+                    Text(
+                      AuthController.instance.currentUser?.name ?? 'Guest',
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
@@ -56,7 +69,9 @@ class MyDrawer extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      '@adnanr',
+                      AuthController.instance.currentUser?.name != null
+                          ? '@${AuthController.instance.currentUser?.username}'
+                          : '@adnanr',
                       style: TextStyle(
                         fontSize: 16,
                         color: Colors.grey[400],
@@ -67,9 +82,18 @@ class MyDrawer extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        _buildStatItem('4', 'Posts'),
-                        _buildStatItem('200', 'Following'),
-                        _buildStatItem('1.2 M', 'Followers'),
+                        // _buildStatItem(
+                        //     AuthController.instance.currentUser?.name, 'Posts'),
+                        _buildStatItem(
+                            AuthController.instance.currentUser?.following
+                                    .toString() ??
+                                "0",
+                            'Following'),
+                        _buildStatItem(
+                            AuthController.instance.currentUser?.followers
+                                    .toString() ??
+                                "0",
+                            'Followers'),
                       ],
                     ),
                   ],
@@ -93,77 +117,107 @@ class MyDrawer extends StatelessWidget {
                   child: ListView(
                     padding: const EdgeInsets.all(16.0),
                     children: [
-                      _buildMenuItem(
-                        icon: Icons.schedule,
-                        title: 'Schedule Now',
-                        badge: '12',
-                        onTap: () {},
-                      ),
+                      // _buildMenuItem(
+                      //   icon: Icons.schedule,
+                      //   title: 'Schedule Now',
+                      //   badge: '12',
+                      //   onTap: () {},
+                      // ),
                       _buildMenuItem(
                         icon: Icons.group,
                         title: 'Friends',
-                        onTap: () {},
+                        onTap: () {
+                          Fluttertoast.showToast(
+                              msg: "Comming soon",
+                              gravity: ToastGravity.CENTER);
+                        },
                       ),
                       _buildMenuItem(
                         icon: Icons.message,
                         title: 'Messages',
-                        badge: '99+',
-                        highlighted: true,
-                        onTap: () {},
+                        // badge: '',
+                        highlighted: false,
+                        onTap: () {
+                          Get.toNamed(AppRoutes.messagesView);
+                        },
                       ),
                       _buildMenuItem(
                         icon: Icons.account_balance_wallet,
                         title: 'Balance',
-                        onTap: () {},
+                        onTap: () {
+                          Fluttertoast.showToast(
+                              msg: "Comming soon",
+                              gravity: ToastGravity.CENTER);
+                        },
                       ),
                       _buildMenuItem(
                         icon: Icons.share,
                         title: 'Share',
-                        onTap: () {},
+                        onTap: () {
+                          Fluttertoast.showToast(
+                              msg: "Comming soon",
+                              gravity: ToastGravity.CENTER);
+                        },
                       ),
                       _buildMenuItem(
                         icon: Icons.qr_code,
                         title: 'QR Code',
-                        badge: '12',
-                        onTap: () {},
+                        // badge: '12',
+                        onTap: () {
+                          Fluttertoast.showToast(
+                              msg: "Comming soon",
+                              gravity: ToastGravity.CENTER);
+                        },
                       ),
                       _buildMenuItem(
                         icon: Icons.people,
                         title: 'Affiliates',
-                        onTap: () {},
+                        onTap: () {
+                          Fluttertoast.showToast(
+                              msg: "Comming soon",
+                              gravity: ToastGravity.CENTER);
+                        },
                       ),
                       _buildMenuItem(
                         icon: Icons.notifications,
                         title: 'Notifications',
-                        badge: '99+',
-                        onTap: () {},
+                        //badge: '99+',
+                        onTap: () {
+                          Fluttertoast.showToast(
+                              msg: "Comming soon",
+                              gravity: ToastGravity.CENTER);
+                        },
                       ),
-                      _buildMenuItem(
-                        icon: Icons.groups,
-                        title: 'Socials',
-                        onTap: () {},
-                      ),
+                      // _buildMenuItem(
+                      //   icon: Icons.groups,
+                      //   title: 'Socials',
+                      //   onTap: () {},
+                      // ),
                       _buildMenuItem(
                         icon: Icons.supervised_user_circle,
                         title: 'Supervision',
-                        badge: '12',
-                        onTap: () {},
+                        // badge: '12',
+                        onTap: () {
+                          Fluttertoast.showToast(
+                              msg: "Comming soon",
+                              gravity: ToastGravity.CENTER);
+                        },
                       ),
-                      _buildMenuItem(
-                        icon: Icons.description,
-                        title: 'Terms & Conditions',
-                        onTap: () {},
-                      ),
-                      _buildMenuItem(
-                        icon: Icons.photo_album,
-                        title: 'Albums',
-                        onTap: () {},
-                      ),
-                      _buildMenuItem(
-                        icon: Icons.favorite,
-                        title: 'Favorites',
-                        onTap: () {},
-                      ),
+                      // _buildMenuItem(
+                      //   icon: Icons.description,
+                      //   title: 'Terms & Conditions',
+                      //   onTap: () {},
+                      // ),
+                      // _buildMenuItem(
+                      //   icon: Icons.photo_album,
+                      //   title: 'Albums',
+                      //   onTap: () {},
+                      // ),
+                      // _buildMenuItem(
+                      //   icon: Icons.favorite,
+                      //   title: 'Favorites',
+                      //   onTap: () {},
+                      // ),
                       const SizedBox(height: 20),
                       _buildMenuItem(
                         icon: Icons.delete,

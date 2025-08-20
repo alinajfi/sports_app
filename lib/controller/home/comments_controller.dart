@@ -29,11 +29,24 @@ class CommentsController extends GetxController {
     }
   }
 
+  Future<void> updateComments({required String postId}) async {
+    try {
+      comments = await HomeServices().getCommentOnPosts(postId: postId);
+      update(['comment']);
+    } catch (e) {
+      log("updating comment faild");
+    }
+  }
+
   Future<void> postComments({required String postId}) async {
     try {
       await HomeServices().addCommentToPost(
           postId: postId, comment: commentsFieldController.text.trim());
-      getCommments(postId: postId);
+      comments.add(comments.first
+          .copyWith(description: commentsFieldController.text.trim()));
+
+      update(['comment']);
+      updateComments(postId: postId);
     } catch (e) {
       Fluttertoast.showToast(msg: "$e");
     }

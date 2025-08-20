@@ -211,6 +211,7 @@
 
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
@@ -376,9 +377,14 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        const CircleAvatar(
+        CircleAvatar(
           radius: 24,
-          backgroundImage: AssetImage('assets/images/profile_placeholder.png'),
+          backgroundImage: AuthController.instance.currentUser?.photo != null
+              ? CachedNetworkImageProvider(
+                  AuthController.instance.currentUser!.photo,
+                )
+              : const AssetImage('assets/images/profile_placeholder.png')
+                  as ImageProvider,
         ),
         const SizedBox(width: 10),
         Column(
@@ -388,7 +394,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                 id: "user_name",
                 builder: (_) {
                   return Text(
-                    Get.put(AuthController()).currentUser?.name ?? "",
+                    Get.find<AuthController>().currentUser?.name ?? "",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,

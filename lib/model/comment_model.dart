@@ -56,6 +56,35 @@ class Comment {
       'replies': replies,
     };
   }
+
+  /// copyWith method
+  Comment copyWith({
+    int? commentId,
+    int? postId,
+    int? userId,
+    String? postType,
+    String? description,
+    String? name,
+    String? photo,
+    dynamic userReaction,
+    ReactionCounts? reactionCounts,
+    String? created,
+    List<dynamic>? replies,
+  }) {
+    return Comment(
+      commentId: commentId ?? this.commentId,
+      postId: postId ?? this.postId,
+      userId: userId ?? this.userId,
+      postType: postType ?? this.postType,
+      description: description ?? this.description,
+      name: name ?? this.name,
+      photo: photo ?? this.photo,
+      userReaction: userReaction ?? this.userReaction,
+      reactionCounts: reactionCounts ?? this.reactionCounts,
+      created: created ?? this.created,
+      replies: replies ?? this.replies,
+    );
+  }
 }
 
 class ReactionCounts {
@@ -95,5 +124,24 @@ class ReactionCounts {
       'angry': angry,
       'total': total,
     };
+  }
+
+  /// copyWith method
+  ReactionCounts copyWith({
+    int? like,
+    int? love,
+    int? sad,
+    int? haha,
+    int? angry,
+    int? total,
+  }) {
+    return ReactionCounts(
+      like: like ?? this.like,
+      love: love ?? this.love,
+      sad: sad ?? this.sad,
+      haha: haha ?? this.haha,
+      angry: angry ?? this.angry,
+      total: total ?? this.total,
+    );
   }
 }

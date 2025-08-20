@@ -358,7 +358,7 @@ class MessagesView extends StatelessWidget {
               )
             : ListView.builder(
                 shrinkWrap: true,
-                itemCount: AppSize.size2,
+                itemCount: messagesController.friendRequests.length,
                 itemBuilder: (context, index) {
                   return Padding(
                     padding: const EdgeInsets.only(bottom: AppSize.appSize18),

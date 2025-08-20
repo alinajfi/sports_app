@@ -46,8 +46,8 @@ class PostItem extends StatelessWidget {
           bottom: AppSize.appSize40,
         ),
         child: socialPost.postImages == null || socialPost.postImages!.isEmpty
-            ? _withPic(context)
-            : _withoutpic(context));
+            ? _withoutpic(context)
+            : _withPic(context));
   }
 
   bool _isVideo(String url) {
@@ -94,7 +94,7 @@ class PostItem extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _buildPostHeader(languageController),
-        _buildPostImage(context),
+        //_buildPostImage(context),
         // if (socialPost.postImages == null || socialPost.postImages!.isEmpty)
         _buildPostDescription(),
         PostActions(
@@ -217,7 +217,15 @@ class PostItem extends StatelessWidget {
       return Padding(
         padding: const EdgeInsets.only(top: AppSize.appSize12),
         child: GestureDetector(
-          onTap: () => _openImageGallery(context, 0),
+          onTap: () {
+            if (_isVideo(images.first)) {
+              Get.to(VideoPlayerScreen(
+                videoUrl: images.first,
+              ));
+            } else {
+              _openImageGallery(context, 0);
+            }
+          },
           child: ClipRRect(
             borderRadius: BorderRadius.circular(8),
             child: _buildMediaWidget(
@@ -250,7 +258,15 @@ class PostItem extends StatelessWidget {
           final extraCount = totalImages - 4;
 
           return GestureDetector(
-            onTap: () => _openImageGallery(context, index),
+            onTap: () {
+              if (_isVideo(mediaUrl)) {
+                Get.to(VideoPlayerScreen(
+                  videoUrl: mediaUrl,
+                ));
+              } else {
+                _openImageGallery(context, index);
+              }
+            },
             child: Stack(
               fit: StackFit.expand,
               children: [
@@ -324,7 +340,7 @@ class PostItem extends StatelessWidget {
       padding: const EdgeInsets.only(top: AppSize.appSize14),
       child: RichText(
         text: TextSpan(
-          text: socialPost.postId.toString(),
+          text: "",
           style: const TextStyle(
             fontSize: AppSize.appSize14,
             fontWeight: FontWeight.w700,

@@ -1,9 +1,11 @@
 import 'dart:io';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:prime_social_media_flutter_ui_kit/model/create_post_model.dart';
 import 'package:prime_social_media_flutter_ui_kit/model/create_story_model.dart';
+import '../../controller/auth_controller.dart';
 import '../../controller/create_story_controller.dart';
 
 class CreateStory extends StatefulWidget {
@@ -247,13 +249,18 @@ class _CreateStoryState extends State<CreateStory> {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const CircleAvatar(
+        CircleAvatar(
           radius: 24,
-          backgroundImage: AssetImage('assets/images/profile_placeholder.png'),
+          backgroundImage: AuthController.instance.currentUser?.photo != null
+              ? CachedNetworkImageProvider(
+                  AuthController.instance.currentUser!.photo,
+                )
+              : const AssetImage('assets/images/profile_placeholder.png')
+                  as ImageProvider,
         ),
         const SizedBox(width: 10),
         Text(
-          'Adeel Abbasi',
+          AuthController.instance.currentUser?.name ?? '',
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 16,

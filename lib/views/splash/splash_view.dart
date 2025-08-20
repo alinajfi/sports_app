@@ -8,6 +8,7 @@ import 'package:prime_social_media_flutter_ui_kit/config/app_font.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_image.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_size.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_string.dart';
+import 'package:prime_social_media_flutter_ui_kit/controller/auth_controller.dart';
 import 'package:prime_social_media_flutter_ui_kit/controller/splash_controller.dart';
 
 import '../../constants/db_constants.dart';
@@ -24,7 +25,6 @@ class SplashView extends StatefulWidget {
 class _SplashViewState extends State<SplashView> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     checkUserLoggedIn();
   }
@@ -34,6 +34,7 @@ class _SplashViewState extends State<SplashView> {
     if (DbController.instance.readData<bool>(DbConstants.isUserLoggedIn) !=
             null &&
         DbController.instance.readData<bool>(DbConstants.isUserLoggedIn)!) {
+      Get.put(AuthController(), permanent: true);
       Get.offAllNamed(AppRoutes.bottomBarView);
     } else {
       Get.offAllNamed(AppRoutes.loginView);

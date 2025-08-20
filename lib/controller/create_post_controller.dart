@@ -50,12 +50,6 @@ class CreatePostController extends GetxController {
   @override
   onInit() {
     super.onInit();
-    Timer(
-      Duration(seconds: 3),
-      () {
-        update(["user_name"]);
-      },
-    );
   }
 
   void toggleLike() {
