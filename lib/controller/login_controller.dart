@@ -70,8 +70,6 @@ class LoginController extends GetxController {
     );
     DbController.instance.writeData<String>(DbConstants.userId, userId);
 
-    Get.put(AuthController(), permanent: true);
-
     Get.offAllNamed(AppRoutes.welcomeView);
   }
 

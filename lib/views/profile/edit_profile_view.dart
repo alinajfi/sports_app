@@ -1,10 +1,12 @@
 // ignore_for_file: must_be_immutable
 
 import 'dart:io';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_image.dart';
+import 'package:prime_social_media_flutter_ui_kit/controller/auth_controller.dart';
 import 'package:prime_social_media_flutter_ui_kit/controller/profile/edit_profile_controller.dart';
 import 'package:prime_social_media_flutter_ui_kit/controller/profile/profile_controller.dart';
 import 'package:prime_social_media_flutter_ui_kit/controller/profile/settings_options/language_controller.dart';
@@ -91,26 +93,46 @@ class EditProfileView extends StatelessWidget {
             alignment: Alignment.topCenter,
             child: Stack(
               children: [
-                Obx(() => Container(
+                GetBuilder<EditProfileController>(
+                  id: "image",
+                  builder: (controller) {
+                    return Container(
+                      padding: EdgeInsets.all(4),
+                      clipBehavior: Clip.hardEdge,
                       width: AppSize.appSize100,
                       height: AppSize.appSize100,
                       decoration: BoxDecoration(
+                        color: Colors.white,
                         borderRadius: BorderRadius.circular(AppSize.appSize66),
                       ),
                       child: Center(
-                        child:
-                            editProfileController.profileImagePath.value.isEmpty
-                                ? Image.asset(AppImage.callProfile1,
-                                    width: AppSize.appSize82)
-                                : CircleAvatar(
-                                    backgroundColor: AppColor.backgroundColor,
-                                    backgroundImage: FileImage(File(
-                                        editProfileController
-                                            .profileImagePath.value)),
-                                    radius: AppSize.appSize37,
+                        child: AuthController.instance.currentUser == null
+                            ? Image.asset(AppImage.callProfile1,
+                                width: AppSize.appSize82)
+                            : controller.profileImage != null
+                                ? Image.file(controller.profileImage!)
+                                : Container(
+                                    width: AppSize.appSize90,
+                                    height: AppSize.appSize90,
+                                    clipBehavior: Clip.hardEdge,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(
+                                          AppSize.appSize66),
+                                    ),
+                                    child: CachedNetworkImage(
+                                        width: double.infinity,
+                                        fit: BoxFit.fill,
+                                        imageUrl: AuthController
+                                            .instance.currentUser!.photo),
                                   ),
                       ),
-                    )),
+                    );
+                  },
+                ),
+                // Obx(() =>
+
+                //     ),
                 Positioned(
                   bottom: AppSize.appSize11,
                   right: AppSize.appSize12,

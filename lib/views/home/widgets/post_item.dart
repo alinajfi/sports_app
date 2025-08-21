@@ -132,17 +132,42 @@ class PostItem extends StatelessWidget {
             child: Row(
               children: [
                 Padding(
-                  padding: EdgeInsets.only(
-                    right: isRTL ? 0 : 10,
-                    left: isRTL ? 10 : 0,
+                  padding: EdgeInsetsDirectional.only(
+                    start: isRTL ? 10 : 0,
+                    end: isRTL ? 0 : 10,
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(20),
-                    child: CachedNetworkImage(
-                      imageUrl: socialPost.photo!,
-                      width: 36,
-                      height: 36,
-                      fit: BoxFit.cover,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border:
+                            Border.all(color: Colors.grey.shade400, width: 1.5),
+                        shape: BoxShape.rectangle,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: CachedNetworkImage(
+                        imageUrl: socialPost.photo ?? '',
+                        width: 36,
+                        height: 36,
+                        fit: BoxFit.cover,
+                        placeholder: (context, url) => Container(
+                          width: 36,
+                          height: 36,
+                          color: Colors.grey.shade200,
+                          child: const Icon(Icons.person,
+                              size: 20, color: Colors.grey),
+                        ),
+                        errorWidget: (context, url, error) => Container(
+                          width: 36,
+                          height: 36,
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade300,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: const Icon(Icons.error,
+                              size: 18, color: Colors.redAccent),
+                        ),
+                      ),
                     ),
                   ),
                 ),
@@ -195,10 +220,10 @@ class PostItem extends StatelessWidget {
                 ),
               ),
             ),
-            Image.asset(
-              AppIcon.more,
-              width: 20,
-            ),
+            // Image.asset(
+            //   AppIcon.more,
+            //   width: 20,
+            // ),
           ],
         ),
       ],

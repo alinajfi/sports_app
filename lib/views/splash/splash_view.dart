@@ -34,7 +34,6 @@ class _SplashViewState extends State<SplashView> {
     if (DbController.instance.readData<bool>(DbConstants.isUserLoggedIn) !=
             null &&
         DbController.instance.readData<bool>(DbConstants.isUserLoggedIn)!) {
-      Get.put(AuthController(), permanent: true);
       Get.offAllNamed(AppRoutes.bottomBarView);
     } else {
       Get.offAllNamed(AppRoutes.loginView);

@@ -42,9 +42,12 @@ class CommentsController extends GetxController {
     try {
       await HomeServices().addCommentToPost(
           postId: postId, comment: commentsFieldController.text.trim());
-      comments.add(comments.first
-          .copyWith(description: commentsFieldController.text.trim()));
-
+      if (comments.isNotEmpty) {
+        comments.add(comments.first
+            .copyWith(description: commentsFieldController.text.trim()));
+      } else {
+        getCommments(postId: postId);
+      }
       update(['comment']);
       updateComments(postId: postId);
     } catch (e) {

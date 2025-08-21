@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_color.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_font.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_icon.dart';
+import 'package:prime_social_media_flutter_ui_kit/config/app_image.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_size.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_string.dart';
 import 'package:prime_social_media_flutter_ui_kit/controller/profile/settings_options/language_controller.dart';
@@ -19,6 +20,8 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
     final languageController = Get.find<LanguageController>();
 
     return AppBar(
+      leadingWidth: 100,
+      leading: Image.asset(AppImage.appLogo),
       backgroundColor: AppColor.backgroundColor,
       automaticallyImplyLeading: false,
       centerTitle: false,

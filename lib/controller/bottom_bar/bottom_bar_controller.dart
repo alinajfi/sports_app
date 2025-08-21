@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/home/home_view.dart';
+import 'package:prime_social_media_flutter_ui_kit/views/new_post/post/create_post.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/notification/notifications_view.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/profile/profile_view.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/reels/reels_view.dart';
@@ -20,7 +21,8 @@ class BottomBarController extends GetxController {
     selectedIndex.value = index;
     if (selectedIndex.value == 2) {
       selectedIndex.value = 0;
-      newPostOptionsBottomSheet(context);
+      Get.to(CreatePostScreen());
+      // newPostOptionsBottomSheet(context);
     }
     pageController.jumpToPage(selectedIndex.value);
     update();

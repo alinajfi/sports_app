@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:prime_social_media_flutter_ui_kit/main.dart';
 import 'package:prime_social_media_flutter_ui_kit/routes/app_routes.dart';
+import 'package:prime_social_media_flutter_ui_kit/services/stripe_service.dart';
 import '../../../../config/app_color.dart'; // your AppColor dark theme class
 
 class DonationScreen extends StatefulWidget {
@@ -457,8 +459,9 @@ class _DonationScreenState extends State<DonationScreen> {
       width: double.infinity,
       child: ElevatedButton(
         onPressed: () {
-          // Handle continue to payment
-          Get.toNamed(AppRoutes.paymentSummaryScreen);
+          StripeService().makePayment(context, onPaymentSuccess: () {});
+          // // Handle continue to payment
+          // Get.toNamed(AppRoutes.paymentSummaryScreen);
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.blue.shade600,

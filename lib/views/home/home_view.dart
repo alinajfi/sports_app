@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_color.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_size.dart';
@@ -24,6 +25,8 @@ import 'package:prime_social_media_flutter_ui_kit/views/home/widgets/repost_item
 import 'package:prime_social_media_flutter_ui_kit/views/home/widgets/stories_section.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/home/widgets/text_post.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/new_post/reel/create_reel_view.dart';
+
+import '../../services/stripe_service.dart';
 
 // import '../../services/notification_service.dart';
 
@@ -56,19 +59,6 @@ class _HomeViewState extends State<HomeView> {
       ),
     );
   }
-
-  // Future<void> makePayment() async {
-  //   final clientSecret = await PaymentService().createPaymentIntent();
-
-  //   await Stripe.instance.initPaymentSheet(
-  //     paymentSheetParameters: SetupPaymentSheetParameters(
-  //       paymentIntentClientSecret: clientSecret,
-  //       merchantDisplayName: 'Test Store',
-  //     ),
-  //   );
-
-  //   await Stripe.instance.presentPaymentSheet();
-  // }
 
   Widget _buildFloatingActionButton() {
     return FloatingActionButton(

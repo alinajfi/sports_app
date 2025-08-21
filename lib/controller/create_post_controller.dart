@@ -64,7 +64,6 @@ class CreatePostController extends GetxController {
   //   log("jfaksldjfklasdjfajsfkjaskflkas");
   // }
 
-  var pickedFiles = <PlatformFile>[].obs;
   var pickedImages = <File>[].obs;
 
   Future<void> pickImages() async {
@@ -77,14 +76,27 @@ class CreatePostController extends GetxController {
     }
   }
 
-  Future<void> pickMediaFiles() async {
+  var pickedFiles = <PlatformFile>[].obs;
+
+  Future<void> pickVideoFiles() async {
+    log("Picking videos...");
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       allowMultiple: true,
+      type: FileType.video, // ✅ Only video files allowed
     );
 
     if (result != null) {
       pickedFiles.assignAll(result.files);
+      log("Picked ${pickedFiles.length} video(s).");
+    } else {
+      log("No video selected.");
     }
+  }
+
+  bool? isVideo;
+  void isVideoFile({required bool isVideoFile}) {
+    isVideo = isVideoFile;
+    update();
   }
 
   RxBool isLoading = false.obs;

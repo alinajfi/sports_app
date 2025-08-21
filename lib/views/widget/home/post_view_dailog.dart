@@ -1,5 +1,7 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 import 'package:prime_social_media_flutter_ui_kit/config/app_color.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_size.dart';
 import 'package:prime_social_media_flutter_ui_kit/controller/home/all_post_controller.dart';
@@ -15,7 +17,14 @@ class PostViewDialog extends StatelessWidget {
   final String imageUrl;
   final int? postId;
   final PostModel? post;
-  PostViewDialog({required this.imageUrl, super.key, this.postId, this.post});
+  final bool isMyProfile;
+  PostViewDialog({
+    Key? key,
+    required this.imageUrl,
+    this.postId,
+    this.post,
+    required this.isMyProfile,
+  }) : super(key: key);
 
   AllPostController allPostController = Get.put(AllPostController());
 
@@ -55,61 +64,65 @@ class PostViewDialog extends StatelessWidget {
                     Positioned(
                       top: 8,
                       right: 12,
-                      child: Row(
-                        children: [
-                          GestureDetector(
-                            onTap: () async {
-                              if (post != null) {
-                                await Get.to(() => EditPostScreen(
-                                      postModel: post!,
-                                    ));
-                                Get.find<ProfileController>().loadUserPosts();
-                              }
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.all(6),
-                              decoration: BoxDecoration(
-                                color: Colors.grey,
-                                shape: BoxShape.circle,
-                              ),
-                              child: const Icon(
-                                Icons.edit,
-                                color: Colors.white,
-                                size: 20,
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            width: AppSize.appSize10,
-                          ),
-                          GestureDetector(
-                            onTap: () async {
-                              bool isDeleted =
-                                  await allPostController.deletePost(
-                                postId!,
-                              );
-                              Get.find<ProfileController>().loadUserPosts();
-                              if (isDeleted) {
-                                print("✅ Post deleted successfully");
-                              } else {
-                                print("❌ Failed to delete post");
-                              }
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.all(6),
-                              decoration: BoxDecoration(
-                                color: Colors.red,
-                                shape: BoxShape.circle,
-                              ),
-                              child: const Icon(
-                                Icons.delete,
-                                color: Colors.white,
-                                size: 20,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                      child: isMyProfile
+                          ? Row(
+                              children: [
+                                GestureDetector(
+                                  onTap: () async {
+                                    if (post != null) {
+                                      await Get.to(() => EditPostScreen(
+                                            postModel: post!,
+                                          ));
+                                      Get.find<ProfileController>()
+                                          .loadUserPosts();
+                                    }
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.all(6),
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey,
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: const Icon(
+                                      Icons.edit,
+                                      color: Colors.white,
+                                      size: 20,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: AppSize.appSize10,
+                                ),
+                                GestureDetector(
+                                  onTap: () async {
+                                    bool isDeleted =
+                                        await allPostController.deletePost(
+                                      postId!,
+                                    );
+                                    Get.find<ProfileController>()
+                                        .loadUserPosts();
+                                    if (isDeleted) {
+                                      print("✅ Post deleted successfully");
+                                    } else {
+                                      print("❌ Failed to delete post");
+                                    }
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.all(6),
+                                    decoration: BoxDecoration(
+                                      color: Colors.red,
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: const Icon(
+                                      Icons.delete,
+                                      color: Colors.white,
+                                      size: 20,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )
+                          : SizedBox(),
                     ),
                   ],
                 ),

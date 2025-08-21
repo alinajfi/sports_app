@@ -39,13 +39,13 @@ class EditProfileController extends GetxController {
 
   Rx<DateTime?> selectedDate = DateTime.now().obs;
   RxInt selectedGenderIndex = 0.obs;
-  RxString profileImagePath = ''.obs;
+  //RxString profileImagePath = ''.obs;
   Rx<UserModel?> user = Rx<UserModel?>(null);
-  Rx<File?> profileImage = Rx<File?>(null);
+  File? profileImage;
   RxBool isLoading = false.obs;
 
   Future<void> uploadProfilePicture() async {
-    if (profileImagePath.value.isEmpty) {
+    if (profileImage == null) {
       Get.snackbar('Error', 'Please select an image first',
           backgroundColor: Colors.orange, colorText: Colors.white);
       return;
@@ -55,7 +55,7 @@ class EditProfileController extends GetxController {
 
     try {
       final result = await HomeServices()
-          .uploadProfilePicture(profileImagePath: profileImagePath.value);
+          .uploadProfilePicture(profileImagePath: profileImage!.path);
       if (result) {
         WidgetHelper.showSnackBar(title: "Success", description: "");
         return;
@@ -153,10 +153,11 @@ class EditProfileController extends GetxController {
           await ImagePicker().pickImage(source: ImageSource.gallery);
 
       if (pickedFile != null) {
-        profileImagePath.value = pickedFile.path;
+        profileImage = File(pickedFile.path);
         // You can add image upload logic here if needed
         Get.snackbar("Success", "Profile image selected",
             backgroundColor: Colors.green, colorText: Colors.white);
+        update(['image']);
       }
     } catch (e) {
       Get.snackbar("Error", "Failed to select image: ${e.toString()}",

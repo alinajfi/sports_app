@@ -3,12 +3,18 @@ import 'package:get/get.dart';
 import 'package:prime_social_media_flutter_ui_kit/routes/app_routes.dart';
 import '../../../config/app_color.dart'; // Make sure to import your color config
 
-class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+class BundlesScreeen extends StatelessWidget {
+  const BundlesScreeen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        leading: Icon(
+          Icons.arrow_back,
+          color: Colors.white,
+        ),
+      ),
       backgroundColor: AppColor.backgroundColor,
       body: Column(
         children: [

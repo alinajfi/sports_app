@@ -209,6 +209,7 @@
 //   }
 // }
 
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -354,6 +355,10 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
             Icons.person_add_alt_1_outlined, 'Tag', controller.tagPeople),
         _iconButton(
             Icons.location_on_outlined, 'Location', controller.pickLocation),
+        _iconButton(Icons.video_camera_front, 'Video', () {
+          log("called");
+          controller.pickVideoFiles();
+        }),
       ],
     );
   }

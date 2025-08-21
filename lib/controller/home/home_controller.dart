@@ -105,6 +105,7 @@ class HomeController extends GetxController {
   void onInit() {
     super.onInit();
     try {
+      getUserIfNull();
       getTimeLinePosts();
       final storedList =
           DbController.instance.readData(DbConstants.itemAddedToFav);
@@ -175,4 +176,10 @@ class HomeController extends GetxController {
     AppString.blueBouy,
     AppString.wagglesCo,
   ].obs;
+
+  Future<void> getUserIfNull() async {
+    if (AuthController.instance.currentUser == null) {
+      await AuthController.instance.getCurrentUser();
+    }
+  }
 }

@@ -6,6 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:prime_social_media_flutter_ui_kit/constants/db_constants.dart';
 import 'package:prime_social_media_flutter_ui_kit/controller/db_controller.dart';
+import 'package:prime_social_media_flutter_ui_kit/controller/home/home_controller.dart';
 import 'package:prime_social_media_flutter_ui_kit/routes/app_routes.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/home/messages/messages_view.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/login/login_view.dart';
@@ -235,6 +236,8 @@ class MyDrawer extends StatelessWidget {
                               .writeData(DbConstants.isUserLoggedIn, null);
                           DbController.instance
                               .writeData(DbConstants.apiToken, null);
+                          AuthController.instance.currentUser = null;
+                          Get.delete<HomeController>();
                           Get.off(LoginView());
                         },
                       ),

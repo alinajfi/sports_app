@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_color.dart';
@@ -11,6 +12,7 @@ import 'package:prime_social_media_flutter_ui_kit/services/db_service.dart';
 import 'package:prime_social_media_flutter_ui_kit/translation/app_translation.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/splash/splash_view.dart';
 
+import 'controller/auth_controller.dart';
 import 'controller/db_controller.dart';
 import 'controller/translation_controller.dart';
 import 'routes/app_routes.dart';
@@ -36,11 +38,17 @@ void main() async {
     }
   }
 
+  // Initialize Stripe
+  Stripe.publishableKey =
+      "pk_test_51Joui7L1cSJT1UwBLOUBZqLx59AjgpFRE7hB6zF3hP74Kow1Q8UZt2sCSRxB6Y4DhX0lTxng5k22L17CHZeEYmpR00p30nE3kY";
+  await Stripe.instance.applySettings();
+
   Get.put(
     DbService.init(GetStorage()),
     permanent: true,
   );
   Get.put(DbController(), permanent: true);
+  Get.put(AuthController(), permanent: true);
   runApp(const MyApp());
 }
 

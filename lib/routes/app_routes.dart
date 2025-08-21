@@ -46,7 +46,7 @@ import 'package:prime_social_media_flutter_ui_kit/views/signup/pages/otp_page.da
 import 'package:prime_social_media_flutter_ui_kit/views/signup/pages/parent_details_page.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/signup/pages/sign_up_page.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/user_profile/event_screen.dart';
-import 'package:prime_social_media_flutter_ui_kit/views/user_profile/profile_screen.dart';
+import 'package:prime_social_media_flutter_ui_kit/views/user_profile/bundles_screen.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/user_profile/supportes_screen.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/welcome/welcome_view.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/widget/home/reels_play_full_view.dart';
@@ -107,7 +107,7 @@ class AppRoutes {
   static const String reelsView = "/reels_view";
   static const String userProfile = "/user_profile";
   static const String eventScreenRoute = "/event_screen";
-  static const String profileScreenRoute = "/profile_screen";
+  static const String bundlesScreens = "/bundles_screen";
   static const String supportersScreenRoute = "/supporters_screen";
   static const String otpPageRoute = "/otp_page";
   static const String parentDetailsPage = "/presen_detail_page";
@@ -167,7 +167,7 @@ class AppRoutes {
     GetPage(name: reelsView, page: () => ReelsView()),
     GetPage(name: userProfile, page: () => UserProfile()),
     GetPage(name: eventScreenRoute, page: () => EventScreen()),
-    GetPage(name: profileScreenRoute, page: () => ProfileScreen()),
+    GetPage(name: bundlesScreens, page: () => BundlesScreeen()),
     GetPage(name: supportersScreenRoute, page: () => SupportersScreen()),
     GetPage(name: otpPageRoute, page: () => OtpPage()),
     //GetPage(name: parentDetailsPage, page: () => ParentDetailsPage()),

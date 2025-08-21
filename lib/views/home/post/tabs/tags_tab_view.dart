@@ -49,6 +49,7 @@ class TagsTabView extends StatelessWidget {
                       .withAlpha(AppSize.appSizePoint7.toInt()),
                   builder: (context) {
                     return PostViewDialog(
+                        isMyProfile: false,
                         imageUrl: allPostController.postsList[index]);
                   },
                 );

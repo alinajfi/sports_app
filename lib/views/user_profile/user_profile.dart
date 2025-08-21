@@ -193,7 +193,9 @@ class UserProfile extends StatelessWidget {
                               ),
                               height: 60,
                               width: 60,
-                              child: Image.network(controller.userData!.photo)),
+                              child: Image.network(
+                                  fit: BoxFit.fill,
+                                  controller.userData!.photo)),
                         ),
                         SizedBox(
                           width: 20,
@@ -584,7 +586,7 @@ class PremiumSubscriptionCard extends StatelessWidget {
                     onTap: () {
                       try {
                         if (Get.isRegistered<GetMaterialController>()) {
-                          Get.toNamed(AppRoutes.profileScreenRoute);
+                          Get.toNamed(AppRoutes.bundlesScreens);
                         } else {
                           debugPrint(
                               'GetMaterialApp is not properly initialized.');
