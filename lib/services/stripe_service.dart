@@ -63,9 +63,9 @@ class StripeService {
 
           // Success handling
           if (context.mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Payment successful!')),
-            );
+            // ScaffoldMessenger.of(context).showSnackBar(
+            //   SnackBar(content: Text('Payment successful!')),
+            // );
           }
         });
       } on StripeException catch (e) {

@@ -6,6 +6,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_color.dart';
 import 'package:prime_social_media_flutter_ui_kit/config/app_size.dart';
 import 'package:prime_social_media_flutter_ui_kit/constants/db_constants.dart';
@@ -27,6 +28,7 @@ import 'package:prime_social_media_flutter_ui_kit/views/home/widgets/text_post.d
 import 'package:prime_social_media_flutter_ui_kit/views/new_post/reel/create_reel_view.dart';
 
 import '../../services/stripe_service.dart';
+import 'widgets/post_item_dummy.dart';
 
 // import '../../services/notification_service.dart';
 
@@ -99,49 +101,40 @@ class _HomeViewState extends State<HomeView> {
   Widget _buildPostsList() {
     return Obx(
       () {
-        return Column(
-          children: [
-            ...Get.find<HomeController>()
-                .timeLinePosts
-                .value
-                .map((post) => GetBuilder<HomeController>(
-                    id: 'on_like',
-                    builder: (cont) {
-                      return PostItem(
-                        commentsCount: post.commentsCount.toString(),
-                        reactionCount: "",
-                        // reactionCount:
-                        //     post.reactionCounts?.love.toString() ?? "0",
-                        controller: Get.find<HomeController>(),
-                        socialPost: post,
-                        onLike: () {
-                          final postId = post.postId.toString();
-                          final homeController = Get.find<HomeController>();
+        return Get.find<HomeController>().isLoading.value
+            ? Skeletonizer(
+                child: SizedBox(
+                height: MediaQuery.sizeOf(context).height,
+                child: ListView(
+                  children: [
+                    PostItemDummy(),
+                    PostItemDummy(),
+                    PostItemDummy(),
+                    PostItemDummy(),
+                  ],
+                ),
+              ))
+            : Column(
+                children: [
+                  ...Get.find<HomeController>()
+                      .timeLinePosts
+                      .value
+                      .map((post) => GetBuilder<HomeController>(
+                          id: 'on_like',
+                          builder: (cont) {
+                            return PostItem(
+                              commentsCount: post.commentsCount.toString(),
+                              reactionCount: "",
+                              // reactionCount:
+                              //     post.reactionCounts?.love.toString() ?? "0",
+                              controller: Get.find<HomeController>(),
+                              socialPost: post,
+                              onLike: () {
+                                final postId = post.postId.toString();
+                                final homeController =
+                                    Get.find<HomeController>();
 
-                          if (homeController.favIds.contains(postId)) {
-                            homeController.favIds.remove(postId);
-                            DbController.instance.writeData<List>(
-                                DbConstants.itemAddedToFav,
-                                homeController.favIds.toList());
-                            cont.update(
-                                ['on_like', 'actions', 'update_all_actions']);
-                          } else {
-                            final index = homeController.timeLinePosts
-                                .indexWhere((p) => p.postId == post.postId);
-
-                            if (index != -1) {
-                              homeController.favIds.add(postId);
-                              DbController.instance.writeData(
-                                  DbConstants.itemAddedToFav,
-                                  homeController.favIds.toList());
-                              cont.update(
-                                  ['on_like', 'actions', 'update_all_actions']);
-                              homeController
-                                  .addReactionToPost(postId, index)
-                                  .then((success) {
-                                if (success) {}
-                              }).onError(
-                                (error, stackTrace) {
+                                if (homeController.favIds.contains(postId)) {
                                   homeController.favIds.remove(postId);
                                   DbController.instance.writeData<List>(
                                       DbConstants.itemAddedToFav,
@@ -151,53 +144,83 @@ class _HomeViewState extends State<HomeView> {
                                     'actions',
                                     'update_all_actions'
                                   ]);
-                                },
-                              );
-                            } else {
-                              log('⚠️ Post not found in timeline for liking.');
-                            }
-                          }
-                        },
-                        isLiked:
-                            homeController.isFavourite(post.postId.toString()),
-                      );
-                    })),
+                                } else {
+                                  final index = homeController.timeLinePosts
+                                      .indexWhere(
+                                          (p) => p.postId == post.postId);
 
-            // Text post
-            // TextPostItem(
-            //   onLike: () => homeController.toggleLike1(),
-            //   isLiked: homeController.isLiked1,
-            // ),
+                                  if (index != -1) {
+                                    homeController.favIds.add(postId);
+                                    DbController.instance.writeData(
+                                        DbConstants.itemAddedToFav,
+                                        homeController.favIds.toList());
+                                    cont.update([
+                                      'on_like',
+                                      'actions',
+                                      'update_all_actions'
+                                    ]);
+                                    homeController
+                                        .addReactionToPost(postId, index)
+                                        .then((success) {
+                                      if (success) {}
+                                    }).onError(
+                                      (error, stackTrace) {
+                                        homeController.favIds.remove(postId);
+                                        DbController.instance.writeData<List>(
+                                            DbConstants.itemAddedToFav,
+                                            homeController.favIds.toList());
+                                        cont.update([
+                                          'on_like',
+                                          'actions',
+                                          'update_all_actions'
+                                        ]);
+                                      },
+                                    );
+                                  } else {
+                                    log('⚠️ Post not found in timeline for liking.');
+                                  }
+                                }
+                              },
+                              isLiked: homeController
+                                  .isFavourite(post.postId.toString()),
+                            );
+                          })),
 
-            // Another post with image
-            // PostItem(
-            //   socialPost: posts.first, // Using first post as example
-            //   onLike: () => homeController.toggleLike2(),
-            //   isLiked: homeController.isLiked2,
-            // ),
+                  // Text post
+                  // TextPostItem(
+                  //   onLike: () => homeController.toggleLike1(),
+                  //   isLiked: homeController.isLiked1,
+                  // ),
 
-            // Another text post
-            // TextPostItem(
-            //   onLike: () => homeController.toggleLike3(),
-            //   isLiked: homeController.isLiked3,
-            // ),
+                  // Another post with image
+                  // PostItem(
+                  //   socialPost: posts.first, // Using first post as example
+                  //   onLike: () => homeController.toggleLike2(),
+                  //   isLiked: homeController.isLiked2,
+                  // ),
 
-            // Repost items
-            // RepostItem(
-            //   imagePath:
-            //       'assets/images/post4.png', // Replace with AppImage.post4
-            //   onLike: () => homeController.toggleLike4(),
-            //   isLiked: homeController.isLiked4,
-            // ),
+                  // Another text post
+                  // TextPostItem(
+                  //   onLike: () => homeController.toggleLike3(),
+                  //   isLiked: homeController.isLiked3,
+                  // ),
 
-            // RepostItem(
-            //   imagePath:
-            //       'assets/images/post5.png', // Replace with AppImage.post5
-            //   onLike: () => homeController.toggleLike4(),
-            //   isLiked: homeController.isLiked4,
-            // ),
-          ],
-        );
+                  // Repost items
+                  // RepostItem(
+                  //   imagePath:
+                  //       'assets/images/post4.png', // Replace with AppImage.post4
+                  //   onLike: () => homeController.toggleLike4(),
+                  //   isLiked: homeController.isLiked4,
+                  // ),
+
+                  // RepostItem(
+                  //   imagePath:
+                  //       'assets/images/post5.png', // Replace with AppImage.post5
+                  //   onLike: () => homeController.toggleLike4(),
+                  //   isLiked: homeController.isLiked4,
+                  // ),
+                ],
+              );
       },
     );
   }

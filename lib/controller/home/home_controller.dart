@@ -12,6 +12,7 @@ import 'package:prime_social_media_flutter_ui_kit/config/app_string.dart';
 import 'package:prime_social_media_flutter_ui_kit/constants/db_constants.dart';
 import 'package:prime_social_media_flutter_ui_kit/controller/auth_controller.dart';
 import 'package:prime_social_media_flutter_ui_kit/controller/db_controller.dart';
+import 'package:prime_social_media_flutter_ui_kit/main.dart';
 import 'package:prime_social_media_flutter_ui_kit/model/comment_model.dart';
 import 'package:prime_social_media_flutter_ui_kit/model/post_model.dart';
 import 'package:prime_social_media_flutter_ui_kit/model/story_model.dart';
@@ -26,11 +27,14 @@ class HomeController extends GetxController {
   RxDouble progress = 0.0.obs;
 
   getTimeLinePosts() async {
+    isLoading.value = true;
     try {
       timeLinePosts.value = await HomeServices().fetchTimelinePosts();
+      isLoading.value = false;
     } catch (e) {
       timeLinePosts.value = [];
       log("error getting timeline posts$e");
+      isLoading.value = false;
     }
   }
 

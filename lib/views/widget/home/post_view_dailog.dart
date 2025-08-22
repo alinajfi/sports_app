@@ -7,6 +7,7 @@ import 'package:prime_social_media_flutter_ui_kit/config/app_size.dart';
 import 'package:prime_social_media_flutter_ui_kit/controller/home/all_post_controller.dart';
 import 'package:prime_social_media_flutter_ui_kit/controller/profile/profile_controller.dart';
 import 'package:prime_social_media_flutter_ui_kit/model/post_model.dart';
+import 'package:prime_social_media_flutter_ui_kit/utils/widget_helper.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/new_post/post/edit_post_screen.dart';
 
 import '../../../config/app_font.dart';
@@ -95,16 +96,19 @@ class PostViewDialog extends StatelessWidget {
                                 ),
                                 GestureDetector(
                                   onTap: () async {
+                                    Navigator.of(context).pop();
                                     bool isDeleted =
                                         await allPostController.deletePost(
-                                      postId!,
+                                      post!.postId!,
                                     );
                                     Get.find<ProfileController>()
                                         .loadUserPosts();
                                     if (isDeleted) {
-                                      print("✅ Post deleted successfully");
+                                      WidgetHelper.showSnackBar(
+                                          title: "✅ Post deleted successfully");
                                     } else {
-                                      print("❌ Failed to delete post");
+                                      WidgetHelper.showSnackBar(
+                                          title: "Failed to delete");
                                     }
                                   },
                                   child: Container(

@@ -9,6 +9,7 @@ import 'package:prime_social_media_flutter_ui_kit/controller/user_profile_contro
 import 'package:prime_social_media_flutter_ui_kit/utils/widget_helper.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/widget/home/post_view_dailog.dart';
 import '../../../../config/app_size.dart';
+import '../profile/tabs/profile_posts_tab_view.dart';
 
 class UserProfilePostTabView extends StatelessWidget {
   UserProfilePostTabView({Key? key}) : super(key: key);
@@ -37,49 +38,61 @@ class UserProfilePostTabView extends StatelessWidget {
                     ? post.postImages!.first
                     : null;
 
+            log(imageUrl.toString());
+
+            if (_isVideo(imageUrl!))
+              return UrlPreview(
+                url: imageUrl,
+              );
+
             return GestureDetector(
               onTap: () {
-                WidgetHelper.showSnackBar();
-                if (imageUrl != null) {
-                  showDialog(
-                    context: context,
-                    barrierColor: AppColor.backgroundColor.withOpacity(0.7),
-                    builder: (_) => PostViewDialog(
-                      isMyProfile: false,
-                      imageUrl: imageUrl,
-                    ),
-                  );
-                }
+                //  WidgetHelper.showSnackBar();
+                showDialog(
+                  context: context,
+                  barrierColor: AppColor.backgroundColor.withOpacity(0.7),
+                  builder: (_) => PostViewDialog(
+                    isMyProfile: false,
+                    imageUrl: imageUrl,
+                  ),
+                );
               },
               child: Container(
-                decoration: BoxDecoration(
-                  color: AppColor.cardBackgroundColor,
-                  borderRadius: BorderRadius.circular(AppSize.appSize10),
-                ),
-                child: imageUrl != null
-                    ? ClipRRect(
-                        borderRadius: BorderRadius.circular(AppSize.appSize10),
-                        child: Image.network(
-                          imageUrl,
-                          fit: BoxFit.cover,
-                          width: double.infinity,
-                          height: double.infinity,
-                          errorBuilder: (_, __, ___) =>
-                              const Icon(Icons.broken_image),
-                          loadingBuilder: (context, child, progress) {
-                            if (progress == null) return child;
-                            return const Center(
-                              child: CircularProgressIndicator(strokeWidth: 1),
-                            );
-                          },
-                        ),
-                      )
-                    : const Center(
-                        child: Icon(Icons.image_not_supported),
-                      ),
-              ),
+                  decoration: BoxDecoration(
+                    color: AppColor.cardBackgroundColor,
+                    borderRadius: BorderRadius.circular(AppSize.appSize10),
+                  ),
+                  child: imageUrl != null
+                      ? ClipRRect(
+                          borderRadius:
+                              BorderRadius.circular(AppSize.appSize10),
+                          child: Image.network(
+                            imageUrl,
+                            fit: BoxFit.cover,
+                            width: double.infinity,
+                            height: double.infinity,
+                            errorBuilder: (_, __, ___) =>
+                                const Icon(Icons.broken_image),
+                            loadingBuilder: (context, child, progress) {
+                              if (progress == null) return child;
+                              return const Center(
+                                child:
+                                    CircularProgressIndicator(strokeWidth: 1),
+                              );
+                            },
+                          ),
+                        )
+                      : SizedBox.shrink()),
             );
           },
         ));
+  }
+
+  bool _isVideo(String url) {
+    final uri = Uri.tryParse(url);
+    if (uri == null) return false;
+
+    final extension = uri.path.toLowerCase().split('.').last;
+    return ['mp4', 'mov', 'avi', 'mkv', 'webm', 'm4v'].contains(extension);
   }
 }

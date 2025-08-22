@@ -458,8 +458,8 @@ class _DonationScreenState extends State<DonationScreen> {
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
-        onPressed: () {
-          StripeService().makePayment(context, onPaymentSuccess: () {});
+        onPressed: () async {
+          await StripeService().makePayment(context, onPaymentSuccess: () {});
           // // Handle continue to payment
           // Get.toNamed(AppRoutes.paymentSummaryScreen);
         },

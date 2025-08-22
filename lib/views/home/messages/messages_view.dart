@@ -1,5 +1,6 @@
 // ignore_for_file: must_be_immutable
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:prime_social_media_flutter_ui_kit/controller/home/messages_controller.dart';
@@ -369,10 +370,17 @@ class MessagesView extends StatelessWidget {
                         width: AppSize.appSize50,
                         height: AppSize.appSize50,
                         child: Center(
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: Image.network(
-                              messagesController.friendRequests[index].photo,
+                          child: Container(
+                            clipBehavior: Clip.hardEdge,
+                            width: 70,
+                            height: 70,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: CachedNetworkImage(
+                              fit: BoxFit.fill,
+                              imageUrl: messagesController
+                                  .friendRequests[index].photo,
                             ),
                           ),
                         ),

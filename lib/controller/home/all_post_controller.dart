@@ -97,7 +97,7 @@ class AllPostController extends GetxController
       print("Delete API Status: ${response.statusCode}");
       print("Delete API Body: ${response.body}");
 
-      if (response.statusCode >= 200 && response.statusCode < 300) {
+      if (response.statusCode == 200) {
         return true;
       } else {
         return false;

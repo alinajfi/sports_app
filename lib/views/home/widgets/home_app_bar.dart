@@ -51,11 +51,11 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
           child: Row(
             children: [
-              _buildActionIcon(
-                AppIcon.search,
-                () => Get.toNamed(AppRoutes.searchView),
-                languageController,
-              ),
+              // _buildActionIcon(
+              //   AppIcon.search,
+              //   () => Get.toNamed(AppRoutes.searchView),
+              //   languageController,
+              // ),
               _buildActionIcon(
                 AppIcon.message,
                 () => Get.toNamed(AppRoutes.messagesView),

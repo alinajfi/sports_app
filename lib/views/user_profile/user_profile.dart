@@ -324,8 +324,8 @@ class UserProfile extends StatelessWidget {
                                   EdgeInsets.zero, // remove default padding
                               constraints:
                                   const BoxConstraints(), // remove min size constraints
-                              onPressed: () {
-                                controller.addFriend();
+                              onPressed: () async {
+                                await controller.addFriend();
                               },
                               icon: Icon(
                                 Icons.person_add,

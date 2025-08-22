@@ -764,6 +764,12 @@
       "languageVersion": "3.3"
     },
     {
+      "name": "skeletonizer",
+      "rootUri": "file:///Users/mac/.pub-cache/hosted/pub.dev/skeletonizer-1.4.3",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
+    },
+    {
       "name": "sky_engine",
       "rootUri": "file:///Users/mac/development/flutter/bin/cache/pkg/sky_engine",
       "packageUri": "lib/",
@@ -1016,7 +1022,7 @@
       "languageVersion": "3.1"
     }
   ],
-  "generated": "2025-08-21T11:06:27.398386Z",
+  "generated": "2025-08-22T05:15:01.389748Z",
   "generator": "pub",
   "generatorVersion": "3.5.1",
   "flutterRoot": "file:///Users/mac/development/flutter",
