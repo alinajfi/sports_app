@@ -32,64 +32,21 @@ class UserProfile extends StatelessWidget {
           return Scaffold(
             backgroundColor: AppColor.backgroundColor,
             appBar: AppBar(
-              automaticallyImplyLeading: true,
+              leading: GestureDetector(
+                onTap: () {
+                  Get.back();
+                },
+                child: Icon(
+                  Icons.arrow_back,
+                  color: Colors.white,
+                ),
+              ),
+              //automaticallyImplyLeading: true,
             ),
             // appBar: _appBar(context),
             body: _body(context),
           );
         });
-  }
-
-  PreferredSizeWidget _appBar(BuildContext context) {
-    return AppBar(
-      backgroundColor: AppColor.backgroundColor,
-      title: const Padding(
-        padding: EdgeInsets.only(left: AppSize.appSize5),
-        child: Align(
-          alignment: Alignment.centerLeft,
-          child: Text(
-            AppString.eleanorPenaID,
-            style: TextStyle(
-              fontSize: AppSize.appSize20,
-              fontWeight: FontWeight.w600,
-              fontFamily: AppFont.appFontSemiBold,
-              color: AppColor.secondaryColor,
-            ),
-          ),
-        ),
-      ),
-      actions: [
-        Obx(() => Padding(
-              padding: EdgeInsets.only(
-                right: AppSize.appSize10,
-                // left: languageController.selectedLanguageIndex.value ==
-                //         AppSize.size2
-                //     ? AppSize.appSize16
-                //     : AppSize.appSize0,
-              ),
-              child: GestureDetector(
-                onTap: () {
-                  try {
-                    // profileActionBottomSheet(context);
-                  } catch (e) {
-                    debugPrint('Error showing bottom sheet: $e');
-                  }
-                },
-                child: Container(
-                  width: AppSize.appSize40,
-                  color: AppColor.backgroundColor,
-                  child: Center(
-                    child: Image.asset(
-                      AppIcon.info,
-                      height: AppSize.appSize14,
-                      width: AppSize.appSize3,
-                    ),
-                  ),
-                ),
-              ),
-            )),
-      ],
-    );
   }
 
   Widget _body(BuildContext context) {

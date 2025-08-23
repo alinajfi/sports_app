@@ -41,6 +41,8 @@ class UserProfileController extends GetxController
 
   List<PostModel> userPosts = [];
 
+  HomeServices _homeServices = HomeServices();
+
   @override
   void onInit() {
     super.onInit();
@@ -134,53 +136,6 @@ class UserProfileController extends GetxController
     }
   }
 
-  // Future<UserModel> fetchUserProfile() async {
-  //   final token =
-  //       await DbController.instance.readData<String>(DbConstants.apiToken);
-
-  //   final response = await http.get(
-  //     Uri.parse("https://mysportsjourney.co.uk/api/profile"),
-  //     headers: {
-  //       'Accept': 'application/json',
-  //       'Authorization': 'Bearer $token',
-  //     },
-  //   );
-
-  //   if (response.statusCode == 200) {
-  //     return UserModel.fromJson(json.decode(response.body));
-  //   } else {
-  //     throw Exception("Failed to load user profile");
-  //   }
-  // }
-
-  Future<void> editUserProfile() async {
-    try {
-      isLoading.value = true;
-      final token =
-          await DbController.instance.readData<String>(DbConstants.apiToken);
-
-      final response = await http.get(
-        Uri.parse("https://mysportsjourney.co.uk/api/profile"),
-        headers: {
-          'Accept': 'application/json',
-          'Authorization': 'Bearer $token',
-        },
-      );
-
-      if (response.statusCode == 200) {
-        final jsonData = json.decode(response.body);
-        user.value = UserModel.fromJson(jsonData);
-        print("Profile loaded: ${user.value?.username}");
-      } else {
-        throw Exception("Failed to load user profile");
-      }
-    } catch (e) {
-      print("Profile error: $e");
-    } finally {
-      isLoading.value = false;
-    }
-  }
-
   void toggleFollow() {
     isFollow.value = !isFollow.value;
   }
@@ -230,6 +185,8 @@ class UserProfileController extends GetxController
     if (userId != null) {
       final result =
           await SocialService().followUser(userId: userId.toString());
+
+      getUserProfile();
 
       if (result) {
         WidgetHelper.showSnackBar(

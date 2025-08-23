@@ -91,32 +91,36 @@ class ProfilePostsTabView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // ✅ Filter posts before building
+    final filteredPosts = profileController.postsList
+        .where((post) => post.postImages != null && post.postImages!.isNotEmpty)
+        .toList();
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: AppSize.appSize20),
-      child: Obx(
-        () => GridView.builder(
+      // ✅ Only wrap GridView with Obx, not the whole Padding
+      child: Obx(() {
+        final filteredPosts = profileController.postsList
+            .where((post) =>
+                post.postImages != null && post.postImages!.isNotEmpty)
+            .toList();
+
+        return GridView.builder(
           shrinkWrap: true,
           physics: const AlwaysScrollableScrollPhysics(),
-          itemCount: profileController.postsList.length,
+          itemCount: filteredPosts.length,
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount:
-                AppSize.size3, // Use 3 or 4 depending on your design
+            crossAxisCount: AppSize.size3,
             crossAxisSpacing: AppSize.appSize8,
             mainAxisSpacing: AppSize.appSize8,
           ),
           itemBuilder: (context, index) {
-            final post = profileController.postsList[index];
-            final imageUrl =
-                post.postImages != null && post.postImages!.isNotEmpty
-                    ? post.postImages!.first
-                    : null;
+            final post = filteredPosts[index];
+            final imageUrl = post.postImages!.first;
 
-            //log(imageUrl.toString());
-
-            if (_isVideo(imageUrl!))
-              return UrlPreview(
-                url: imageUrl,
-              );
+            if (_isVideo(imageUrl)) {
+              return UrlPreview(url: imageUrl);
+            }
 
             return GestureDetector(
               onTap: () {
@@ -126,7 +130,7 @@ class ProfilePostsTabView extends StatelessWidget {
                   builder: (_) => PostViewDialog(
                     isMyProfile: true,
                     post: post,
-                    imageUrl: post.postImages!.first,
+                    imageUrl: imageUrl,
                   ),
                 );
               },
@@ -135,30 +139,28 @@ class ProfilePostsTabView extends StatelessWidget {
                   color: AppColor.cardBackgroundColor,
                   borderRadius: BorderRadius.circular(AppSize.appSize10),
                 ),
-                child: imageUrl != null
-                    ? ClipRRect(
-                        borderRadius: BorderRadius.circular(AppSize.appSize10),
-                        child: Image.network(
-                          imageUrl,
-                          fit: BoxFit.cover,
-                          width: double.infinity,
-                          height: double.infinity,
-                          errorBuilder: (_, __, ___) =>
-                              const Icon(Icons.broken_image),
-                          loadingBuilder: (context, child, progress) {
-                            if (progress == null) return child;
-                            return const Center(
-                              child: CircularProgressIndicator(strokeWidth: 1),
-                            );
-                          },
-                        ),
-                      )
-                    : SizedBox.shrink(),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(AppSize.appSize10),
+                  child: Image.network(
+                    imageUrl,
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                    height: double.infinity,
+                    errorBuilder: (_, __, ___) =>
+                        const Icon(Icons.broken_image),
+                    loadingBuilder: (context, child, progress) {
+                      if (progress == null) return child;
+                      return const Center(
+                        child: CircularProgressIndicator(strokeWidth: 1),
+                      );
+                    },
+                  ),
+                ),
               ),
             );
           },
-        ),
-      ),
+        );
+      }),
     );
   }
 

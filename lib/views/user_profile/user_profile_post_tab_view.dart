@@ -20,11 +20,18 @@ class UserProfilePostTabView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: AppSize.appSize20),
-        child: GridView.builder(
+      padding: const EdgeInsets.symmetric(horizontal: AppSize.appSize20),
+      child: Obx(() {
+        // ✅ Filter posts to only include ones with images
+        final filteredPosts = profileController.postsList
+            .where((post) =>
+                post.postImages != null && post.postImages!.isNotEmpty)
+            .toList();
+
+        return GridView.builder(
           shrinkWrap: true,
           physics: const AlwaysScrollableScrollPhysics(),
-          itemCount: profileController.postsList.value.length,
+          itemCount: filteredPosts.length,
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount:
                 AppSize.size3, // Use 3 or 4 depending on your design
@@ -32,22 +39,15 @@ class UserProfilePostTabView extends StatelessWidget {
             mainAxisSpacing: AppSize.appSize8,
           ),
           itemBuilder: (context, index) {
-            final post = profileController.postsList[index];
-            final imageUrl =
-                post.postImages != null && post.postImages!.isNotEmpty
-                    ? post.postImages!.first
-                    : null;
+            final post = filteredPosts[index];
+            final imageUrl = post.postImages!.first;
 
-            log(imageUrl.toString());
-
-            if (_isVideo(imageUrl!))
-              return UrlPreview(
-                url: imageUrl,
-              );
+            if (_isVideo(imageUrl)) {
+              return GestureDetector(child: UrlPreview(url: imageUrl));
+            }
 
             return GestureDetector(
               onTap: () {
-                //  WidgetHelper.showSnackBar();
                 showDialog(
                   context: context,
                   barrierColor: AppColor.backgroundColor.withOpacity(0.7),
@@ -58,34 +58,33 @@ class UserProfilePostTabView extends StatelessWidget {
                 );
               },
               child: Container(
-                  decoration: BoxDecoration(
-                    color: AppColor.cardBackgroundColor,
-                    borderRadius: BorderRadius.circular(AppSize.appSize10),
+                decoration: BoxDecoration(
+                  color: AppColor.cardBackgroundColor,
+                  borderRadius: BorderRadius.circular(AppSize.appSize10),
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(AppSize.appSize10),
+                  child: Image.network(
+                    imageUrl,
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                    height: double.infinity,
+                    errorBuilder: (_, __, ___) =>
+                        const Icon(Icons.broken_image),
+                    loadingBuilder: (context, child, progress) {
+                      if (progress == null) return child;
+                      return const Center(
+                        child: CircularProgressIndicator(strokeWidth: 1),
+                      );
+                    },
                   ),
-                  child: imageUrl != null
-                      ? ClipRRect(
-                          borderRadius:
-                              BorderRadius.circular(AppSize.appSize10),
-                          child: Image.network(
-                            imageUrl,
-                            fit: BoxFit.cover,
-                            width: double.infinity,
-                            height: double.infinity,
-                            errorBuilder: (_, __, ___) =>
-                                const Icon(Icons.broken_image),
-                            loadingBuilder: (context, child, progress) {
-                              if (progress == null) return child;
-                              return const Center(
-                                child:
-                                    CircularProgressIndicator(strokeWidth: 1),
-                              );
-                            },
-                          ),
-                        )
-                      : SizedBox.shrink()),
+                ),
+              ),
             );
           },
-        ));
+        );
+      }),
+    );
   }
 
   bool _isVideo(String url) {

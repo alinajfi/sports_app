@@ -55,7 +55,7 @@ class StripeService {
       try {
         // Ensure we're on the main thread and UI is ready
         WidgetsBinding.instance.addPostFrameCallback((_) async {
-          await Future.delayed(Duration(milliseconds: 800));
+          await Future.delayed(Duration(seconds: 1));
 
           await Stripe.instance.presentPaymentSheet(
             options: PaymentSheetPresentOptions(),
@@ -63,9 +63,9 @@ class StripeService {
 
           // Success handling
           if (context.mounted) {
-            // ScaffoldMessenger.of(context).showSnackBar(
-            //   SnackBar(content: Text('Payment successful!')),
-            // );
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Payment successful!')),
+            );
           }
         });
       } on StripeException catch (e) {
@@ -81,9 +81,9 @@ class StripeService {
           );
         }
       }
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Payment successful!')),
-      );
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   SnackBar(content: Text('Payment successful!')),
+      // );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Payment failed: $e')),
