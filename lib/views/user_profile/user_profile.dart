@@ -541,16 +541,17 @@ class PremiumSubscriptionCard extends StatelessWidget {
                 Flexible(
                   child: GestureDetector(
                     onTap: () {
-                      try {
-                        if (Get.isRegistered<GetMaterialController>()) {
-                          Get.toNamed(AppRoutes.bundlesScreens);
-                        } else {
-                          debugPrint(
-                              'GetMaterialApp is not properly initialized.');
-                        }
-                      } catch (e) {
-                        debugPrint('Navigation error: $e');
-                      }
+                      Get.toNamed(AppRoutes.bundlesScreens);
+                      // try {
+                      //   if (Get.isRegistered<GetMaterialController>()) {
+
+                      //   } else {
+                      //     debugPrint(
+                      //         'GetMaterialApp is not properly initialized.');
+                      //   }
+                      // } catch (e) {
+                      //   debugPrint('Navigation error: $e');
+                      // }
                     },
                     child: Container(
                       padding: const EdgeInsets.symmetric(

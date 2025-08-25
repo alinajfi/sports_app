@@ -46,11 +46,14 @@ class MyDrawer extends StatelessWidget {
                     Container(
                       clipBehavior: Clip.hardEdge,
                       child: CachedNetworkImage(
-                          errorWidget: (context, url, error) {
-                            return Icon(Icons.person);
-                          },
-                          fit: BoxFit.fill,
-                          imageUrl: AuthController.instance.currentUser!.photo),
+                        errorWidget: (context, url, error) =>
+                            const Icon(Icons.person),
+                        fit: BoxFit.fill,
+                        imageUrl:
+                            Get.find<AuthController>().currentUser?.photo ?? "",
+                        placeholder: (context, url) =>
+                            const Icon(Icons.person), // optional
+                      ),
                       width: 80,
                       height: 80,
                       decoration: BoxDecoration(
@@ -58,6 +61,7 @@ class MyDrawer extends StatelessWidget {
                         borderRadius: BorderRadius.circular(16.0),
                       ),
                     ),
+
                     const SizedBox(height: 16),
                     // Name and Username
                     Text(

@@ -45,6 +45,7 @@ dependencies:
   cached_network_image: ^3.4.1
   flutter_stripe: ^10.1.0
   skeletonizer: ^1.4.3
+  video_thumbnail: ^0.5.6
 
   
 

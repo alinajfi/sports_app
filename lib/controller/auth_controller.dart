@@ -10,6 +10,7 @@ import '../model/user_model.dart';
 class AuthController extends GetxController {
   static AuthController instance = Get.find<AuthController>();
   String? userName;
+
   UserModel? currentUser;
 
   Future<void> getCurrentUser() async {

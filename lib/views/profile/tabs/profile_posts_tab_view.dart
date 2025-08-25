@@ -91,10 +91,10 @@ class ProfilePostsTabView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // ✅ Filter posts before building
-    final filteredPosts = profileController.postsList
-        .where((post) => post.postImages != null && post.postImages!.isNotEmpty)
-        .toList();
+    // // ✅ Filter posts before building
+    // final filteredPosts = profileController.postsList
+    //     .where((post) => post.postImages != null && post.postImages!.isNotEmpty)
+    //     .toList();
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: AppSize.appSize20),
@@ -119,7 +119,19 @@ class ProfilePostsTabView extends StatelessWidget {
             final imageUrl = post.postImages!.first;
 
             if (_isVideo(imageUrl)) {
-              return UrlPreview(url: imageUrl);
+              return GestureDetector(
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      barrierColor: AppColor.backgroundColor.withOpacity(0.7),
+                      builder: (_) => VideoViewDialog(
+                        isMyProfile: true,
+                        post: post,
+                        videoUrl: imageUrl,
+                      ),
+                    );
+                  },
+                  child: UrlPreview(url: imageUrl));
             }
 
             return GestureDetector(

@@ -15,12 +15,13 @@ import 'package:prime_social_media_flutter_ui_kit/controller/edit_post_controlle
 import 'package:prime_social_media_flutter_ui_kit/model/create_post_model.dart';
 import 'package:prime_social_media_flutter_ui_kit/model/post_model.dart';
 
+import '../../profile/tabs/profile_posts_tab_view.dart';
+
 class EditPostScreen extends StatefulWidget {
   final PostModel postModel;
-  EditPostScreen({
-    Key? key,
-    required this.postModel,
-  }) : super(key: key);
+  final bool isFromVideo;
+  EditPostScreen({Key? key, required this.postModel, required this.isFromVideo})
+      : super(key: key);
 
   @override
   State<EditPostScreen> createState() => _CreatePostScreenState();
@@ -120,12 +121,17 @@ class _CreatePostScreenState extends State<EditPostScreen> {
                                 children: [
                                   ClipRRect(
                                     borderRadius: BorderRadius.circular(8),
-                                    child: Image.network(
-                                      controller.existingImages[index],
-                                      fit: BoxFit.cover,
-                                      width: double.infinity,
-                                      height: double.infinity,
-                                    ),
+                                    child: widget.isFromVideo
+                                        ? UrlPreview(
+                                            url:
+                                                controller.existingImages.first,
+                                          )
+                                        : Image.network(
+                                            controller.existingImages[index],
+                                            fit: BoxFit.cover,
+                                            width: double.infinity,
+                                            height: double.infinity,
+                                          ),
                                   ),
                                   Positioned(
                                     top: 4,

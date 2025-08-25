@@ -34,60 +34,58 @@ class StripeService {
     }
   }
 
-  Future<void> makePayment(BuildContext context,
-      {Function? onPaymentSuccess}) async {
-    try {
-      // Create payment intent
-      final paymentIntent = await StripeService.createPaymentIntent(
-        amount: '1000', // Amount in cents ($10.00)
-        currency: 'usd',
-      );
-      log(paymentIntent['client_secret'].toString());
-      // Initialize payment sheet
-      await Stripe.instance.initPaymentSheet(
-        paymentSheetParameters: SetupPaymentSheetParameters(
-          paymentIntentClientSecret: paymentIntent['client_secret'],
-          merchantDisplayName: 'Sport me',
-          style: ThemeMode.light,
-        ),
-      );
+  // Future<void> makePayment(BuildContext context,
+  //     {Function? onPaymentSuccess}) async {
+  //   try {
+  //     // Create payment intent
+  //     final paymentIntent = await StripeService.createPaymentIntent(
+  //       amount: '1000', // Amount in cents ($10.00)
+  //       currency: 'usd',
+  //     );
+  //     log(paymentIntent['client_secret'].toString());
+  //     // Initialize payment sheet
+  //     await Stripe.instance.initPaymentSheet(
+  //       paymentSheetParameters: SetupPaymentSheetParameters(
+  //         paymentIntentClientSecret: paymentIntent['client_secret'],
+  //         merchantDisplayName: 'Sport me',
+  //         style: ThemeMode.light,
+  //       ),
+  //     );
 
-      try {
-        // Ensure we're on the main thread and UI is ready
-        WidgetsBinding.instance.addPostFrameCallback((_) async {
-          await Future.delayed(Duration(seconds: 1));
+  //     try {
+  //       // Ensure we're on the main thread and UI is ready
+  //       WidgetsBinding.instance.addPostFrameCallback((_) async {
+  //         await Future.delayed(Duration(seconds: 1));
 
-          await Stripe.instance.presentPaymentSheet(
-            options: PaymentSheetPresentOptions(),
-          );
+  //         await Stripe.instance.presentPaymentSheet(
+  //           options: PaymentSheetPresentOptions(),
+  //         );
 
-          // Success handling
-          if (context.mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Payment successful!')),
-            );
-          }
-        });
-      } on StripeException catch (e) {
-        if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Payment error: ${e.error.message}')),
-          );
-        }
-      } catch (e) {
-        if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Unexpected error: $e')),
-          );
-        }
-      }
-      // ScaffoldMessenger.of(context).showSnackBar(
-      //   SnackBar(content: Text('Payment successful!')),
-      // );
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Payment failed: $e')),
-      );
-    }
-  }
+  //         // Success handling
+  //         if (context.mounted) {
+  //           onPaymentSuccess?.call();
+  //         }
+  //       });
+  //     } on StripeException catch (e) {
+  //       if (context.mounted) {
+  //         ScaffoldMessenger.of(context).showSnackBar(
+  //           SnackBar(content: Text('Payment error: ${e.error.message}')),
+  //         );
+  //       }
+  //     } catch (e) {
+  //       if (context.mounted) {
+  //         ScaffoldMessenger.of(context).showSnackBar(
+  //           SnackBar(content: Text('Unexpected error: $e')),
+  //         );
+  //       }
+  //     }
+  //     // ScaffoldMessenger.of(context).showSnackBar(
+  //     //   SnackBar(content: Text('Payment successful!')),
+  //     // );
+  //   } catch (e) {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(content: Text('Payment failed: $e')),
+  //     );
+  //   }
+  // }
 }

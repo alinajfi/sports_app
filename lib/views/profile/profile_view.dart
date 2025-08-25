@@ -17,6 +17,7 @@ import 'package:prime_social_media_flutter_ui_kit/controller/profile/settings_op
 import 'package:prime_social_media_flutter_ui_kit/controller/sign_up_controller.dart';
 import 'package:prime_social_media_flutter_ui_kit/model/highlight_model.dart';
 import 'package:prime_social_media_flutter_ui_kit/routes/app_routes.dart';
+import 'package:prime_social_media_flutter_ui_kit/utils/widget_helper.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/profile/tabs/profile_comments_tab_view.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/profile/tabs/profile_posts_tab_view.dart';
 import 'package:prime_social_media_flutter_ui_kit/views/profile/tabs/profile_reels_tab_view.dart';
@@ -365,7 +366,12 @@ class _ProfileViewState extends State<ProfileView> {
                   GestureDetector(
                     onTap: () async {
                       final res = await Get.toNamed(AppRoutes.editProfileView);
-                      profileController.loadUserProfile();
+                      if (res) {
+                        WidgetHelper.showSnackBar(
+                            title: "Success",
+                            description: "Profile updated succesfully");
+                        profileController.loadUserProfile();
+                      }
                     },
                     child: Container(
                       width: kIsWeb ? AppSize.appSize355 : AppSize.appSize147,
@@ -420,39 +426,39 @@ class _ProfileViewState extends State<ProfileView> {
                       ),
                     ),
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      Fluttertoast.showToast(
-                        msg: AppString.userAdded,
-                        backgroundColor: AppColor.cardBackgroundColor,
-                        fontSize: AppSize.appSize14,
-                        textColor: AppColor.secondaryColor,
-                        toastLength: Toast.LENGTH_SHORT,
-                        gravity: ToastGravity.BOTTOM,
-                      );
-                    },
-                    child: Container(
-                      width: AppSize.appSize40,
-                      height: AppSize.appSize32,
-                      margin: EdgeInsets.only(
-                        left: AppSize.appSize8,
-                        right: languageController.selectedLanguageIndex.value ==
-                                AppSize.size2
-                            ? AppSize.appSize8
-                            : AppSize.appSize0,
-                      ),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(AppSize.appSize6),
-                        color: AppColor.cardBackgroundColor,
-                      ),
-                      child: Center(
-                        child: Image.asset(
-                          AppIcon.add,
-                          width: AppSize.appSize20,
-                        ),
-                      ),
-                    ),
-                  ),
+                  // GestureDetector(
+                  //   onTap: () {
+                  //     Fluttertoast.showToast(
+                  //       msg: AppString.userAdded,
+                  //       backgroundColor: AppColor.cardBackgroundColor,
+                  //       fontSize: AppSize.appSize14,
+                  //       textColor: AppColor.secondaryColor,
+                  //       toastLength: Toast.LENGTH_SHORT,
+                  //       gravity: ToastGravity.BOTTOM,
+                  //     );
+                  //   },
+                  //   child: Container(
+                  //     width: AppSize.appSize40,
+                  //     height: AppSize.appSize32,
+                  //     margin: EdgeInsets.only(
+                  //       left: AppSize.appSize8,
+                  //       right: languageController.selectedLanguageIndex.value ==
+                  //               AppSize.size2
+                  //           ? AppSize.appSize8
+                  //           : AppSize.appSize0,
+                  //     ),
+                  //     decoration: BoxDecoration(
+                  //       borderRadius: BorderRadius.circular(AppSize.appSize6),
+                  //       color: AppColor.cardBackgroundColor,
+                  //     ),
+                  //     child: Center(
+                  //       child: Image.asset(
+                  //         AppIcon.add,
+                  //         width: AppSize.appSize20,
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
             ),

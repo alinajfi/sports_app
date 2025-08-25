@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
@@ -5,7 +7,9 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:prime_social_media_flutter_ui_kit/main.dart';
 import 'package:prime_social_media_flutter_ui_kit/routes/app_routes.dart';
 import 'package:prime_social_media_flutter_ui_kit/services/stripe_service.dart';
-import '../../../../config/app_color.dart'; // your AppColor dark theme class
+import 'package:prime_social_media_flutter_ui_kit/utils/widget_helper.dart';
+import '../../../../config/app_color.dart';
+import '../../home/home_view.dart'; // your AppColor dark theme class
 
 class DonationScreen extends StatefulWidget {
   const DonationScreen({Key? key}) : super(key: key);
@@ -459,9 +463,15 @@ class _DonationScreenState extends State<DonationScreen> {
       width: double.infinity,
       child: ElevatedButton(
         onPressed: () async {
-          await StripeService().makePayment(context, onPaymentSuccess: () {});
-          // // Handle continue to payment
-          // Get.toNamed(AppRoutes.paymentSummaryScreen);
+          WidgetsBinding.instance.addPostFrameCallback((_) async {
+            makePayment(context, onPaymentSuccess: () {
+              WidgetHelper.showSnackBar(title: "Payment successfull");
+              Future.delayed(const Duration(milliseconds: 500), () {
+                int count = 0;
+                Get.until((_) => count++ >= 3); // pops 3 screens
+              });
+            });
+          });
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.blue.shade600,
@@ -471,7 +481,7 @@ class _DonationScreenState extends State<DonationScreen> {
           ),
         ),
         child: const Text(
-          'CONTINUE TO PAYMENT',
+          'Make Payment',
           style: TextStyle(
             color: Colors.white,
             fontSize: 16,
@@ -487,5 +497,60 @@ class _DonationScreenState extends State<DonationScreen> {
   void dispose() {
     _customAmountController.dispose();
     super.dispose();
+  }
+
+  Future<void> makePayment(BuildContext context,
+      {Function? onPaymentSuccess}) async {
+    try {
+      log("Called make payment");
+      final paymentIntent = await StripeService.createPaymentIntent(
+        amount: '1000', // Amount in cents ($10.00)
+        currency: 'usd',
+      );
+      log(paymentIntent['client_secret'].toString());
+      // Initialize payment sheet
+      await Stripe.instance.initPaymentSheet(
+        paymentSheetParameters: SetupPaymentSheetParameters(
+          paymentIntentClientSecret: paymentIntent['client_secret'],
+          merchantDisplayName: 'Sport me',
+          style: ThemeMode.light,
+        ),
+      );
+
+      try {
+        // Ensure we're on the main thread and UI is ready
+        WidgetsBinding.instance.addPostFrameCallback((_) async {
+          await Future.delayed(Duration(seconds: 1));
+
+          await Stripe.instance.presentPaymentSheet(
+            options: PaymentSheetPresentOptions(),
+          );
+
+          // Success handling
+          if (context.mounted) {
+            onPaymentSuccess?.call();
+          }
+        });
+      } on StripeException catch (e) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Payment error: ${e.error.message}')),
+          );
+        }
+      } catch (e) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Unexpected error: $e')),
+          );
+        }
+      }
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   SnackBar(content: Text('Payment successful!')),
+      // );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Payment failed: $e')),
+      );
+    }
   }
 }

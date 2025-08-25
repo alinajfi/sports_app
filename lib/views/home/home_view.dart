@@ -34,8 +34,6 @@ import 'widgets/post_item_dummy.dart';
 
 // import '../../services/notification_service.dart';
 
-final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
 class HomeView extends StatefulWidget {
   HomeView({Key? key}) : super(key: key);
 
@@ -44,6 +42,8 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   final HomeController homeController = Get.put(HomeController());
 
   final LanguageController languageController = Get.put(LanguageController());

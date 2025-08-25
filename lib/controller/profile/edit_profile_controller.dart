@@ -95,17 +95,16 @@ class EditProfileController extends GetxController {
     try {
       final result = await HomeServices().updateProfile(userInfo: userInfo);
       if (result) {
-        WidgetHelper.showSnackBar(
-            title: "Success", description: "Info update successfull");
+        Get.back(result: true);
         return;
       }
       WidgetHelper.showSnackBar(
           title: "Failed", description: "Info update Failed");
     } catch (e) {
       WidgetHelper.showSnackBar(
-          title: "Success", description: "Info update Failed $e");
+          title: "Failed", description: "Info update Failed $e");
     } finally {
-      isLoading.value = true;
+      isLoading.value = false;
     }
   }
 
